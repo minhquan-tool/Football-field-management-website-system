@@ -28,7 +28,9 @@ public class SecurityConfig {
     }
 
     @Bean
-    SecurityFilterChain security(HttpSecurity http,AuthService service,ObjectMapper json,com.sanbong.security.LoginAttemptLimiter limiter) throws Exception {
+    SecurityFilterChain security(HttpSecurity http,AuthService service,ObjectMapper json,com.sanbong.security.LoginAttemptLimiter limiter,
+            @org.springframework.beans.factory.annotation.Value("${app.security.remember-seconds:604800}") int rememberSeconds,
+            @org.springframework.beans.factory.annotation.Value("${server.servlet.session.cookie.secure:false}") boolean secureCookie) throws Exception {
         http.authorizeHttpRequests(a -> a
                 .requestMatchers(org.springframework.http.HttpMethod.GET,"/Trang_chu.html","/css/**","/assets/**","/vendor/**",
                         "/public/options","/public/pitches","/public/availability").permitAll()
@@ -63,6 +65,7 @@ public class SecurityConfig {
                         service.audit(principal.accountId(),"Đăng nhập","Đăng nhập thành công");
                         req.getSession().setAttribute("credentialFingerprint",service.credentialFingerprint(principal.accountId()));
                         req.setAttribute(LoginRateLimitFilter.SUCCESS,true);
+                        com.sanbong.security.RememberLoginSession.apply(req,res,rememberSeconds,secureCookie);
                         write(json,res,200,ApiResponse.ok("Đăng nhập thành công.",principal.profile()));
                     } catch(RuntimeException e) {
                         req.getSession().invalidate();
@@ -78,6 +81,7 @@ public class SecurityConfig {
                     write(json,res,401,ApiResponse.error("Thông tin đăng nhập không đúng hoặc tài khoản đã bị khóa."));
                 }))
             .logout(l -> l.logoutUrl("/auth/logout")
+                .deleteCookies("JSESSIONID")
                 .addLogoutHandler((req,res,auth) -> {
                     if(auth!=null && auth.getPrincipal() instanceof AccountPrincipal p)
                         service.audit(p.accountId(),"Đăng xuất","Đăng xuất khỏi hệ thống");

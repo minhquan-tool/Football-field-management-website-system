@@ -99,18 +99,18 @@
             </div>
 
             <!-- Remember me & Forgot Password -->
-            <div class="flex items-center justify-between text-sm">
+            <div class="login-options flex items-center justify-between text-sm">
                 <div class="flex items-center">
-                    <input id="remember-me" name="remember-me" type="checkbox" disabled title="Phiên đăng nhập hết hạn sau 30 phút không hoạt động" 
+                    <input id="remember-me" name="remember-me" type="checkbox" title="Giữ đăng nhập tối đa 7 ngày trên thiết bị này"
                         class="h-4 w-4 text-brand-600 focus:ring-brand-500 border-gray-300 rounded cursor-pointer">
                     <label for="remember-me" class="ml-2 block text-gray-700 cursor-pointer">
                         Ghi nhớ đăng nhập
                     </label>
                 </div>
                 <div class="text-sm">
-                    <a aria-disabled="true" tabindex="-1" title="Chức năng chưa triển khai" class="font-medium text-brand-600 hover:text-brand-500 hover:underline transition-colors">
+                    <button type="button" id="forgotPassword" class="font-medium text-brand-600 hover:text-brand-500 hover:underline transition-colors">
                         Quên mật khẩu?
-                    </a>
+                    </button>
                 </div>
             </div>
 
@@ -221,7 +221,8 @@
                     const account = await SanBong.request('auth/login', {
                         method: 'POST', body: new URLSearchParams({
                             identifier: document.getElementById('identifier').value.trim(),
-                            password: document.getElementById('password').value
+                            password: document.getElementById('password').value,
+                            'remember-me': String(document.getElementById('remember-me').checked)
                         })
                     });
                     showToast('Đăng nhập thành công.');
@@ -236,5 +237,5 @@
     </script>
     <script src="js/role-navigation.js" defer></script>
     <script src="js/auth.js" defer></script>
-</body>
+<script src="js/login-support.js" defer></script></body>
 </html>

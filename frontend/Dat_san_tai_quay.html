@@ -53,8 +53,8 @@
     <div class="flex-1 flex flex-col h-full overflow-hidden relative">
         <header class="h-20 bg-white shadow-sm flex items-center justify-between px-6 lg:px-8 z-10 border-b border-gray-100">
             <div>
-                <h2 class="text-xl font-bold text-gray-800">Đặt Sân Tại Quầy (POS Sân Bóng)</h2>
-                <p class="text-xs text-gray-400">Tiếp nhận khách vãng lai, tạo phiếu đặt và thu ngân trực tiếp</p>
+                <h2 class="text-xl font-bold text-gray-800">Đặt sân tại quầy</h2>
+
             </div>
 
             <div class="flex items-center gap-4">
@@ -84,18 +84,14 @@
                         </h3>
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             <div>
-                                <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Số Điện Thoại <span class="text-red-500">*</span></label>
+                                <label for="customerPhone" class="block text-xs font-bold text-gray-700 uppercase mb-1">Số Điện Thoại <span class="text-red-500">*</span></label>
                                 <div class="relative">
-                                    <input type="tel" id="customerPhone" maxlength="15" class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-brand-500 outline-none" placeholder="Nhập SĐT..." required>
-                                    <button type="button" id="lookupCustomerButton" onclick="lookupCustomer()" class="absolute right-2 top-1/2 -translate-y-1/2 text-brand-600 text-xs font-bold hover:underline">
-                                        Tra cứu
-                                    </button>
+                                    <input type="tel" id="customerPhone" autocomplete="tel" pattern="\+?[0-9]{7,15}" minlength="7" maxlength="15" class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-brand-500 outline-none" placeholder="Nhập SĐT..." required>
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Họ Và Tên <span class="text-red-500">*</span></label>
-                                <input type="text" id="customerName" readonly class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-brand-500 outline-none" placeholder="Tên khách hàng" required>
-                                <button type="button" id="createCustomerButton" onclick="createCounterCustomer()" hidden class="mt-2 bg-brand-600 text-white rounded-xl px-3 py-2 text-sm font-bold hover:bg-brand-700 disabled:opacity-50">Tạo khách</button>
+                                <label for="customerName" class="block text-xs font-bold text-gray-700 uppercase mb-1">Họ Và Tên <span class="text-red-500">*</span></label>
+                                <input type="text" id="customerName" maxlength="100" autocomplete="name" class="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-brand-500 outline-none" placeholder="Tên khách hàng" required>
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Ghi Chú Đặt Sân</label>
@@ -106,20 +102,16 @@
 
                     <!-- BƯỚC 2: CHỌN SÂN & KHUNG GIỜ -->
                     <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                        <h3 class="text-base font-bold text-gray-800 mb-4 flex items-center justify-between">
-                            <div class="flex items-center">
-                                <span class="bg-brand-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs mr-2">2</span>
-                                Chọn Sân & Khung Giờ Chơi
-                            </div>
-                            <input type="date" id="playDate" class="border border-gray-300 rounded-lg px-3 py-1.5 text-xs font-bold text-gray-700 focus:ring-2 focus:ring-brand-500 outline-none">
-                        </h3>
-
-<div class="mb-4"><label class="text-sm font-bold">Loại sân</label><select id="bookingType" class="border border-gray-300 rounded-xl p-2 ml-2"></select></div>
+<h3 class="text-base font-bold text-gray-800 mb-4">2. Chọn ngày và sân</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+<label for="playDate" class="text-sm font-bold">Ngày chơi<input type="date" id="playDate" required class="w-full border border-gray-300 rounded-xl p-3"></label>
+<label for="bookingType" class="text-sm font-bold">Loại sân<select id="bookingType" class="w-full border border-gray-300 rounded-xl p-3"></select></label></div>
+<label class="block text-sm font-bold mb-3">Chọn sân cụ thể</label>
 <div id="bookingPitches" class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5"></div>
-<label class="text-sm font-bold">Nhập giờ chơi (07:00–22:00)</label>
+<h3 class="text-base font-bold mb-4">3. Chọn giờ chơi</h3>
 <div id="bookingSlots" class="grid grid-cols-2 gap-3"><label class="text-sm font-bold">Giờ bắt đầu<input id="startTime" type="time" step="60" min="07:00" max="21:59" value="08:00" required class="w-full border border-gray-300 rounded-xl p-3"></label><label class="text-sm font-bold">Giờ kết thúc<input id="endTime" type="time" step="60" min="07:01" max="22:00" value="09:00" required class="w-full border border-gray-300 rounded-xl p-3"></label></div>
 <p id="availabilityFeedback" class="text-sm text-gray-500 mt-3" role="status"></p></section>
-<section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6"><h3 class="font-bold">Dịch vụ đặt trước</h3><p class="text-sm text-gray-500 mt-2">Chọn số lượng đơn vị hoặc lốc. Giá chính thức được lưu khi tạo booking; chưa thanh toán.</p><div id="prebookServices" class="mt-3">Đang tải danh mục...</div></section></div>
+<section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6"><h3 class="font-bold">Dịch vụ đặt trước</h3><div id="prebookServices" class="mt-3">Đang tải danh mục...</div></section></div>
                 <!-- CỘT PHẢI: HÓA ĐƠN & THANH TOÁN (STICKY) -->
                 <div class="lg:col-span-1">
                     <div class="bg-white rounded-2xl shadow-xl border border-gray-200 sticky top-6 overflow-hidden">
@@ -135,7 +127,7 @@
 <div>Sân: <strong id="receiptPitch">—</strong></div>
 <div>Ngày / giờ: <strong id="receiptTime">—</strong></div>
 <div>Đơn giá mỗi giờ: <strong id="receiptPitchPrice">—</strong></div>
-<p class="text-xs text-gray-500">Dịch vụ đặt trước được lưu cùng booking. Nhân viên có thể thêm phát sinh khi nhận sân. Chưa thanh toán.</p>
+
 <div class="flex justify-between"><strong>Tổng tiền dự kiến:</strong><strong id="receiptTotal" class="text-brand-600">—</strong></div>
 <p id="bookingFeedback" class="text-sm text-brand-700" role="status" aria-live="polite"></p></div>                            <!-- Submit -->
                             <button type="submit" disabled class="w-full bg-brand-600 text-white font-black py-3.5 rounded-xl hover:bg-brand-700 transition-all shadow-lg active:scale-[0.98]">

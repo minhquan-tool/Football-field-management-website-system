@@ -31,8 +31,11 @@ public class FinanceController {
  public ApiResponse<?> promotion(@PathVariable String id,@Valid @RequestBody PromotionApplyRequest request,@AuthenticationPrincipal AccountPrincipal actor){return ApiResponse.ok("Đã áp dụng khuyến mãi vào tiền sân.",service.applyCustomerPromotion(id,request,actor));}
  @PostMapping("/finance/bookings/{id}/payments") @PreAuthorize("hasAnyRole('ADMIN','ACCOUNTANT','PITCH_STAFF') and hasAuthority('CN04_THEM')")
  public ApiResponse<?> pay(@PathVariable String id,@Valid @RequestBody PaymentRequest request,@AuthenticationPrincipal AccountPrincipal actor) { return ApiResponse.ok("Đã ghi nhận thực thu nội bộ.",service.pay(id,request,actor,true)); }
- @PostMapping("/finance/bookings/{id}/payment-requests") @PreAuthorize("hasRole('CUSTOMER') and hasAuthority('CN04_THEM')")
- public ApiResponse<?> request(@PathVariable String id,@Valid @RequestBody PaymentRequest request,@AuthenticationPrincipal AccountPrincipal actor) { return ApiResponse.ok("Đang chờ nhân viên xác minh; chưa xác nhận thu tiền.",service.pay(id,request,actor,false)); }
+ @PostMapping("/finance/bookings/{id}/payment-requests") @PreAuthorize("hasAnyRole('CUSTOMER','PITCH_STAFF') and hasAuthority('CN04_THEM')")
+ public ApiResponse<?> request(@PathVariable String id,@Valid @RequestBody PaymentRequest request,@AuthenticationPrincipal AccountPrincipal actor) {
+  if("VT02".equals(actor.roleId()) && !"Chuyển khoản".equals(request.phuongThuc())) throw new org.springframework.security.access.AccessDeniedException("Nhân viên chỉ gửi chuyển khoản chờ kế toán xác minh qua thao tác này.");
+  return ApiResponse.ok("Đang chờ nhân viên xác minh; chưa xác nhận thu tiền.",service.pay(id,request,actor,false));
+ }
  @PostMapping("/finance/payments/{id}/confirm") @PreAuthorize("hasAnyRole('ADMIN','ACCOUNTANT','PITCH_STAFF') and hasAuthority('CN04_SUA')")
  public ApiResponse<?> confirm(@PathVariable String id,@Valid @RequestBody ReceiptConfirmation request,@AuthenticationPrincipal AccountPrincipal actor) { return ApiResponse.ok("Đã xác nhận thực thu.",service.confirmPayment(id,actor,true)); }
  @PostMapping("/finance/payments/{id}/reject") @PreAuthorize("hasAnyRole('ADMIN','ACCOUNTANT','PITCH_STAFF') and hasAuthority('CN04_SUA')")

@@ -10,6 +10,8 @@
     function render() {
         if (!current) return;
         const booking = current.booking;
+        $('confirmOperationsButton').hidden = booking.trangThai !== 'Chờ xác nhận';
+        $('confirmOperationsButton').disabled = busy || !allowed('CN02_SUA');
         set('operationsTitle', 'Nhận sân / Dịch vụ · ' + id);
         set('operationsSummary', `${booking.tenSan} · ${booking.ngayChoi} · ${booking.trangThai} · ${current.visit ? current.visit.thoiGianKetThuc ? 'Đã trả sân' : 'Đã nhận sân' : 'Chưa nhận sân'}`);
         $('checkInButton').disabled = busy || !allowed('CN02_SUA') || Boolean(current.visit) || booking.trangThai !== 'Đã xác nhận';
@@ -68,6 +70,16 @@
     for (const name of ['serviceCatalog', 'servicePack', 'serviceQuantity']) $(name).addEventListener('change', preview);
     $('operationsClose').addEventListener('click', () => { if (busy) return; ++version; $('operationsModal').classList.add('hidden'); $('operationsModal').classList.remove('flex'); });
     $('checkInButton').addEventListener('click', () => mutate('/check-in', 'POST', {}, 'Đã nhận sân.'));
+    $('confirmOperationsButton').addEventListener('click', async () => {
+        if (busy || !current || !allowed('CN02_SUA')) return;
+        busy = true; render();
+        try {
+            await SanBong.request('bookings/' + encodeURIComponent(id) + '/confirm', { method:'POST' });
+            current = await SanBong.request('operations/bookings/' + encodeURIComponent(id));
+            feedback('Đã xác nhận lượt đặt.'); await window.applyFilters();
+        } catch (error) { feedback(error.message, true); }
+        finally { busy = false; render(); }
+    });
     $('checkOutButton').addEventListener('click', () => { if (confirm('Trả sân và kết thúc chỉnh dịch vụ? Thao tác này không tự ghi nhận thanh toán mới.')) mutate('/check-out', 'POST', {}, 'Đã trả sân; xem hóa đơn để kiểm tra số còn thiếu.'); });
     $('serviceLineForm').addEventListener('submit', event => { event.preventDefault(); mutate(`/services/${encodeURIComponent($('serviceCatalog').value)}`, 'POST', { soLuong: Number($('serviceQuantity').value), quyCach: $('servicePack').value }, 'Đã ghi dịch vụ theo giá SQL Server.'); });
     document.addEventListener('sanbong:authenticated', event => { account = event.detail; });

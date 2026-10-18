@@ -32,8 +32,8 @@
                 populate($('homeBookings'), () => SanBong.request('bookings?' + new URLSearchParams({date:options.today})), (host,row) => {
                     const card=item(host,'','div'); card.className='border-b border-gray-100 pb-3 mb-3';
                     item(card, `${row.tenSan} · ${row.gioBatDau}–${row.gioKetThuc}`);
-                    item(card, `${row.maDatSan} · ${row.trangThai} · ${money(row.tongTien)}`);
-                    link(card,'Xem lịch / Hóa đơn','Quan_ly_lich_dat_san.html?' + new URLSearchParams({date:row.ngayChoi,pitch:row.maSan,booking:row.maDatSan}));
+                    item(card, `${row.maDatSan} · ${row.trangThai}`);
+                    link(card,'Xem chi tiết lượt đặt','Quan_ly_lich_dat_san.html?' + new URLSearchParams({date:row.ngayChoi,pitch:row.maSan,booking:row.maDatSan}));
                 }, 'Hôm nay chưa có booking của bạn.'),
                 populate($('homePitches'), async () => options.pitches, (host,row) => {
                     const card=item(host,'','div'); card.className='bg-white border border-gray-100 rounded-2xl p-5 shadow-sm';

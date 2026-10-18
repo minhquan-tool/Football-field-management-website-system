@@ -66,21 +66,21 @@
 
         <main class="flex-1 overflow-y-auto p-6 lg:p-8 space-y-6">
             <!-- Filter Toolbar -->
-            <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 items-end">
+            <div class="booking-search-panel bg-white rounded-2xl p-5 shadow-sm border border-gray-100 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 items-end" role="search" aria-label="Tìm kiếm lượt đặt sân">
                 <div>
-                    <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Ngày Chơi</label>
+                    <label for="filterDate" class="block text-xs font-bold text-gray-600 uppercase mb-1">Ngày chơi</label>
                     <input type="date" id="filterDate" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Sân Bóng</label>
+                    <label for="filterPitch" class="block text-xs font-bold text-gray-600 uppercase mb-1">Sân bóng</label>
                     <select id="filterPitch" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 outline-none"><option value="">Tất cả sân</option></select>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Khung Giờ</label>
+                    <label for="filterSlot" class="block text-xs font-bold text-gray-600 uppercase mb-1">Khung giờ</label>
                     <select id="filterSlot" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 outline-none"><option value="">Tất cả khung giờ</option></select>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Trạng Thái</label>
+                    <label for="filterStatus" class="block text-xs font-bold text-gray-600 uppercase mb-1">Trạng thái</label>
                     <select id="filterStatus" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
                         <option value="">Tất cả trạng thái</option>
                         <option value="Chờ xác nhận">Chờ xác nhận</option>
@@ -90,8 +90,8 @@
                     </select>
                 </div>
                 <div>
-                    <button onclick="applyFilters()" class="w-full bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 rounded-xl text-sm transition-colors flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-filter"></i> Lọc Kết Quả
+                    <button type="button" onclick="applyFilters()" class="booking-search-button w-full bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 rounded-xl text-sm transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> Tìm kiếm
                     </button>
                 </div>
             </div>
@@ -124,11 +124,11 @@
     </div>
 
     <!-- Modal Chi Tiết Phiếu Đặt Sân -->
-    <div id="detailModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+    <div id="detailModal" role="dialog" aria-modal="true" aria-labelledby="modalBookingId" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
         <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden">
             <div class="bg-brand-600 px-6 py-4 flex justify-between items-center text-white">
                 <h3 class="font-bold text-lg" id="modalBookingId">Chi Tiết Phiếu Đặt Sân</h3>
-                <button onclick="closeDetailModal()" class="text-white/80 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
+
             </div>
             <div class="p-6 space-y-4">
                 <div class="grid grid-cols-2 gap-3 text-xs bg-gray-50 p-4 rounded-xl">
@@ -151,7 +151,7 @@
                 </div>
 
                 <div>
-<h4 class="text-xs font-bold text-gray-700 uppercase mb-2">Chi tiết tiền đã lưu</h4><p id="detailAmounts" class="text-xs text-gray-600"></p><p id="detailNote" class="text-xs text-gray-600 mt-2"></p></div>
+<h4 class="text-xs font-bold text-gray-700 uppercase mb-2">Chi phí đặt sân</h4><p id="detailAmounts" class="text-xs text-gray-600"></p><p id="detailNote" class="text-xs text-gray-600 mt-2"></p></div>
                 <div class="border-t border-gray-100 pt-3 flex justify-between items-baseline">
                     <span class="text-sm font-bold text-gray-700 uppercase">Tổng cộng:</span>
                     <span class="text-2xl font-black text-brand-600" id="detailTotal">—</span>
@@ -219,7 +219,7 @@
             <div class="p-6 space-y-4">
                 <p id="operationsFeedback" class="text-sm text-brand-700" role="status" aria-live="polite"></p>
                 <p id="operationsSummary" class="text-sm font-bold"></p>
-                <div class="flex gap-3"><button id="checkInButton" type="button" class="bg-green-600 text-white px-4 py-2 rounded-xl font-bold text-sm">Nhận sân</button>
+                <div class="flex gap-3 operations-actions"><button id="confirmOperationsButton" type="button" hidden class="bg-brand-600 text-white px-4 py-2 rounded-xl font-bold text-sm">Xác nhận lượt đặt</button><button id="checkInButton" type="button" class="bg-green-600 text-white px-4 py-2 rounded-xl font-bold text-sm">Nhận sân</button>
                     <button id="checkOutButton" type="button" class="bg-brand-600 text-white px-4 py-2 rounded-xl font-bold text-sm">Trả sân / chốt dịch vụ</button></div>
                 <form id="serviceLineForm" class="flex flex-wrap gap-3 items-end" data-api-ready="true">
                     <label class="text-sm">Dịch vụ <select id="serviceCatalog" class="block border border-gray-300 rounded-xl p-2"></select></label>
@@ -228,7 +228,7 @@
                 <label class="text-sm">Quy cách<select id="servicePack" class="block border rounded-xl p-2"><option value="DON_VI">Đơn vị</option><option value="LOC_6">Lốc 6</option></select></label><span id="servicePreview" class="text-sm"></span></form>
                 <div class="overflow-x-auto"><table class="w-full text-sm text-left"><thead class="bg-gray-50"><tr><th class="p-2">Dịch vụ</th><th class="p-2">SL</th><th class="p-2">Giá đã lưu</th><th class="p-2">Thành tiền</th><th class="p-2">Thao tác</th></tr></thead><tbody id="serviceLines"></tbody></table></div>
                 <p id="operationsAmounts" class="text-sm font-bold text-brand-700"></p>
-                <p class="text-xs text-gray-500">Xem Chi tiết booking để mở hóa đơn, thanh toán và lịch sử hoàn tiền. Trả sân chốt dịch vụ; không tự thu tiền.</p>
+
             </div>
         </div>
     </div>

@@ -32,8 +32,12 @@ function pitchActions(san) {
     actions.append(pitchAction('Chi tiết', 'text-brand-600 font-bold text-xs', () => openDetailModal(san.maSan)));
     if (pitchCan('SUA')) {
         if (pitchAccount.maVaiTro === 'VT04') actions.append(pitchAction('Sửa', 'px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-xs font-bold', () => openEditModal(san.maSan)));
-        if (san.trangThai === 'Bảo trì') actions.append(pitchAction('Mở lại', 'px-3 py-1.5 bg-green-600 text-white rounded-lg text-xs font-bold', () => changePitchStatus(san.maSan, 'Trống')));
-        else actions.append(pitchAction('Bảo trì', 'px-3 py-1.5 bg-yellow-50 text-yellow-700 rounded-lg text-xs font-bold', () => changePitchStatus(san.maSan, 'Bảo trì')));
+        const select=document.createElement('select');select.className='pitch-status-action';
+        select.setAttribute('aria-label','Đổi trạng thái '+san.tenSan);
+        for(const state of ['Trống','Đang sử dụng','Bảo trì'])select.add(new Option(state,state));
+        select.value=san.trangThai;
+        select.addEventListener('change',async()=>{select.disabled=true;try{await changePitchStatus(san.maSan,select.value);}finally{select.value=san.trangThai;select.disabled=false;}});
+        actions.append(select);
     }
     return actions;
 }
@@ -44,9 +48,7 @@ function pitchMinimum(san) {
 }
 function renderPitches(pitches) {
     const grid = pitchElement('pitchGrid'), rows = pitchElement('pitchRows'); grid.replaceChildren(); rows.replaceChildren();
-    const stats = { statTotalPitch: pitches.length, statEmptyPitch: 0, statActivePitch: 0, statMaintPitch: 0 };
     pitches.forEach(san => {
-        stats[({ 'Trống': 'statEmptyPitch', 'Đang sử dụng': 'statActivePitch', 'Bảo trì': 'statMaintPitch' })[san.trangThai]]++;
         const card = pitchNode('div', 'bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow');
         const head = pitchNode('div', 'h-32 bg-gradient-to-r from-blue-700 to-indigo-800 p-4 text-white flex flex-col justify-between relative');
         const badges = pitchNode('div', 'flex justify-between items-start');
@@ -63,7 +65,7 @@ function renderPitches(pitches) {
         [san.maSan, san.tenSan, san.tenLoaiSan, san.trangThai, san.moTa || ''].forEach(value => row.append(pitchNode('td', 'p-4', value)));
         const actions = pitchNode('td', 'p-4'); actions.append(pitchActions(san)); row.append(actions); rows.append(row);
     });
-    Object.entries(stats).forEach(([id, count]) => pitchElement(id).textContent = count);
+
     pitchElement('pitchFeedback').textContent = pitches.length ? 'Hiển thị ' + pitches.length + ' sân theo bộ lọc.' : 'Không có sân phù hợp.';
 }
 async function loadPitches() {
@@ -71,8 +73,12 @@ async function loadPitches() {
     const params = new URLSearchParams({ q: pitchElement('searchPitch').value.trim(), type: pitchElement('filterType').value, status: pitchElement('filterStatus').value });
     pitchElement('pitchFeedback').textContent = 'Đang tải danh sách sân...';
     try {
-        const pitches = await SanBong.request('pitches?' + params);
-        if (version === pitchRequestVersion) renderPitches(pitches);
+        const [pitches, all] = await Promise.all([SanBong.request('pitches?' + params), SanBong.request('pitches')]);
+        if (version === pitchRequestVersion) {
+            renderPitches(pitches);
+            const counts={statTotalPitch:all.length,statEmptyPitch:all.filter(p=>p.trangThai==='Trống').length,statActivePitch:all.filter(p=>p.trangThai==='Đang sử dụng').length,statMaintPitch:all.filter(p=>p.trangThai==='Bảo trì').length};
+            Object.entries(counts).forEach(([id,count])=>pitchElement(id).textContent=count);
+        }
         return true;
     } catch (error) {
         if (version === pitchRequestVersion) { pitchElement('pitchFeedback').textContent = error.message; showToast(error.message); }
@@ -160,3 +166,11 @@ pitchElement('pitchForm').addEventListener('submit', async event => {
     } catch (error) { showToast(error.message); }
     finally { button.disabled = false; }
 });
+
+function refreshPitchData() {
+    if (!pitchAccount || document.hidden || document.querySelector('#pitchModal:not(.hidden),#pitchDetailModal:not(.hidden)') || document.activeElement?.matches('input,select,textarea')) return;
+    loadPitches();
+}
+setInterval(refreshPitchData,30000);
+window.addEventListener('focus',refreshPitchData);
+document.addEventListener('visibilitychange',refreshPitchData);

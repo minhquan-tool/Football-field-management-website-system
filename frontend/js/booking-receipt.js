@@ -1,7 +1,7 @@
 /* A booking slip is not evidence of receipt of money. Values come from the API. */
 document.addEventListener('sanbong:authenticated', () => {
     const modal=document.getElementById('detailModal');if(!modal)return;
-    const button=document.createElement('button');button.type='button';button.id='printBookingSlip';button.textContent='In / Lưu PDF phiếu đặt sân';button.className='border rounded-lg px-3 py-2 m-3';
+    const button=document.createElement('button');button.type='button';button.id='printBookingSlip';button.textContent='In phiếu đặt sân';button.title='In hoặc lưu PDF phiếu đặt sân';button.className='border rounded-lg px-3 py-2 m-3';
     modal.querySelector('h3,h2')?.parentElement.append(button);
     button.addEventListener('click',async()=>{
         const id=document.getElementById('modalBookingId').textContent.replace(/^Chi tiết /,'').trim();

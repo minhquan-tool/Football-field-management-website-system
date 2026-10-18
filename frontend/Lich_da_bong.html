@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="vi"><head><link rel="stylesheet" href="vendor/fontawesome/css/all.min.css"><link rel="stylesheet" href="vendor/montserrat/montserrat.css"><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Lịch đá bóng theo tuần - FC-UTE</title>
 <link rel="stylesheet" href="css/tailwind.css">
 <link rel="stylesheet" href="css/fc-ute.css"><link rel="stylesheet" href="css/weekly-schedule.css">
 <link rel="stylesheet" href="css/experience.css"><script src="js/ui.js" defer></script></head>
 <body><nav aria-label="Điều hướng"></nav><main class="p-6">
-<div class="schedule-title"><div><p class="schedule-eyebrow">FC-UTE · Vận hành sân</p><h1 class="text-2xl font-bold">Lịch đá bóng</h1><p class="text-sm text-gray-500">Xem lịch cả tuần, mở lượt đặt để xác nhận, nhận/trả sân và quản lý dịch vụ.</p></div><button id="schedulePrint" type="button" disabled>In lịch tuần</button></div>
+<div class="schedule-title"><div><p class="schedule-eyebrow">FC-UTE · Vận hành sân</p><h1 class="text-2xl font-bold">Lịch đá bóng</h1></div><button id="schedulePrint" type="button" disabled>In lịch tuần</button></div>
 <section class="schedule-controls" aria-label="Bộ lọc lịch đá bóng">
-<form id="scheduleFilters" data-api-ready="true"><label>Sân bóng<select id="schedulePitch"><option value="">Tất cả sân</option></select></label><label>Chọn ngày trong tuần<input id="scheduleDate" type="date" required min="0001-01-01" max="9999-12-25"></label><label>Trạng thái<select id="scheduleState"><option value="">Ẩn lượt đã hủy</option><option value="ALL">Tất cả trạng thái</option><option>Chờ xác nhận</option><option>Đã xác nhận</option><option>Đã sử dụng</option><option>Đã hủy</option></select></label><button type="submit">Xem lịch</button></form>
-<div class="schedule-week-nav"><button id="schedulePrevious" type="button" aria-label="Tuần trước">← Tuần trước</button><button id="scheduleToday" type="button">Tuần hiện tại</button><button id="scheduleNext" type="button" aria-label="Tuần sau">Tuần sau →</button><button id="scheduleRefresh" type="button">Tải lại</button></div>
+<form id="scheduleFilters" data-api-ready="true"><label>Sân bóng<select id="schedulePitch"><option value="">Tất cả sân</option></select></label><label>Chọn ngày trong tuần<input id="scheduleDate" type="date" required min="0001-01-01" max="9999-12-25"></label><label>Trạng thái<select id="scheduleState"><option value="ALL">Tất cả trạng thái</option><option>Chờ xác nhận</option><option>Đã xác nhận</option><option>Đã sử dụng</option><option>Đã hủy</option></select></label><button type="submit">Xem lịch</button></form>
+<div class="schedule-week-nav"><button id="schedulePrevious" type="button" aria-label="Tuần trước">← Tuần trước</button><button id="scheduleToday" type="button">Tuần hiện tại</button><button id="scheduleNext" type="button" aria-label="Tuần sau">Tuần sau →</button><button id="scheduleRefresh" type="button" aria-label="Tải lại lịch" title="Tải lại lịch"><i class="fa-solid fa-arrow-rotate-right" aria-hidden="true"></i></button></div>
 </section>
 <section class="schedule-content" aria-labelledby="scheduleWeekTitle"><div class="schedule-summary"><div><h2 id="scheduleWeekTitle" class="font-bold">Lịch trong tuần</h2><p id="scheduleStatus" role="status" aria-live="polite">Đang tải lịch…</p></div><div class="schedule-legend" aria-label="Chú giải"><span data-state="Chờ xác nhận">Chờ xác nhận</span><span data-state="Đã xác nhận">Đã xác nhận</span><span data-state="Đã sử dụng">Đã sử dụng</span><span data-state="Đã hủy">Đã hủy</span></div></div>
-<p class="schedule-help">Giờ Việt Nam (UTC+7). Cuộn ngang để xem đủ 7 ngày trên màn hình nhỏ. Các lượt cùng giờ được xếp cạnh nhau; chọn lượt đặt để mở chi tiết.</p><button id="scheduleListToggle" type="button" aria-expanded="false" aria-controls="scheduleList" class="text-brand-600 underline text-sm mb-3" disabled>Xem danh sách lượt đặt</button>
+
 <div id="scheduleScroll" class="schedule-scroll" tabindex="0" role="region" aria-label="Lịch đá bóng từ thứ Hai đến Chủ nhật, cuộn ngang để xem thêm" hidden><div id="scheduleBoard" class="schedule-board"></div></div>
 <div id="scheduleList" class="schedule-print-list" hidden></div>
 </section></main>

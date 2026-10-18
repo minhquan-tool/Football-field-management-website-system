@@ -8,7 +8,7 @@
     const range = row => `${time(row.gioBatDau)} - ${time(row.gioKetThuc)}`;
     const calendar = Boolean($('bookingRows'));
     let account, options, rows = [], selectedPitch = '', selectedSlot = '', customer, loading = true, saving = false, sequence = 0;
-    let customerBusy = false, customerSequence = 0, newCustomerMode = false;
+    let customerBusy = false;
     const allowed = action => account?.permissions.includes('CN02_' + action);
     function text(id, value) { if ($(id)) $(id).textContent = value; }
     function element(tag, value, css = '') {
@@ -43,8 +43,36 @@
             button.setAttribute('aria-pressed',String(selectedPitch===pitch.maSan));
             button.addEventListener('click', () => { selectedPitch = pitch.maSan; selectedSlot = ''; renderChoices(); }); pitches.append(button);
         }
-        text('availabilityFeedback', loading ? 'Đang tra cứu...' : rows.length ? 'Chọn sân còn trống cho khoảng giờ đã nhập.' : 'Không có sân khả dụng trong khoảng giờ này.');
+        text('availabilityFeedback', loading ? 'Đang tra cứu...' : rows.length ? '' : 'Không có sân khả dụng trong khoảng giờ này.');
         receipt();
+    }
+    function enhanceTimePickers() {
+        for (const id of ['startTime', 'endTime']) {
+            const input = $(id);
+            if (input.dataset.enhanced) continue;
+            input.dataset.enhanced = 'true';
+            const end = id === 'endTime', label = end ? 'Giờ kết thúc' : 'Giờ bắt đầu';
+            const group = document.createElement('fieldset'); group.className = 'booking-time-picker';
+            const legend = document.createElement('legend'); legend.textContent = label; group.append(legend);
+            const controls = document.createElement('div'); controls.className = 'booking-time-controls';
+            const hour = document.createElement('select'), minute = document.createElement('select');
+            hour.setAttribute('aria-label', label + ' — giờ'); minute.setAttribute('aria-label', label + ' — phút');
+            for (let h = 7; h <= (end ? 22 : 21); h++) {
+                const period = h < 12 ? 'Sáng' : h < 18 ? 'Chiều' : 'Tối';
+                hour.add(new Option(`${String(h).padStart(2, '0')} · ${period}`, String(h).padStart(2, '0')));
+            }
+            for (let m = 0; m < 60; m++) minute.add(new Option(String(m).padStart(2, '0') + ' phút', String(m).padStart(2, '0')));
+            const initial = input.value.split(':'); hour.value = initial[0]; minute.value = initial[1];
+            const separator = document.createElement('span'); separator.textContent = ':'; separator.setAttribute('aria-hidden', 'true');
+            controls.append(hour, separator, minute); group.append(controls);
+            input.parentElement.replaceWith(group); input.type = 'hidden'; input.required = false; group.append(input);
+            function constrain() {
+                for (const option of minute.options) option.disabled = end && ((hour.value === '22' && option.value !== '00') || (hour.value === '07' && option.value === '00'));
+                if (minute.selectedOptions[0]?.disabled) minute.value = hour.value === '22' ? '00' : '01';
+            }
+            function update() { constrain(); input.value = `${hour.value}:${minute.value}`; input.dispatchEvent(new Event('change', { bubbles: true })); }
+            hour.addEventListener('change', update); minute.addEventListener('change', update); constrain();
+        }
     }
     async function search() {
         const version = ++sequence; loading = true; rows = []; renderChoices();
@@ -55,58 +83,35 @@
             if (version !== sequence) return; rows = result; loading = false; renderChoices();
         } catch (error) { if (version === sequence) { loading = false; renderChoices(); feedback(error.message, true); } }
     }
-    function customerMode(create) {
-        newCustomerMode = create; $('customerName').readOnly = !create;
-        $('customerName').maxLength = 100;
-        $('createCustomerButton').hidden = !create || !allowed('THEM');
+    async function resolveCounterCustomer() {
+        const phone = $('customerPhone').value.trim(), name = $('customerName').value.trim();
+        const match = rows => {
+            if (rows.length !== 1) throw new Error('Số điện thoại khớp nhiều khách hàng. Vui lòng kiểm tra lại.');
+            const found = rows[0];
+            if (found.hoTen.trim().normalize('NFC').toLocaleLowerCase('vi-VN') !== name.normalize('NFC').toLocaleLowerCase('vi-VN'))
+                throw new Error('Số điện thoại đã thuộc khách hàng ' + found.hoTen + '. Vui lòng kiểm tra họ tên và số điện thoại.');
+            return found;
+        };
+        const existing = await SanBong.request('booking-customers?' + new URLSearchParams({ phone }));
+        if (existing.length) return match(existing);
+        try { return await write('booking-customers', { hoTen: name, soDienThoai: phone }); }
+        catch (error) {
+            if (error.status !== 409) throw error;
+            const concurrent = await SanBong.request('booking-customers?' + new URLSearchParams({ phone }));
+            if (!concurrent.length) throw error;
+            return match(concurrent);
+        }
     }
-    function customerLoading(busy) {
-        customerBusy = busy; $('lookupCustomerButton').disabled = busy || !allowed('THEM');
-        $('lookupCustomerButton').textContent = busy ? 'Đang xử lý...' : 'Tra cứu';
-        $('createCustomerButton').disabled = busy || !allowed('THEM'); receipt();
-    }
-    function chooseCustomer(value) {
-        customer = value; $('customerName').value = value.hoTen; customerMode(false); receipt();
-    }
-    window.lookupCustomer = async () => {
-        if (customerBusy || !allowed('THEM')) return;
-        const phone = $('customerPhone').value.trim(), version = ++customerSequence;
-        customer = null; $('customerName').value = ''; customerMode(false); customerLoading(true);
-        try {
-            const matches = await SanBong.request('booking-customers?' + new URLSearchParams({ phone }));
-            if (version !== customerSequence || $('customerPhone').value.trim() !== phone) return;
-            if (!matches.length) { customerMode(true); feedback('Chưa có khách hàng. Nhập họ tên rồi chọn Tạo khách để tiếp tục.'); $('customerName').focus(); return; }
-            chooseCustomer(matches[0]); feedback('Đã tìm khách hàng từ SQL Server.');
-        } catch (error) { if (version === customerSequence) feedback(error.message, true); }
-        finally { customerLoading(false); }
-    };
-    window.createCounterCustomer = async () => {
-        if (customerBusy || !newCustomerMode || !allowed('THEM')) return;
-        const phone = $('customerPhone').value.trim(), name = $('customerName').value.trim(), version = ++customerSequence;
-        if (!name || name.length > 100 || !/^[0-9+]{7,15}$/.test(phone)) { feedback('Nhập họ tên (tối đa 100 ký tự) và SĐT hợp lệ (7–15 ký tự).', true); return; }
-        customerLoading(true);
-        try {
-            const created = await write('booking-customers', { hoTen: name, soDienThoai: phone });
-            if (version !== customerSequence || $('customerPhone').value.trim() !== phone) return;
-            chooseCustomer(created); feedback('Đã tạo hồ sơ khách. Có thể tiếp tục đặt sân.');
-        } catch (error) {
-            if (version !== customerSequence) return;
-            feedback(error.message, true);
-            if (error.status === 409) {
-                try {
-                    const matches = await SanBong.request('booking-customers?' + new URLSearchParams({ phone }));
-                    if (version !== customerSequence) return;
-                    if (matches.length) { chooseCustomer(matches[0]); feedback('Khách hàng với số điện thoại này đã tồn tại. Đã chọn hồ sơ hiện có.', true); }
-                } catch (lookupError) { if (version === customerSequence) feedback(lookupError.message, true); }
-            }
-        } finally { customerLoading(false); }
-    };
     async function submit(event) {
         event.preventDefault(); if (saving || loading) return;
         const row = rows.find(r => r.maSan === selectedPitch);
         if (!row || !customer) { feedback('Chọn khách hàng, sân và khung giờ khả dụng.', true); return; }
         saving = true; renderChoices();
         try {
+            if ($('counterBookingForm')) {
+                $('customerPhone').readOnly = $('customerName').readOnly = true;
+                customer = await resolveCounterCustomer();
+            }
             const booking = await write('bookings', { maSan: row.maSan, gioBatDau: row.gioBatDau, gioKetThuc: row.gioKetThuc,
                 ngayChoi: row.ngayChoi, maKH: customer.maKH, ghiChu: $('customerNote')?.value || null, dichVu: window.SanBongPrebook.selected() });
             feedback(`Đã tạo ${booking.maDatSan}: ${booking.trangThai}, ${money(booking.tongTien)}. Chưa thanh toán.`);
@@ -115,10 +120,11 @@
             box.append(element('p', `Phiếu ${booking.maDatSan} đã lưu trong SQL Server.`));
             const link = element('a', 'Xem lịch đặt sân', 'underline font-bold');
             link.href = 'Quan_ly_lich_dat_san.html?' + new URLSearchParams({ date: booking.ngayChoi, pitch: booking.maSan, booking:booking.maDatSan }); box.append(link);
+            if (account.maVaiTro === 'VT01') { window.location.assign(link.href + '&payment=1'); return; }
             if(account.maVaiTro==='VT01'){const pay=element('a','Thanh toán ngay','bg-brand-600 text-white rounded-lg px-3 py-2 inline-block ml-3');pay.href=link.href+'&payment=1';box.append(pay);}
             selectedSlot = ''; await search();
         } catch (error) { feedback(error.message, true); await search(); }
-        finally { saving = false; renderChoices(); }
+        finally { saving = false; if ($('counterBookingForm')) $('customerPhone').readOnly = $('customerName').readOnly = false; renderChoices(); }
     }
     function fillSelect(id, data, key, label, first) {
         const select = $(id); select.replaceChildren();
@@ -138,15 +144,16 @@
                 `${row.ngayChoi} ${range(row)}`, money(row.tongTien)]) tr.append(element('td', value, 'p-4'));
             const stateCell=element('td','','p-4'),state=element('span',row.trangThai,'fc-status');state.dataset.state=row.trangThai;stateCell.append(state);tr.append(stateCell);
             const td = document.createElement('td'); td.className = 'p-4 text-center';
-            td.append(action('Chi tiết', () => window.openDetailModal(row.maDatSan)));
+            const actions=document.createElement('div');actions.className='booking-actions';td.append(actions);
+            actions.append(action('Chi tiết', () => window.openDetailModal(row.maDatSan)));
             if (account.maVaiTro !== 'VT01' && window.SanBongOperations)
-                td.append(action('Nhận sân / Dịch vụ', () => SanBongOperations.open(row.maDatSan), 'bg-green-50 text-green-700'));
+                actions.append(action('Nhận sân / Dịch vụ', () => SanBongOperations.open(row.maDatSan), 'bg-green-50 text-green-700'));
             if (account.maVaiTro !== 'VT01' && allowed('SUA') && row.trangThai === 'Chờ xác nhận')
-                td.append(action('Xác nhận', () => window.confirmBooking(row.maDatSan), 'bg-brand-600 text-white'));
+                actions.append(action('Xác nhận', () => window.confirmBooking(row.maDatSan), 'bg-brand-600 text-white'));
             if (allowed('SUA') && ['Chờ xác nhận', 'Đã xác nhận'].includes(row.trangThai))
-                td.append(action('Hủy', () => window.openCancelModal(row.maDatSan), 'bg-red-50 text-red-600'));
+                actions.append(action('Hủy', () => window.openCancelModal(row.maDatSan), 'bg-red-50 text-red-600'));
             if (account.maVaiTro !== 'VT01' && allowed('SUA') && ['Chờ xác nhận', 'Đã xác nhận'].includes(row.trangThai))
-                td.append(action('Đổi lịch cùng sân', () => reschedule(row), 'bg-yellow-50 text-yellow-800'));
+                actions.append(action('Đổi lịch cùng sân', () => reschedule(row), 'bg-yellow-50 text-yellow-800'));
             tr.append(td); body.append(tr);
         }
     }
@@ -182,9 +189,10 @@
             text('modalBookingId', 'Chi tiết ' + row.maDatSan); text('detailCustomer', row.hoTen);
             text('detailPitch', `${row.tenSan} (${row.maSan})`); text('detailTime', `${row.ngayChoi} ${range(row)}`);
             text('detailStatus', row.trangThai); text('detailTotal', money(row.tongTien));
-            text('detailAmounts', `Tiền sân ${money(row.tienSan)} · Dịch vụ ${money(row.tienDichVu)} · Giảm ${money(row.tienGiam)} · Giá đã lưu ${money(row.donGia)} / ${row.thoiLuong} giờ`);
+            const customerView = ['VT01','VT02'].includes(account.maVaiTro);
+            text('detailAmounts', customerView ? `Tiền sân: ${money(row.tienSan)}${Number(row.tienDichVu) ? ' · Dịch vụ: ' + money(row.tienDichVu) : ''}${Number(row.tienGiam) ? ' · Giảm giá: ' + money(row.tienGiam) : ''}` : `Tiền sân ${money(row.tienSan)} · Dịch vụ ${money(row.tienDichVu)} · Giảm ${money(row.tienGiam)} · Giá đã lưu ${money(row.donGia)} / ${row.thoiLuong} giờ`);
             const services = await SanBong.request('bookings/' + encodeURIComponent(id) + '/services');
-            text('detailNote', (row.ghiChu || '') + '\n' + services.map(l => `${l.tenDV} · ${l.nguon} · ${l.quyCach} × ${l.soLuong}: ${money(l.thanhTien)}`).join('\n'));  $('detailModal').classList.remove('hidden');
+            text('detailNote', (row.ghiChu || '') + '\n' + services.map(l => customerView ? `${l.tenDV} · ${l.quyCach === 'LOC_6' ? 'Lốc 6' : 'Đơn vị'} × ${l.soLuong}: ${money(l.thanhTien)}` : `${l.tenDV} · ${l.nguon} · ${l.quyCach} × ${l.soLuong}: ${money(l.thanhTien)}`).join('\n'));  $('detailModal').classList.remove('hidden');
         } catch (error) { feedback(error.message, true); }
     };
     window.closeDetailModal = () => $('detailModal').classList.add('hidden');
@@ -207,12 +215,20 @@
         try {
             options = await SanBong.request('booking-options');
             if (calendar) {
+                if (account.maVaiTro === 'VT02') document.body.classList.add('staff-booking-calendar');
                 fillSelect('filterPitch', options.pitches, 'maSan', p => `${p.tenSan} (${p.maSan})`, 'Tất cả sân');
                 fillSelect('filterSlot', options.slots, 'maKhungGio', range, 'Tất cả khung giờ');
                 fillSelect('filterStatus', options.states.map(s => ({ id: s })), 'id', s => s.id, 'Tất cả trạng thái');
                 const params = new URLSearchParams(location.search); $('filterDate').value = params.get('date') || options.today;
                 $('filterPitch').value = params.get('pitch') || '';
-                if (account.maVaiTro === 'VT01') document.querySelectorAll('a[href="Dat_san_tai_quay.html"]').forEach(a => a.href = 'Man_hinh_chinh_Dat_san_KH.html');
+                if (account.maVaiTro === 'VT01') {
+                    document.body.classList.add('customer-booking-calendar');
+                    document.title = 'Lịch đặt của tôi - FC-UTE';
+                    const heading = document.querySelector('h2');
+                    if (heading) { heading.textContent = 'Lịch đặt của tôi'; if (heading.nextElementSibling) heading.nextElementSibling.textContent = 'Xem lượt đặt, trạng thái và chi tiết hóa đơn của bạn.'; }
+                    document.querySelectorAll('a[href="Dat_san_tai_quay.html"]').forEach(a => { a.href = 'Man_hinh_chinh_Dat_san_KH.html'; a.textContent = 'Đặt sân mới'; });
+                    const listHeading = document.querySelector('main h3'); if (listHeading) listHeading.textContent = 'Các lượt đặt của bạn';
+                }
                 $('cancelForm').addEventListener('submit', cancel); await window.applyFilters();
                 if (params.get('booking')) await window.openDetailModal(params.get('booking'));
             } else {
@@ -226,12 +242,19 @@
                 if (homeParams.has('end')) $('endTime').value = homeParams.get('end');
                 if (homeParams.has('type')) $('bookingType').value = homeParams.get('type');
                 $('playDate').required = true;
+                enhanceTimePickers();
                 $('startTime').addEventListener('change', search); $('endTime').addEventListener('change', search);
                 $('playDate').addEventListener('change', search); $('bookingType').addEventListener('change', search);
                 if (options.customer) { customer = options.customer; text('bookingCustomerPhone', customer.soDienThoai); }
                 if ($('customerPhone')) {
-                    customerMode(false); customerLoading(false);
-                    $('customerPhone').addEventListener('input', () => { ++customerSequence; customer = null; $('customerName').value = ''; customerMode(false); receipt(); });
+                    const updateCustomer = () => {
+                        const name = $('customerName').value.trim(), phone = $('customerPhone').value.trim();
+                        customer = name && phone && $('customerPhone').checkValidity() ? { hoTen: name, soDienThoai: phone } : null;
+                        receipt();
+                    };
+                    $('customerPhone').addEventListener('input', updateCustomer);
+                    $('customerName').addEventListener('input', updateCustomer);
+                    updateCustomer();
                 }
                 ($('bookingForm') || $('counterBookingForm')).addEventListener('submit', submit); await search();
             }

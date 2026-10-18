@@ -4,19 +4,18 @@ window.SanBongNavigation = (() => {
         VT01: [
             ['Trang chủ', 'Man_hinh_chinh_KH.html'],
             ['Đặt sân', 'Man_hinh_chinh_Dat_san_KH.html', 'CN02_XEM'],
-            ['Lịch đặt / Hóa đơn', 'Quan_ly_lich_dat_san.html', 'CN02_XEM'],
-            ['Lịch sử / Đánh giá', 'Man_hinh_LS&ĐG_KH.html', 'CN02_XEM'],
+            ['Lịch đặt của tôi', 'Quan_ly_lich_dat_san.html', 'CN02_XEM'],
+            ['Lịch sử đặt sân', 'Man_hinh_LS&ĐG_KH.html', 'CN02_XEM'],
             ['Khuyến mãi', 'Man_hinh_Khuyen_mai_KH.html'],
-            ['Thông tin / Phản hồi', 'Tai_khoan_KH.html']
+            ['Thông tin tài khoản', 'Tai_khoan_KH.html']
         ],
         VT02: [
             ['Bảng điều khiển sân', 'Man_hinh_chinh_NVKH.html', 'CN02_XEM'],
             ['Lịch đá bóng', 'Lich_da_bong.html', 'CN02_XEM'],
-            ['Lịch / Nhận trả sân / Dịch vụ', 'Quan_ly_lich_dat_san.html', 'CN02_XEM'],
+            ['Quản lý lượt đặt', 'Quan_ly_lich_dat_san.html', 'CN02_XEM'],
             ['Đặt sân tại quầy', 'Dat_san_tai_quay.html', 'CN02_THEM'],
             ['Trạng thái sân', 'Quan_ly_san.html', 'CN02_XEM'],
-            ['Tiếp nhận phản hồi', 'Phan_hoi.html', 'CN05_XEM'],
-            ['Báo cáo sử dụng sân', 'Bao_cao.html', 'CN06_XEM']
+            ['Tiếp nhận phản hồi', 'Phan_hoi.html', 'CN05_XEM']
         ],
         VT03: [
             ['Giao dịch / Hóa đơn / Hoàn tiền', 'Man_hinh_chinh_NVKT.html', 'CN04_XEM'],
@@ -25,7 +24,7 @@ window.SanBongNavigation = (() => {
         VT04: [
             ['Tổng quan', 'Man_hinh_chinh.html', 'CN06_XEM'],
             ['Lịch đá bóng', 'Lich_da_bong.html', 'CN02_XEM'],
-            ['Lịch / Nhận trả sân / Dịch vụ', 'Quan_ly_lich_dat_san.html', 'CN02_XEM'],
+            ['Quản lý lượt đặt', 'Quan_ly_lich_dat_san.html', 'CN02_XEM'],
             ['Đặt sân tại quầy', 'Dat_san_tai_quay.html', 'CN02_THEM'],
             ['Quản lý sân', 'Quan_ly_san.html', 'CN02_XEM'],
             ['Giao dịch / Hoàn tiền', 'Man_hinh_chinh_NVKT.html', 'CN04_XEM'],
