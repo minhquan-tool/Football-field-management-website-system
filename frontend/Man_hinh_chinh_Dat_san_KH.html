@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặt Sân Bóng - FC-UTE</title>
+    <link rel="stylesheet" href="css/tailwind.css">
+    <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+    <link href="vendor/montserrat/montserrat.css" rel="stylesheet">
+    
+    
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f8fafc;
+        }
+        .hide-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        
+        /* Toast message animation */
+        #toast {
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.3s linear;
+            transform: translateY(-20px);
+        }
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+<link rel="stylesheet" href="css/fc-ute.css"><link rel="stylesheet" href="css/experience.css"><script src="js/ui.js" defer></script></head>
+<body class="text-gray-800 flex flex-col min-h-screen">
+
+    <!-- Top Navigation (Giống Màn hình chính) -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20">
+                <div class="flex items-center">
+                    <img src="assets/hcmute-logo.png" 
+                         alt="Logo HCMUTE" class="h-12 w-12 object-contain mr-3 cursor-pointer">
+                    <div class="flex flex-col cursor-pointer">
+                        <span class="font-black text-xl text-brand-700 leading-tight">FC-UTE</span>
+                     
+                    </div>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="Man_hinh_chinh_KH.html" class="text-gray-500 hover:text-brand-600 font-medium transition-colors">Trang Chủ</a>
+                    <a href="Man_hinh_chinh_Dat_san_KH.html" class="text-brand-600 font-bold border-b-2 border-brand-600 pb-1">Đặt Sân</a>
+                    <a aria-disabled="true" tabindex="-1" title="Chức năng chưa triển khai" class="text-gray-500 hover:text-brand-600 font-medium transition-colors">Khuyến Mãi</a>
+                    <a href="Quan_ly_lich_dat_san.html" class="text-gray-500 hover:text-brand-600 font-medium transition-colors">Lịch Sử & Đánh Giá</a>
+                </div>
+
+                <div class="flex items-center gap-5">
+                    <button type="button" disabled title="Chức năng chưa triển khai" class="relative text-gray-400 hover:text-brand-600 transition-colors">
+                        <i class="fa-regular fa-bell text-xl"></i>
+                    </button>
+                    <div class="h-8 w-px bg-gray-200 hidden sm:block"></div>
+                    <div class="flex items-center gap-3 cursor-pointer group">
+                        <div class="text-right hidden sm:block">
+                            <p class="text-sm font-bold text-gray-800 group-hover:text-brand-600 transition-colors" data-account-name>Đang tải...</p>
+                            <p id="bookingCustomerPhone" class="text-xs text-gray-500 font-medium">—</p>
+                        </div>
+                        <div class="h-10 w-10 rounded-full bg-brand-100 border-2 border-brand-500 flex items-center justify-center text-brand-700 overflow-hidden">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                    </div>
+                    <button type="button" data-mobile-menu aria-label="Mở menu" class="md:hidden text-gray-500 hover:text-brand-600 ml-2">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Booking Section -->
+    <main class="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+        
+        <!-- Breadcrumb -->
+        <div class="mb-6 text-sm font-medium text-gray-500">
+            <a href="Man_hinh_chinh_KH.html" class="hover:text-brand-600 transition-colors"><i class="fa-solid fa-house mr-1"></i> Trang chủ</a>
+            <span class="mx-2">/</span>
+            <span class="text-brand-600 font-bold">Đặt sân bóng</span>
+        </div>
+
+        <h1 class="text-2xl md:text-3xl font-black text-gray-800 mb-8">Tiến Hành Đặt Sân</h1>
+
+        <form id="bookingForm" data-api-ready="true" class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+            
+            <!-- CỘT TRÁI: CHỌN SÂN, GIỜ & DỊCH VỤ -->
+            <div class="lg:col-span-2 space-y-6">
+                
+                <!-- BƯỚC 1: CHỌN NGÀY VÀ SÂN -->
+                <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                    <h2 class="text-lg font-bold text-gray-800 mb-5 flex items-center">
+                        <span class="bg-brand-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs mr-2">1</span> 
+                        Chọn Ngày & Loại Sân
+                    </h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Ngày chơi <span class="text-red-500">*</span></label>
+                            <input type="date" id="playDate" class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-shadow" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Loại sân <span class="text-red-500">*</span></label>
+<select id="bookingType" class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm"></select>
+</div></div><label class="block text-sm font-bold mb-3">Chọn sân cụ thể</label>
+<div id="bookingPitches" class="grid grid-cols-2 md:grid-cols-4 gap-3"></div></section>
+<section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6"><h2 class="text-lg font-bold mb-4">2. Nhập giờ chơi</h2>
+<div id="bookingSlots" class="grid grid-cols-2 gap-3"><label class="text-sm font-bold">Giờ bắt đầu<input id="startTime" type="time" step="60" min="07:00" max="21:59" value="08:00" required class="w-full border border-gray-300 rounded-xl p-3"></label><label class="text-sm font-bold">Giờ kết thúc<input id="endTime" type="time" step="60" min="07:01" max="22:00" value="09:00" required class="w-full border border-gray-300 rounded-xl p-3"></label></div><p id="availabilityFeedback" class="text-sm text-gray-500 mt-3" role="status"></p></section>
+<section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6"><h3 class="font-bold">Dịch vụ đặt trước</h3><p class="text-sm text-gray-500 mt-2">Chọn số lượng đơn vị hoặc lốc. Giá chính thức được lưu khi tạo booking; chưa thanh toán.</p><div id="prebookServices" class="mt-3">Đang tải danh mục...</div></section></div>
+            <!-- CỘT PHẢI: PHIẾU ĐẶT SÂN & THANH TOÁN (STICKY) -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-2xl shadow-xl border border-gray-200 sticky top-24 overflow-hidden">
+                    
+                    <!-- Header Phiếu -->
+                    <div class="bg-brand-600 px-6 py-4">
+                        <h3 class="text-white font-bold text-lg text-center tracking-wide uppercase"><i class="fa-solid fa-file-invoice mr-2"></i> Phiếu Đặt Sân</h3>
+                    </div>
+
+                    <div class="p-6">
+<div class="mb-5 pb-4 border-b border-gray-100 text-sm space-y-3">
+<div>Khách hàng: <strong id="receiptCustomer">—</strong></div>
+<div>Sân: <strong id="receiptPitch">—</strong></div>
+<div>Ngày / giờ: <strong id="receiptTime">—</strong></div>
+<div>Đơn giá mỗi giờ: <strong id="receiptPitchPrice">—</strong></div>
+<p class="text-xs text-gray-500">Dịch vụ đặt trước được lưu cùng booking. Nhân viên có thể thêm phát sinh khi nhận sân. Chưa thanh toán.</p>
+<div class="flex justify-between"><strong>Tổng tiền dự kiến:</strong><strong id="receiptTotal" class="text-brand-600">—</strong></div>
+<p id="bookingFeedback" class="text-sm text-brand-700" role="status" aria-live="polite"></p></div>                        <!-- Button Xác nhận -->
+                        <button type="submit" disabled class="w-full bg-brand-600 text-white font-black py-4 rounded-xl text-lg hover:bg-brand-700 focus:ring-4 focus:ring-brand-200 transition-all shadow-lg transform active:scale-[0.98]">
+                            XÁC NHẬN ĐẶT SÂN
+                        </button>
+                        <p class="text-center text-[11px] text-gray-500 mt-3">Bằng việc đặt sân, bạn đồng ý với <a aria-disabled="true" tabindex="-1" title="Chức năng chưa triển khai" class="text-brand-600 underline">Chính sách đặt/hủy sân</a> của chúng tôi.</p>
+                    </div>
+                </div>
+            </div>
+        <div id="createdBooking" class="text-sm text-brand-700 lg:col-span-3" role="status"></div></form>
+    </main>
+
+    <!-- Custom Toast cho thông báo -->
+    <div id="toast" class="fixed top-24 right-5 bg-white border-l-4 border-green-500 shadow-xl rounded-md px-6 py-4 flex items-center z-50">
+        <div class="text-green-500 mr-3 text-2xl">
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <div>
+            <h4 class="text-gray-800 font-bold text-sm">Thông báo</h4>
+            <p class="text-gray-600 text-xs mt-1"></p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
+                <p>&copy; 2026 Quản Lý Sân Bóng FC-UTE.</p>
+                <div class="flex space-x-4 mt-4 md:mt-0">
+                    <a aria-disabled="true" tabindex="-1" title="Chức năng chưa triển khai" class="hover:text-brand-600 transition-colors">Hỗ trợ</a>
+                    <a aria-disabled="true" tabindex="-1" title="Chức năng chưa triển khai" class="hover:text-brand-600 transition-colors">Liên hệ</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <script src="js/role-navigation.js" defer></script>
+    <script src="js/auth.js" defer></script>
+    <script src="js/booking-services.js" defer></script>
+<script src="js/bookings.js" defer></script>
+</body>
+</html>

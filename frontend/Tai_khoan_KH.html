@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Thông tin tài khoản và phản hồi FC-UTE</title>
+<link rel="stylesheet" href="css/tailwind.css">
+
+<link rel="stylesheet" href="css/fc-ute.css"><link rel="stylesheet" href="css/experience.css"><script src="js/ui.js" defer></script>
+</head>
+<body class="bg-gray-50 text-gray-800">
+<nav class="bg-white border-b"></nav>
+<main class="max-w-6xl mx-auto p-6">
+<h1 class="text-2xl font-bold">Thông tin tài khoản và phản hồi</h1><p id="careStatus" role="status"></p>
+<form id="profileForm" class="bg-white p-5 my-4 grid gap-3">
+<h2 class="font-bold">Hồ sơ cá nhân</h2>
+<label>Họ tên<input id="profile_hoTen" autocomplete="name" required maxlength="100" class="border p-2 block w-full"></label>
+<label>Số điện thoại<input id="profile_soDienThoai" type="tel" autocomplete="tel" required pattern="\+?[0-9]+" minlength="7" maxlength="15" title="7–15 ký tự, chỉ gồm số và tối đa một dấu + đứng đầu" class="border p-2 block w-full"></label>
+<label>Email<input id="profile_email" type="email" autocomplete="email" maxlength="100" class="border p-2 block w-full"></label>
+<label>Địa chỉ<input id="profile_diaChi" autocomplete="street-address" maxlength="255" class="border p-2 block w-full"></label>
+<button class="bg-brand-600 text-white p-2 rounded">Lưu thông tin</button></form>
+<form id="passwordForm" class="bg-white p-5 my-4 grid gap-3">
+<h2 class="font-bold">Đổi mật khẩu</h2>
+<p id="passwordHint">Mật khẩu mới ít nhất 10 ký tự, tối đa 72 byte UTF-8. Sau khi đổi, các phiên cũ phải đăng nhập lại.</p>
+<label>Mật khẩu hiện tại<input id="password_current" type="password" autocomplete="current-password" required maxlength="200" class="border p-2 block w-full"></label>
+<label>Mật khẩu mới<input id="password_new" type="password" autocomplete="new-password" required minlength="10" maxlength="72" aria-describedby="passwordHint" class="border p-2 block w-full"></label>
+<label>Xác nhận mật khẩu mới<input id="password_confirm" type="password" autocomplete="new-password" required minlength="10" maxlength="72" class="border p-2 block w-full"></label>
+<p id="passwordStatus" role="status"></p>
+<button class="bg-brand-600 text-white p-2 rounded">Đổi mật khẩu</button>
+<a id="passwordRelogin" href="Dang_nhap.html" class="text-brand-600 underline" hidden>Đăng nhập lại bằng mật khẩu mới</a>
+</form>
+<form id="feedbackForm" class="bg-white p-5 grid gap-3"><h2 class="font-bold">Gửi phản hồi</h2>
+<label>Mã đặt sân nếu có<input id="feedbackBooking" maxlength="10" class="border p-2 block"></label>
+<label>Loại phản hồi<select id="feedbackType" class="border p-2"><option>Góp ý</option><option>Khiếu nại</option><option>Hỗ trợ</option></select></label>
+<label>Nội dung phản hồi<textarea id="feedbackContent" required maxlength="500" class="border p-2 block w-full"></textarea></label>
+<button class="bg-brand-600 text-white p-2 rounded">Gửi phản hồi</button></form><section id="feedbackRows"></section>
+</main><script src="js/role-navigation.js" defer></script><script src="js/auth.js" defer></script><script src="js/customer-care.js" defer></script>
+</body></html>
+

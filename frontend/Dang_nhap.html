@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập - Quản Lý Sân Bóng FC-UTE</title>
+    <link rel="stylesheet" href="css/tailwind.css">
+    <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+    <link href="vendor/montserrat/montserrat.css" rel="stylesheet">
+    
+    
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-image: url('assets/football-field.svg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        /* Glassmorphism effect for the card */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .input-group:focus-within .input-icon {
+            color: #1d4ed8; /* Cập nhật màu icon khi focus */
+        }
+
+        /* Toast message animation */
+        #toast {
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.3s linear;
+        }
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+<link rel="stylesheet" href="css/fc-ute.css"><link rel="stylesheet" href="css/experience.css"><script src="js/ui.js" defer></script></head>
+<body class="min-h-screen flex items-center justify-center relative bg-gray-900 bg-opacity-60 bg-blend-overlay p-4 fc-auth-page">
+
+<main class="fc-auth-shell" id="fcMainContent">
+        <aside class="fc-auth-story" aria-label="Chào mừng đến FC-UTE">
+            <a class="fc-auth-wordmark" href="Trang_chu.html"><img class="fc-brand-logo" src="assets/hcmute-logo.png" alt="">FC-UTE</a>
+            <div><h2>Hẹn đồng đội.<br>Chọn giờ ra sân.</h2><p>Tra cứu sân trống, đặt lịch và theo dõi hóa đơn trong cùng một tài khoản.</p><img class="fc-auth-pitch" src="assets/pitch-blueprint.svg" alt="" width="720" height="540"></div>
+            <small>Sân bóng ĐH SPKT TP.HCM<br>Khung giờ đặt sân · 07:00–22:00</small>
+        </aside>
+    <div class="glass-card w-full max-w-md rounded-2xl shadow-2xl p-8 relative overflow-hidden">
+        <a class="fc-auth-back" href="Trang_chu.html"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Về trang chủ</a>
+        <!-- Top decorative shape -->
+        <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-brand-400 via-brand-600 to-brand-500"></div>
+
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <!-- Đã thay thế icon bóng bằng Logo -->
+            <img src="assets/hcmute-logo.png" 
+                 alt="Logo Trường" 
+                 class="mx-auto h-24 w-24 object-contain drop-shadow-md mb-4">
+            
+            <h1 class="text-2xl font-bold text-gray-800">Đăng nhập</h1>
+            <p class="text-sm text-gray-500 mt-2">Chào mừng trở lại. Tiếp tục lịch hẹn trên sân của bạn.</p>
+        </div>
+
+        <form id="loginForm" class="space-y-6">
+            <!-- Email/Phone Input -->
+            <div>
+                <label for="identifier" class="block text-sm font-medium text-gray-700 mb-1">Tên đăng nhập, email hoặc số điện thoại</label>
+                <div class="input-group relative rounded-lg shadow-sm">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fa-regular fa-user input-icon text-gray-400 transition-colors"></i>
+                    </div>
+                    <input type="text" id="identifier" name="identifier" autocomplete="username"
+                        class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-brand-500 focus:border-brand-500 transition-shadow outline-none text-gray-700" 
+                        placeholder="Nhập tên đăng nhập..." required>
+                </div>
+            </div>
+
+            <!-- Password Input -->
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Mật khẩu</label>
+                <div class="input-group relative rounded-lg shadow-sm">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fa-solid fa-lock input-icon text-gray-400 transition-colors"></i>
+                    </div>
+                    <input type="password" id="password" name="password" autocomplete="current-password"
+                        class="block w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-brand-500 focus:border-brand-500 transition-shadow outline-none text-gray-700" 
+                        placeholder="••••••••" required>
+                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                        <button type="button" id="togglePassword" aria-label="Hiện mật khẩu" aria-pressed="false" class="text-gray-400 hover:text-brand-600 focus:outline-none transition-colors">
+                            <i class="fa-regular fa-eye-slash" id="eyeIcon"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Remember me & Forgot Password -->
+            <div class="flex items-center justify-between text-sm">
+                <div class="flex items-center">
+                    <input id="remember-me" name="remember-me" type="checkbox" disabled title="Phiên đăng nhập hết hạn sau 30 phút không hoạt động" 
+                        class="h-4 w-4 text-brand-600 focus:ring-brand-500 border-gray-300 rounded cursor-pointer">
+                    <label for="remember-me" class="ml-2 block text-gray-700 cursor-pointer">
+                        Ghi nhớ đăng nhập
+                    </label>
+                </div>
+                <div class="text-sm">
+                    <a aria-disabled="true" tabindex="-1" title="Chức năng chưa triển khai" class="font-medium text-brand-600 hover:text-brand-500 hover:underline transition-colors">
+                        Quên mật khẩu?
+                    </a>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div>
+                <button type="submit" 
+                    class="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-md text-sm font-bold text-white bg-brand-600 hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 transition-colors transform active:scale-[0.98]">
+                    <i class="fa-solid fa-right-to-bracket mr-2"></i> ĐĂNG NHẬP
+                </button>
+            </div>
+        </form>
+
+        <!-- Divider -->
+        <div class="mt-6">
+            <div class="relative">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-gray-300"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                    <span class="px-2 bg-white text-gray-500 rounded">Hoặc</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Register Link -->
+        <div class="mt-6 text-center text-sm text-gray-600">
+            Bạn chưa có tài khoản? 
+            <a href="Dang_ky.html" class="font-bold text-brand-600 hover:text-brand-700 hover:underline transition-colors">Đăng ký ngay</a>
+        </div>
+    </div>
+
+    </main>
+
+    <!-- Custom Toast Message (Replacing alert) -->
+    <div id="toast" class="fixed top-5 right-5 bg-white border-l-4 border-brand-600 shadow-lg rounded-md px-6 py-4 flex items-center z-50">
+        <div class="text-brand-600 mr-3 text-xl">
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <div>
+            <h4 class="text-gray-800 font-bold text-sm">Thông báo</h4>
+            <p id="toastMessage" class="text-gray-600 text-sm mt-1"></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const togglePassword = document.getElementById('togglePassword');
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eyeIcon');
+            const loginForm = document.getElementById('loginForm');
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            const loginStatus = document.createElement('p');
+            loginStatus.id = 'loginStatus'; loginStatus.setAttribute('role', 'status');
+            loginStatus.className = 'text-red-700 text-sm'; loginForm.append(loginStatus);
+            let cooldownTimer = null;
+            function waitBeforeRetry(seconds, button, originalContent) {
+                const until = Date.now() + Math.max(1, Math.min(3600, seconds || 1)) * 1000;
+                const tick = () => {
+                    const remaining = Math.max(0, Math.ceil((until - Date.now()) / 1000));
+                    button.disabled = remaining > 0;
+                    if (remaining) {
+                        button.textContent = `Thử lại sau ${remaining} giây`;
+                        loginStatus.textContent = `Bạn đã thử đăng nhập quá nhiều lần. Vui lòng chờ ${remaining} giây.`;
+                    } else {
+                        clearInterval(cooldownTimer); cooldownTimer = null;
+                        button.innerHTML = originalContent;
+                        loginStatus.textContent = 'Bạn có thể thử đăng nhập lại.';
+                    }
+                };
+                cooldownTimer = setInterval(tick, 1000); tick();
+            }
+
+            // Toggle Password Visibility
+            togglePassword.addEventListener('click', () => {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                 togglePassword.setAttribute('aria-label',type==='text'?'Ẩn mật khẩu':'Hiện mật khẩu');
+                 togglePassword.setAttribute('aria-pressed',String(type==='text'));
+                
+                if (type === 'text') {
+                    eyeIcon.classList.remove('fa-eye-slash');
+                    eyeIcon.classList.add('fa-eye');
+                } else {
+                    eyeIcon.classList.remove('fa-eye');
+                    eyeIcon.classList.add('fa-eye-slash');
+                }
+            });
+
+            // Show Toast Function
+            function showToast(message, duration = 3000) {
+                toastMessage.textContent = message;
+                toast.classList.add('show');
+                
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, duration);
+            }
+
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                if (cooldownTimer) return;
+                const submitBtn = loginForm.querySelector('button[type="submit"]');
+                const originalContent = submitBtn.innerHTML;
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang xử lý...';
+                try {
+                    const account = await SanBong.request('auth/login', {
+                        method: 'POST', body: new URLSearchParams({
+                            identifier: document.getElementById('identifier').value.trim(),
+                            password: document.getElementById('password').value
+                        })
+                    });
+                    showToast('Đăng nhập thành công.');
+                    window.location.href = SanBong.loginDestination(account.maVaiTro);
+                } catch (error) {
+                    showToast(error.message); loginStatus.textContent = error.message;
+                    if (error.status === 429) waitBeforeRetry(error.retryAfterSeconds, submitBtn, originalContent);
+                }
+                finally { if (!cooldownTimer) { submitBtn.disabled = false; submitBtn.innerHTML = originalContent; } }
+            });
+        });
+    </script>
+    <script src="js/role-navigation.js" defer></script>
+    <script src="js/auth.js" defer></script>
+</body>
+</html>

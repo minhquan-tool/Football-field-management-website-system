@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {runInNewContext} from 'node:vm';
+const sandbox = {window:{},URL,URLSearchParams};
+runInNewContext(readFileSync(new URL('../../frontend/js/venue-map.js', import.meta.url),'utf8'),sandbox);
+const map = new URL(sandbox.window.SanBongVenueMap.mapUrl());
+assert.equal(map.hostname,'www.google.com');
+assert.equal(map.searchParams.get('query'),'10.8505572,106.7729939');
+const current = new URL(sandbox.window.SanBongVenueMap.directionsUrl());
+assert.equal(current.searchParams.get('api'),'1');
+assert.equal(current.searchParams.has('origin'),false);
+const text = '  Thủ Đức & Quận 1 / TP.HCM  ';
+const directions = new URL(sandbox.window.SanBongVenueMap.directionsUrl(text));
+assert.equal(directions.searchParams.get('origin'),text.trim());
+assert.equal(directions.searchParams.get('destination'),'10.8505572,106.7729939');
+assert.equal(directions.searchParams.get('travelmode'),'driving');
+console.log('VENUE_MAP_PASS: exact destination, current-location fallback and encoded origin; no DB/API key.');

@@ -1,0 +1,26 @@
+<!doctype html><html lang="vi"><meta charset="utf-8"><title>Finance UI regression — synthetic only</title>
+<div id="financeHost"></div><form id="financeLookup"><input id="financeBookingId"></form>
+<input id="financeTransactionDate" type="date"><table><tbody id="financeTransactions"></tbody></table><div id="financeNet"></div><div id="financeRefundQueue"></div>
+<script>
+window.audit = { failReload: false, delayPost: false, failPost: false, requests: [], posts: 0 };
+const view = id => ({booking:{maDatSan:id,trangThai:'Đã xác nhận',tongTien:90000,tienSan:90000,tienDichVu:0,tienGiam:0},invoice:{maHoaDon:'HD'+id,tongTien:90000,conLai:90000,daThanhToan:0,daChot:false,trangThai:'CHUA_THANH_TOAN',tienSan:90000,tienDichVu:0,tienGiam:0},payments:[],refunds:[]});
+window.SanBong = {randomId:()=>crypto.randomUUID(),request:async(path,options={})=>{
+    audit.requests.push({path,method:options.method||'GET',body:options.body});
+    if(options.method==='POST') {
+        audit.posts++;
+        if(audit.delayPost) await new Promise(resolve=>audit.releasePost=resolve);
+        if(audit.failPost) throw new Error('SIMULATED_POST_RESPONSE_LOST');
+        return view('DSA');
+    }
+    if(path==='finance/transactions')return {payments:['DSA','DSB'].map((id,index)=>({maTT:'TT'+id,maDatSan:id,hoTen:'Synthetic',soTien:0,trangThai:'Chờ xử lý',ngayThanhToan:index?'2026-10-12T08:00:00':'2026-10-11T08:00:00'})),refunds:[],thucNhan:0};
+    if(path==='finance/promotions')return [];
+    if(path.endsWith('cancel-preview'))return {thoiDiem:'2026-10-13',tiLeHoan:100,thucThu:0,soTienHoan:0};
+    if(path.startsWith('finance/bookings/')) {
+        if(audit.failReload && audit.posts)throw new Error('SIMULATED_RELOAD_503');
+        return view(path.split('/')[2]);
+    }
+    throw new Error('Unexpected mock path: '+path);
+}};
+</script><script src="/finance.js"></script><script>
+document.dispatchEvent(new CustomEvent('sanbong:authenticated',{detail:{maVaiTro:'VT03',permissions:['CN04_XEM','CN04_THEM','CN04_SUA']}}));
+</script></html>

@@ -1,0 +1,11 @@
+const {readFileSync}=require('node:fs');
+const vm=require('node:vm');const assert=require('node:assert/strict');
+const context={window:{location:{href:'http://localhost/api/Dang_nhap.html'}},document:{addEventListener(){}},URL,URLSearchParams,location:{search:'?date=2026-10-20&start=08:00&end=09:00&pitch=S01&next=https://evil.example'},Headers};
+vm.runInNewContext(readFileSync('frontend/js/auth.js','utf8'),context);
+const api=context.window.SanBong;
+assert.equal(api.loginDestination('VT01'),'Man_hinh_chinh_Dat_san_KH.html?date=2026-10-20&start=08%3A00&end=09%3A00&pitch=S01');
+for(const role of ['VT02','VT03','VT04'])assert.equal(api.loginDestination(role),api.home(role));
+context.location.search='?date=bad&start=08:00&end=09:00&pitch=../../secret&next=//evil.example';
+assert.equal(api.loginDestination('VT01'),api.home('VT01'));
+assert.equal(api.bookingIntent().has('pitch'),false);
+console.log('BOOKING_INTENT_PASS: customer selection, role isolation, malformed filters and external redirects.');

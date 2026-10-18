@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Sân & Loại Sân - FC-UTE</title>
+    <link rel="stylesheet" href="css/tailwind.css">
+    <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+    <link href="vendor/montserrat/montserrat.css" rel="stylesheet">
+    
+    
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f4f7f6;
+        }
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 10px;
+        }
+        #toast {
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.3s linear;
+            transform: translateY(-20px);
+        }
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+<link rel="stylesheet" href="css/fc-ute.css"><link rel="stylesheet" href="css/experience.css"><script src="js/ui.js" defer></script></head>
+<body class="flex h-screen overflow-hidden text-gray-800">
+
+    <!-- Sidebar Điều Hướng -->
+    <aside class="w-72 bg-white shadow-2xl flex flex-col h-full hidden md:flex z-20 border-r border-gray-100">
+        <!-- Logo -->
+        <div class="h-20 flex items-center justify-center border-b border-gray-100 px-4 bg-white">
+            <img src="assets/hcmute-logo.png" 
+                 alt="Logo HCMUTE" class="h-12 w-12 object-contain mr-3">
+            <div class="flex flex-col">
+                <span class="font-bold text-xl text-brand-700 leading-tight">FC-UTE</span>
+                <span class="text-[10px] text-gray-500 font-semibold uppercase">Quản lý hệ thống</span>
+            </div>
+        </div>
+
+        <!-- Menu Links -->
+        <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-6"><div data-navigation-loading>Đang tải chức năng theo quyền…</div></nav>
+
+        <div class="p-4 border-t border-gray-100 bg-gray-50">
+            <a href="Dang_nhap.html" class="flex items-center gap-3 text-gray-600 hover:text-red-600 hover:bg-red-50 px-4 py-2.5 rounded-xl font-bold transition-colors">
+                <i class="fa-solid fa-arrow-right-from-bracket w-5 text-center"></i> Đăng xuất
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="flex-1 flex flex-col h-full overflow-hidden relative">
+        <!-- Header -->
+        <header class="h-20 bg-white shadow-sm flex items-center justify-between px-6 lg:px-8 z-10 border-b border-gray-100">
+            <div class="flex items-center gap-3">
+                <button type="button" data-mobile-menu aria-label="Mở menu" class="md:hidden text-gray-500 hover:text-brand-600 focus:outline-none">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+                <div>
+                    <h2 class="text-xl font-bold text-gray-800">Quản Lý Sân & Loại Sân</h2>
+                    <p class="text-xs text-gray-400">Danh mục sân bóng đá và cấu hình thông số kỹ thuật sân</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <button id="addPitchButton" onclick="openAddPitchModal()" disabled class="bg-brand-600 text-white px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-brand-700 transition-colors shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-plus"></i> Thêm Sân Mới
+                </button>
+                <div class="h-8 w-px bg-gray-200"></div>
+                <div class="flex items-center gap-3 cursor-pointer">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-sm font-bold text-gray-800" data-account-name>Đang tải...</p>
+                        <p class="text-xs text-brand-600 font-medium">Quản lý sân</p>
+                    </div>
+                    <div class="h-10 w-10 rounded-full bg-brand-100 border-2 border-brand-500 flex items-center justify-center text-brand-700">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Body -->
+        <main class="flex-1 overflow-y-auto p-6 lg:p-8 space-y-6">
+            <!-- Thống kê nhanh -->
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-5">
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 flex items-center gap-4 border-l-4 border-l-blue-600">
+                    <div class="h-12 w-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl">
+                        <i class="fa-regular fa-futbol"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-500 font-bold uppercase mb-1">Tổng Số Sân</p>
+                        <h3 class="text-2xl font-black text-gray-800" id="statTotalPitch">—</h3>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 flex items-center gap-4 border-l-4 border-l-green-500">
+                    <div class="h-12 w-12 rounded-xl bg-green-50 text-green-500 flex items-center justify-center text-xl">
+                        <i class="fa-regular fa-circle-check"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-500 font-bold uppercase mb-1">Sân Đang Trống</p>
+                        <h3 class="text-2xl font-black text-green-600" id="statEmptyPitch">—</h3>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 flex items-center gap-4 border-l-4 border-l-orange-500">
+                    <div class="h-12 w-12 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-500 font-bold uppercase mb-1">Đang Sử Dụng</p>
+                        <h3 class="text-2xl font-black text-orange-600" id="statActivePitch">—</h3>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 flex items-center gap-4 border-l-4 border-l-red-500">
+                    <div class="h-12 w-12 rounded-xl bg-red-50 text-red-500 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-wrench"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-500 font-bold uppercase mb-1">Đang Bảo Trì</p>
+                        <h3 class="text-2xl font-black text-red-600" id="statMaintPitch">—</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Toolbar: Tìm kiếm và bộ lọc -->
+            <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex flex-wrap items-center justify-between gap-4">
+                <div class="flex items-center gap-3 flex-1 min-w-[280px]">
+                    <div class="relative flex-1">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                        <input type="text" id="searchPitch" placeholder="Tìm theo tên sân hoặc mã sân..." 
+                               class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none">
+                    </div>
+                    <select id="filterType" class="border border-gray-200 rounded-xl px-3 py-2 text-sm text-gray-600 focus:ring-2 focus:ring-brand-500 outline-none"><option value="">Tất cả loại sân</option></select>
+                    <select id="filterStatus" class="border border-gray-200 rounded-xl px-3 py-2 text-sm text-gray-600 focus:ring-2 focus:ring-brand-500 outline-none">
+                        <option value="">Tất cả trạng thái</option>
+                        <option value="Trống">Trống</option>
+                        <option value="Đang sử dụng">Đang sử dụng</option>
+                        <option value="Bảo trì">Bảo trì</option>
+                    </select>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <button onclick="switchView('grid')" id="btnGrid" class="p-2.5 rounded-lg bg-brand-50 text-brand-600 font-bold hover:bg-brand-100 transition-colors" title="Dạng lưới">
+                        <i class="fa-solid fa-border-all"></i>
+                    </button>
+                    <button onclick="switchView('table')" id="btnTable" class="p-2.5 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors" title="Dạng bảng">
+                        <i class="fa-solid fa-list"></i>
+                    </button>
+                    <button onclick="openPitchTypeModal()" class="ml-2 text-xs font-bold text-brand-600 hover:text-brand-700 bg-brand-50 px-3 py-2.5 rounded-xl border border-brand-200">
+                        <i class="fa-solid fa-gear mr-1"></i> Danh mục loại sân
+                    </button>
+                </div>
+            </div>
+
+            <!-- Danh sách sân từ REST API, giữ hai chế độ hiển thị hiện tại -->
+            <p id="pitchFeedback" class="text-sm text-gray-500" role="status">Đang tải danh sách sân...</p>
+            <div id="pitchGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            <div id="pitchTable" class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hidden">
+                <table class="w-full text-left text-sm"><thead class="bg-gray-50 text-gray-500">
+                    <tr><th class="p-4">Mã Sân</th><th class="p-4">Tên Sân</th><th class="p-4">Loại Sân</th>
+                    <th class="p-4">Trạng Thái</th><th class="p-4">Mô Tả</th><th class="p-4 text-center">Thao Tác</th></tr>
+                </thead><tbody id="pitchRows" class="divide-y divide-gray-100"></tbody></table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Thêm / Chỉnh Sửa Sân -->
+    <div id="pitchModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden">
+            <div class="bg-brand-600 px-6 py-4 flex justify-between items-center text-white">
+                <h3 id="modalTitle" class="font-bold text-lg">Thêm Sân Bóng Mới</h3>
+                <button onclick="closeModal()" class="text-white/80 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="pitchForm" data-api-ready="true" class="p-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Mã Sân <span class="text-red-500">*</span></label>
+                    <input type="text" id="modalPitchId" maxlength="10" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 outline-none uppercase" placeholder="VD: S07" required>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Tên Sân <span class="text-red-500">*</span></label>
+                    <input type="text" id="modalPitchName" maxlength="50" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 outline-none" placeholder="VD: Sân A5 (Mái che)" required>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Loại Sân <span class="text-red-500">*</span></label>
+                    <select id="modalPitchType" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 outline-none" required></select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Trạng Thái Ban Đầu</label>
+                    <select id="modalPitchStatus" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+                        <option value="Trống">Trống</option>
+                        <option value="Bảo trì">Bảo trì</option>
+                        <option value="Đang sử dụng">Đang sử dụng</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Mô Tả Chi Tiết</label>
+                    <textarea id="modalPitchDesc" maxlength="255" rows="3" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 outline-none" placeholder="Ghi chú về mặt sân, hệ thống đèn, vị trí..."></textarea>
+                </div>
+                <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                    <button type="button" onclick="closeModal()" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm font-bold hover:bg-gray-50">Hủy</button>
+                    <button type="submit" class="px-5 py-2 bg-brand-600 text-white rounded-lg text-sm font-bold hover:bg-brand-700 shadow-md">Lưu Sân Bóng</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="pitchDetailModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full overflow-hidden">
+            <div class="bg-brand-600 px-6 py-4 flex justify-between items-center text-white">
+                <h3 id="detailTitle" class="font-bold text-lg">Chi tiết sân</h3>
+                <button onclick="closeDetailModal()" class="text-white/80 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="p-6 max-h-[70vh] overflow-y-auto"><p id="detailDescription" class="text-sm text-gray-600 mb-4"></p>
+                <div id="detailContent" class="text-sm"></div>
+            </div>
+        </div>
+    </div>
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-24 right-5 bg-white border-l-4 border-brand-600 shadow-xl rounded-md px-6 py-4 flex items-center z-50">
+        <div class="text-brand-600 mr-3 text-xl"><i class="fa-solid fa-circle-check"></i></div>
+        <div>
+            <h4 class="text-gray-800 font-bold text-sm">Thông báo</h4>
+            <p id="toastMessage" class="text-gray-600 text-xs mt-1"></p>
+        </div>
+    </div>
+
+
+    <script src="js/role-navigation.js" defer></script>
+    <script src="js/auth.js" defer></script>
+    <script src="js/pitches.js" defer></script>
+</body>
+</html>
+

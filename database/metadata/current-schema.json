@@ -1,0 +1,4069 @@
+{
+  "database": "QuanLySanBong",
+  "collation": "SQL_Latin1_General_CP1_CI_AS",
+  "capturedAt": "2026-10-18T00:08:52.2781974+07:00",
+  "tables": [
+    {
+      "name": "BangGia",
+      "columns": [
+        {
+          "name": "MaBangGia",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "MaLoaiSan",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "MaKhungGio",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "LoaiNgay",
+          "type": "nvarchar",
+          "max_length": 40,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "DonGia",
+          "type": "decimal",
+          "max_length": 9,
+          "precision": 18,
+          "scale": 2,
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "NgayHieuLuc",
+          "type": "date",
+          "max_length": 3,
+          "precision": 10,
+          "scale": 0,
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "NgayHetHieuLuc",
+          "type": "date",
+          "max_length": 3,
+          "precision": 10,
+          "scale": 0,
+          "is_nullable": true,
+          "is_identity": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_BangGia",
+          "type_desc": "CLUSTERED",
+          "is_primary_key": true,
+          "is_unique": true,
+          "is_unique_constraint": false,
+          "columns": [
+            {
+              "name": "MaBangGia",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "name": "CK_BangGia_LoaiNgay",
+          "definition": "([LoaiNgay]=N'Ngày lễ' OR [LoaiNgay]=N'Cuối tuần' OR [LoaiNgay]=N'Ngày thường')",
+          "is_disabled": false,
+          "is_not_trusted": false
+        },
+        {
+          "name": "CK_BangGia_DonGia",
+          "definition": "([DonGia]>(0))",
+          "is_disabled": false,
+          "is_not_trusted": false
+        },
+        {
+          "name": "CK_BangGia_HieuLuc",
+          "definition": "([NgayHetHieuLuc] IS NULL OR [NgayHetHieuLuc]>=[NgayHieuLuc])",
+          "is_disabled": false,
+          "is_not_trusted": false
+        }
+      ]
+    },
+    {
+      "name": "BaoCao",
+      "columns": [
+        {
+          "name": "MaBaoCao",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "LoaiBaoCao",
+          "type": "nvarchar",
+          "max_length": 100,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "NgayLap",
+          "type": "date",
+          "max_length": 3,
+          "precision": 10,
+          "scale": 0,
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF__BaoCao__NgayLap__4A8310C6",
+          "default_definition": "(getdate())"
+        },
+        {
+          "name": "TuNgay",
+          "type": "date",
+          "max_length": 3,
+          "precision": 10,
+          "scale": 0,
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "DenNgay",
+          "type": "date",
+          "max_length": 3,
+          "precision": 10,
+          "scale": 0,
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "MaTK",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "NoiDung",
+          "type": "nvarchar",
+          "max_length": -1,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_BaoCao",
+          "type_desc": "CLUSTERED",
+          "is_primary_key": true,
+          "is_unique": true,
+          "is_unique_constraint": false,
+          "columns": [
+            {
+              "name": "MaBaoCao",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "name": "CK_BaoCao_ThoiGian",
+          "definition": "([DenNgay]>=[TuNgay])",
+          "is_disabled": false,
+          "is_not_trusted": false
+        }
+      ]
+    },
+    {
+      "name": "ChiTietDanhGia",
+      "columns": [
+        {
+          "name": "MaDanhGia",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "MaTieuChi",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "Diem",
+          "type": "int",
+          "max_length": 4,
+          "precision": 10,
+          "scale": 0,
+          "is_nullable": false,
+          "is_identity": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_ChiTietDanhGia",
+          "type_desc": "CLUSTERED",
+          "is_primary_key": true,
+          "is_unique": true,
+          "is_unique_constraint": false,
+          "columns": [
+            {
+              "name": "MaDanhGia",
+              "is_descending_key": false,
+              "is_included_column": false
+            },
+            {
+              "name": "MaTieuChi",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "name": "CK_CTDG_Diem",
+          "definition": "([Diem]>=(1) AND [Diem]<=(5))",
+          "is_disabled": false,
+          "is_not_trusted": false
+        }
+      ]
+    },
+    {
+      "name": "ChiTietDichVu",
+      "columns": [
+        {
+          "name": "MaDatSan",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "MaDV",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "SoLuong",
+          "type": "int",
+          "max_length": 4,
+          "precision": 10,
+          "scale": 0,
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "NgayGhiNhan",
+          "type": "datetime",
+          "max_length": 8,
+          "precision": 23,
+          "scale": 3,
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF__ChiTietDi__NgayG__7F2BE32F",
+          "default_definition": "(getdate())"
+        },
+        {
+          "name": "MaNV",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        },
+        {
+          "name": "MaChiTiet",
+          "type": "bigint",
+          "max_length": 8,
+          "precision": 19,
+          "scale": 0,
+          "is_nullable": false,
+          "is_identity": true,
+          "identity_seed": "1",
+          "identity_increment": "1"
+        },
+        {
+          "name": "Nguon",
+          "type": "varchar",
+          "max_length": 12,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF_CTDV_Nguon",
+          "default_definition": "('LEGACY')"
+        },
+        {
+          "name": "QuyCach",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF_CTDV_QuyCach",
+          "default_definition": "('DON_VI')"
+        },
+        {
+          "name": "DonGiaDonViSnapshot",
+          "type": "decimal",
+          "max_length": 9,
+          "precision": 18,
+          "scale": 2,
+          "is_nullable": true,
+          "is_identity": false
+        },
+        {
+          "name": "DonGiaLegacySnapshot",
+          "type": "decimal",
+          "max_length": 9,
+          "precision": 18,
+          "scale": 2,
+          "is_nullable": true,
+          "is_identity": false
+        },
+        {
+          "name": "SoDonViMoiQuyCach",
+          "type": "int",
+          "max_length": 4,
+          "precision": 10,
+          "scale": 0,
+          "is_nullable": true,
+          "is_identity": false,
+          "computed": "(CONVERT([int],case when [QuyCach]='LOC_6' then (6) else (1) end))",
+          "is_persisted": true
+        },
+        {
+          "name": "DonGia",
+          "type": "decimal",
+          "max_length": 9,
+          "precision": 18,
+          "scale": 2,
+          "is_nullable": true,
+          "is_identity": false,
+          "computed": "(CONVERT([decimal](18,2),case when [Nguon]='LEGACY' then [DonGiaLegacySnapshot] else round(([DonGiaDonViSnapshot]*case when [QuyCach]='LOC_6' then (6) else (1) end)*case when [QuyCach]='LOC_6' then (0.97) else (1) end,(2)) end))",
+          "is_persisted": true
+        },
+        {
+          "name": "ThanhTien",
+          "type": "decimal",
+          "max_length": 17,
+          "precision": 29,
+          "scale": 2,
+          "is_nullable": true,
+          "is_identity": false,
+          "computed": "([SoLuong]*CONVERT([decimal](18,2),case when [Nguon]='LEGACY' then [DonGiaLegacySnapshot] else round(([DonGiaDonViSnapshot]*case when [QuyCach]='LOC_6' then (6) else (1) end)*case when [QuyCach]='LOC_6' then (0.97) else (1) end,(2)) end))",
+          "is_persisted": true
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_ChiTietDichVu",
+          "type_desc": "CLUSTERED",
+          "is_primary_key": true,
+          "is_unique": true,
+          "is_unique_constraint": false,
+          "columns": [
+            {
+              "name": "MaChiTiet",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        },
+        {
+          "name": "IX_CTDV_BookingSku",
+          "type_desc": "NONCLUSTERED",
+          "is_primary_key": false,
+          "is_unique": false,
+          "is_unique_constraint": false,
+          "columns": [
+            {
+              "name": "MaDatSan",
+              "is_descending_key": false,
+              "is_included_column": false
+            },
+            {
+              "name": "MaDV",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "name": "CK_CTDV_SoLuong",
+          "definition": "([SoLuong]>(0))",
+          "is_disabled": false,
+          "is_not_trusted": false
+        },
+        {
+          "name": "CK_CTDV_Nguon",
+          "definition": "([Nguon]='PHAT_SINH' OR [Nguon]='DAT_TRUOC' OR [Nguon]='LEGACY')",
+          "is_disabled": false,
+          "is_not_trusted": false
+        },
+        {
+          "name": "CK_CTDV_QuyCach",
+          "definition": "([QuyCach]='LOC_6' OR [QuyCach]='DON_VI')",
+          "is_disabled": false,
+          "is_not_trusted": false
+        },
+        {
+          "name": "CK_CTDV_DonGia",
+          "definition": "([DonGia] IS NOT NULL AND [DonGia]>(0))",
+          "is_disabled": false,
+          "is_not_trusted": false
+        },
+        {
+          "name": "CK_CTDV_Snapshot",
+          "definition": "([Nguon]='LEGACY' AND [DonGiaLegacySnapshot] IS NOT NULL AND [DonGiaLegacySnapshot]>(0) AND ([DonGiaDonViSnapshot] IS NULL OR [DonGiaDonViSnapshot]>(0)) OR [Nguon]<>'LEGACY' AND [DonGiaLegacySnapshot] IS NULL AND [DonGiaDonViSnapshot] IS NOT NULL AND [DonGiaDonViSnapshot]>(0))",
+          "is_disabled": false,
+          "is_not_trusted": false
+        }
+      ]
+    },
+    {
+      "name": "ChucNang",
+      "columns": [
+        {
+          "name": "MaChucNang",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "TenChucNang",
+          "type": "nvarchar",
+          "max_length": 200,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "MoTa",
+          "type": "nvarchar",
+          "max_length": 510,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_ChucNang",
+          "type_desc": "CLUSTERED",
+          "is_primary_key": true,
+          "is_unique": true,
+          "is_unique_constraint": false,
+          "columns": [
+            {
+              "name": "MaChucNang",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DanhGia",
+      "columns": [
+        {
+          "name": "MaDanhGia",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "MaDatSan",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "MaKH",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "MaSan",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "NgayDanhGia",
+          "type": "date",
+          "max_length": 3,
+          "precision": 10,
+          "scale": 0,
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF__DanhGia__NgayDan__2B0A656D",
+          "default_definition": "(getdate())"
+        },
+        {
+          "name": "NoiDung",
+          "type": "nvarchar",
+          "max_length": 1000,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        },
+        {
+          "name": "DiemTrungBinh",
+          "type": "decimal",
+          "max_length": 5,
+          "precision": 3,
+          "scale": 2,
+          "is_nullable": true,
+          "is_identity": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_DanhGia",
+          "type_desc": "CLUSTERED",
+          "is_primary_key": true,
+          "is_unique": true,
+          "is_unique_constraint": false,
+          "columns": [
+            {
+              "name": "MaDanhGia",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        },
+        {
+          "name": "UQ_DanhGia_DatSan",
+          "type_desc": "NONCLUSTERED",
+          "is_primary_key": false,
+          "is_unique": true,
+          "is_unique_constraint": true,
+          "columns": [
+            {
+              "name": "MaDatSan",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "name": "CK_DanhGia_Diem",
+          "definition": "([DiemTrungBinh] IS NULL OR [DiemTrungBinh]>=(1) AND [DiemTrungBinh]<=(5))",
+          "is_disabled": false,
+          "is_not_trusted": false
+        }
+      ]
+    },
+    {
+      "name": "DatSan",
+      "columns": [
+        {
+          "name": "MaDatSan",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "MaKH",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "MaSan",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "MaKhungGio",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        },
+        {
+          "name": "NgayChoi",
+          "type": "date",
+          "max_length": 3,
+          "precision": 10,
+          "scale": 0,
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "DonGia",
+          "type": "decimal",
+          "max_length": 9,
+          "precision": 18,
+          "scale": 2,
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "TienDichVu",
+          "type": "decimal",
+          "max_length": 9,
+          "precision": 18,
+          "scale": 2,
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF__DatSan__TienDich__6D0D32F4",
+          "default_definition": "((0))"
+        },
+        {
+          "name": "MaKM",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        },
+        {
+          "name": "TienGiam",
+          "type": "decimal",
+          "max_length": 9,
+          "precision": 18,
+          "scale": 2,
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF__DatSan__TienGiam__6E01572D",
+          "default_definition": "((0))"
+        },
+        {
+          "name": "NgayDat",
+          "type": "datetime",
+          "max_length": 8,
+          "precision": 23,
+          "scale": 3,
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF__DatSan__NgayDat__6FE99F9F",
+          "default_definition": "(getdate())"
+        },
+        {
+          "name": "MaNV",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        },
+        {
+          "name": "TrangThai",
+          "type": "nvarchar",
+          "max_length": 40,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF__DatSan__TrangTha__70DDC3D8",
+          "default_definition": "(N'Chờ xác nhận')"
+        },
+        {
+          "name": "GhiChu",
+          "type": "nvarchar",
+          "max_length": 510,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        },
+        {
+          "name": "GioBatDau",
+          "type": "time",
+          "max_length": 3,
+          "precision": 8,
+          "scale": 0,
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "GioKetThuc",
+          "type": "time",
+          "max_length": 3,
+          "precision": 8,
+          "scale": 0,
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "CheDoGia",
+          "type": "varchar",
+          "max_length": 12,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF_DatSan_CheDoGia",
+          "default_definition": "('GIA_KHUNG')"
+        },
+        {
+          "name": "HinhThucDat",
+          "type": "varchar",
+          "max_length": 12,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF_DatSan_HinhThucDat",
+          "default_definition": "('KHONG_RO')"
+        },
+        {
+          "name": "ThoiLuongLegacySnapshot",
+          "type": "decimal",
+          "max_length": 5,
+          "precision": 4,
+          "scale": 2,
+          "is_nullable": true,
+          "is_identity": false
+        },
+        {
+          "name": "TienSanLegacySnapshot",
+          "type": "decimal",
+          "max_length": 9,
+          "precision": 18,
+          "scale": 2,
+          "is_nullable": true,
+          "is_identity": false
+        },
+        {
+          "name": "ThoiLuong",
+          "type": "decimal",
+          "max_length": 5,
+          "precision": 4,
+          "scale": 2,
+          "is_nullable": true,
+          "is_identity": false,
+          "computed": "(CONVERT([decimal](4,2),case when [CheDoGia]='GIA_KHUNG' then [ThoiLuongLegacySnapshot] else round(datediff(minute,[GioBatDau],[GioKetThuc])/(60.0),(2)) end))",
+          "is_persisted": true
+        },
+        {
+          "name": "TienSan",
+          "type": "decimal",
+          "max_length": 9,
+          "precision": 18,
+          "scale": 2,
+          "is_nullable": true,
+          "is_identity": false,
+          "computed": "(CONVERT([decimal](18,2),case when [CheDoGia]='GIA_KHUNG' then [TienSanLegacySnapshot] else round(([DonGia]*datediff(minute,[GioBatDau],[GioKetThuc]))/(60.0),(2)) end))",
+          "is_persisted": true
+        },
+        {
+          "name": "TongTien",
+          "type": "decimal",
+          "max_length": 9,
+          "precision": 18,
+          "scale": 2,
+          "is_nullable": true,
+          "is_identity": false,
+          "computed": "(CONVERT([decimal](18,2),(CONVERT([decimal](18,2),case when [CheDoGia]='GIA_KHUNG' then [TienSanLegacySnapshot] else round(([DonGia]*datediff(minute,[GioBatDau],[GioKetThuc]))/(60.0),(2)) end)+[TienDichVu])-[TienGiam]))",
+          "is_persisted": true
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_DatSan",
+          "type_desc": "CLUSTERED",
+          "is_primary_key": true,
+          "is_unique": true,
+          "is_unique_constraint": false,
+          "columns": [
+            {
+              "name": "MaDatSan",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        },
+        {
+          "name": "UX_DatSan_KhongTrungLich",
+          "type_desc": "NONCLUSTERED",
+          "is_primary_key": false,
+          "is_unique": true,
+          "is_unique_constraint": false,
+          "filter_definition": "([TrangThai]<>N'Đã hủy' AND [MaKhungGio] IS NOT NULL)",
+          "columns": [
+            {
+              "name": "MaSan",
+              "is_descending_key": false,
+              "is_included_column": false
+            },
+            {
+              "name": "NgayChoi",
+              "is_descending_key": false,
+              "is_included_column": false
+            },
+            {
+              "name": "MaKhungGio",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        },
+        {
+          "name": "IX_DatSan_SanNgayBatDau",
+          "type_desc": "NONCLUSTERED",
+          "is_primary_key": false,
+          "is_unique": false,
+          "is_unique_constraint": false,
+          "columns": [
+            {
+              "name": "MaSan",
+              "is_descending_key": false,
+              "is_included_column": false
+            },
+            {
+              "name": "NgayChoi",
+              "is_descending_key": false,
+              "is_included_column": false
+            },
+            {
+              "name": "GioBatDau",
+              "is_descending_key": false,
+              "is_included_column": false
+            },
+            {
+              "name": "GioKetThuc",
+              "is_descending_key": false,
+              "is_included_column": true
+            },
+            {
+              "name": "TrangThai",
+              "is_descending_key": false,
+              "is_included_column": true
+            }
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "name": "CK_DatSan_KhoangGio",
+          "definition": "([GioKetThuc]>[GioBatDau])",
+          "is_disabled": false,
+          "is_not_trusted": false
+        },
+        {
+          "name": "CK_DatSan_CheDoGia",
+          "definition": "([CheDoGia]='GIA_GIO' OR [CheDoGia]='GIA_KHUNG')",
+          "is_disabled": false,
+          "is_not_trusted": false
+        },
+        {
+          "name": "CK_DatSan_HinhThucDat",
+          "definition": "([HinhThucDat]='TAI_QUAY' OR [HinhThucDat]='TRUC_TUYEN' OR [HinhThucDat]='KHONG_RO')",
+          "is_disabled": false,
+          "is_not_trusted": false
+        },
+        {
+          "name": "CK_DatSan_GioMoi",
+          "definition": "([CheDoGia]='GIA_KHUNG' OR [GioBatDau]>='07:00:00' AND [GioKetThuc]<='22:00:00' AND datepart(second,[GioBatDau])=(0) AND datepart(second,[GioKetThuc])=(0))",
+          "is_disabled": false,
+          "is_not_trusted": false
+        },
+        {
+          "name": "CK_DatSan_Tien",
+          "definition": "([DonGia]>(0) AND [TienSan] IS NOT NULL AND [TienSan]>=(0) AND [TienDichVu]>=(0) AND [TienGiam]>=(0) AND [TongTien]>=(0))",
+          "is_disabled": false,
+          "is_not_trusted": false
+        },
+        {
+          "name": "CK_DatSan_ThoiLuong",
+          "definition": "([ThoiLuong] IS NOT NULL AND [ThoiLuong]>(0))",
+          "is_disabled": false,
+          "is_not_trusted": false
+        },
+        {
+          "name": "CK_DatSan_LegacySnapshots",
+          "definition": "([CheDoGia]='GIA_KHUNG' AND [ThoiLuongLegacySnapshot] IS NOT NULL AND [ThoiLuongLegacySnapshot]>(0) AND [TienSanLegacySnapshot] IS NOT NULL AND [TienSanLegacySnapshot]>=(0) OR [CheDoGia]='GIA_GIO' AND [ThoiLuongLegacySnapshot] IS NULL AND [TienSanLegacySnapshot] IS NULL)",
+          "is_disabled": false,
+          "is_not_trusted": false
+        },
+        {
+          "name": "CK_DatSan_TrangThai",
+          "definition": "([TrangThai]=N'Đã hủy' OR [TrangThai]=N'Đã sử dụng' OR [TrangThai]=N'Đã xác nhận' OR [TrangThai]=N'Chờ xác nhận')",
+          "is_disabled": false,
+          "is_not_trusted": false
+        }
+      ]
+    },
+    {
+      "name": "DichVu",
+      "columns": [
+        {
+          "name": "MaDV",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "TenDV",
+          "type": "nvarchar",
+          "max_length": 200,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "DonViTinh",
+          "type": "nvarchar",
+          "max_length": 40,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        },
+        {
+          "name": "DonGia",
+          "type": "decimal",
+          "max_length": 9,
+          "precision": 18,
+          "scale": 2,
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "TrangThai",
+          "type": "bit",
+          "max_length": 1,
+          "precision": 1,
+          "scale": 0,
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF__DichVu__TrangTha__7B5B524B",
+          "default_definition": "((1))"
+        },
+        {
+          "name": "HoTroLoc",
+          "type": "bit",
+          "max_length": 1,
+          "precision": 1,
+          "scale": 0,
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF_DichVu_HoTroLoc",
+          "default_definition": "((0))"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_DichVu",
+          "type_desc": "CLUSTERED",
+          "is_primary_key": true,
+          "is_unique": true,
+          "is_unique_constraint": false,
+          "columns": [
+            {
+              "name": "MaDV",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "name": "CK_DichVu_DonGia",
+          "definition": "([DonGia]>(0))",
+          "is_disabled": false,
+          "is_not_trusted": false
+        }
+      ]
+    },
+    {
+      "name": "GiaTheoCa",
+      "columns": [
+        {
+          "name": "MaCa",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "GioBatDau",
+          "type": "time",
+          "max_length": 3,
+          "precision": 8,
+          "scale": 0,
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "GioKetThuc",
+          "type": "time",
+          "max_length": 3,
+          "precision": 8,
+          "scale": 0,
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "DonGia",
+          "type": "decimal",
+          "max_length": 9,
+          "precision": 18,
+          "scale": 2,
+          "is_nullable": false,
+          "is_identity": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_GiaTheoCa",
+          "type_desc": "CLUSTERED",
+          "is_primary_key": true,
+          "is_unique": true,
+          "is_unique_constraint": false,
+          "columns": [
+            {
+              "name": "MaCa",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "name": "CK_GiaTheoCa_DonGia",
+          "definition": "([DonGia]>(0))",
+          "is_disabled": false,
+          "is_not_trusted": false
+        },
+        {
+          "name": "CK_GiaTheoCa_Bien",
+          "definition": "([MaCa]='SANG' AND [GioBatDau]='07:00:00' AND [GioKetThuc]='13:00:00' OR [MaCa]='CHIEU' AND [GioBatDau]='13:00:00' AND [GioKetThuc]='19:00:00' OR [MaCa]='TOI' AND [GioBatDau]='19:00:00' AND [GioKetThuc]='22:00:00')",
+          "is_disabled": false,
+          "is_not_trusted": false
+        }
+      ]
+    },
+    {
+      "name": "HoaDon",
+      "columns": [
+        {
+          "name": "MaHoaDon",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "MaDatSan",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "MaTKLap",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "TienSan",
+          "type": "decimal",
+          "max_length": 9,
+          "precision": 18,
+          "scale": 2,
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "TienDichVu",
+          "type": "decimal",
+          "max_length": 9,
+          "precision": 18,
+          "scale": 2,
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "TienGiam",
+          "type": "decimal",
+          "max_length": 9,
+          "precision": 18,
+          "scale": 2,
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "DaThanhToan",
+          "type": "decimal",
+          "max_length": 9,
+          "precision": 18,
+          "scale": 2,
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF__HoaDon__DaThanhT__318258D2",
+          "default_definition": "((0))"
+        },
+        {
+          "name": "TrangThai",
+          "type": "varchar",
+          "max_length": 24,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF__HoaDon__TrangTha__32767D0B",
+          "default_definition": "('CHUA_THANH_TOAN')"
+        },
+        {
+          "name": "DaChot",
+          "type": "bit",
+          "max_length": 1,
+          "precision": 1,
+          "scale": 0,
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF__HoaDon__DaChot__336AA144",
+          "default_definition": "((0))"
+        },
+        {
+          "name": "NgayLap",
+          "type": "datetime2",
+          "max_length": 8,
+          "precision": 27,
+          "scale": 7,
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF__HoaDon__NgayLap__345EC57D",
+          "default_definition": "(sysdatetime())"
+        },
+        {
+          "name": "TongTien",
+          "type": "decimal",
+          "max_length": 9,
+          "precision": 18,
+          "scale": 2,
+          "is_nullable": true,
+          "is_identity": false,
+          "computed": "(CONVERT([decimal](18,2),([TienSan]+[TienDichVu])-[TienGiam]))",
+          "is_persisted": true
+        },
+        {
+          "name": "ConLai",
+          "type": "decimal",
+          "max_length": 9,
+          "precision": 19,
+          "scale": 2,
+          "is_nullable": true,
+          "is_identity": false,
+          "computed": "(case when [TrangThai]='DA_HUY' then CONVERT([decimal](18,2),(0)) else CONVERT([decimal](18,2),([TienSan]+[TienDichVu])-[TienGiam])-[DaThanhToan] end)",
+          "is_persisted": true
+        },
+        {
+          "name": "HoanTatTaiChinh",
+          "type": "bit",
+          "max_length": 1,
+          "precision": 1,
+          "scale": 0,
+          "is_nullable": true,
+          "is_identity": false,
+          "computed": "(CONVERT([bit],case when [DaChot]=(1) AND CONVERT([decimal](18,2),([TienSan]+[TienDichVu])-[TienGiam])=[DaThanhToan] AND [TrangThai]='DA_THANH_TOAN' then (1) else (0) end))",
+          "is_persisted": true
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_HoaDon",
+          "type_desc": "CLUSTERED",
+          "is_primary_key": true,
+          "is_unique": true,
+          "is_unique_constraint": false,
+          "columns": [
+            {
+              "name": "MaHoaDon",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        },
+        {
+          "name": "UQ_HoaDon_DatSan",
+          "type_desc": "NONCLUSTERED",
+          "is_primary_key": false,
+          "is_unique": true,
+          "is_unique_constraint": true,
+          "columns": [
+            {
+              "name": "MaDatSan",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "name": "CK_HD_State",
+          "definition": "([TrangThai]='DA_HUY' OR [TrangThai]='DA_THANH_TOAN' OR [TrangThai]='THANH_TOAN_MOT_PHAN' OR [TrangThai]='CHUA_THANH_TOAN')",
+          "is_disabled": false,
+          "is_not_trusted": false
+        },
+        {
+          "name": "CK_HD_Money",
+          "definition": "([TienSan]>=(0) AND [TienDichVu]>=(0) AND [TienGiam]>=(0) AND [TienGiam]<=[TienSan] AND [TongTien]>=(0) AND [DaThanhToan]>=(0) AND [DaThanhToan]<=[TongTien])",
+          "is_disabled": false,
+          "is_not_trusted": false
+        }
+      ]
+    },
+    {
+      "name": "HoanTien",
+      "columns": [
+        {
+          "name": "MaHT",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "MaTT",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "MaHuy",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "NgayHoan",
+          "type": "datetime",
+          "max_length": 8,
+          "precision": 23,
+          "scale": 3,
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF__HoanTien__NgayHo__1EA48E88",
+          "default_definition": "(getdate())"
+        },
+        {
+          "name": "SoTienHoan",
+          "type": "decimal",
+          "max_length": 9,
+          "precision": 18,
+          "scale": 2,
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "PhuongThuc",
+          "type": "nvarchar",
+          "max_length": 40,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "TrangThai",
+          "type": "nvarchar",
+          "max_length": 40,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF__HoanTien__TrangT__1F98B2C1",
+          "default_definition": "(N'Chờ duyệt')"
+        },
+        {
+          "name": "MaNV",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        },
+        {
+          "name": "NgayXacNhan",
+          "type": "datetime2",
+          "max_length": 8,
+          "precision": 27,
+          "scale": 7,
+          "is_nullable": true,
+          "is_identity": false
+        },
+        {
+          "name": "LyDo",
+          "type": "nvarchar",
+          "max_length": 510,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_HoanTien",
+          "type_desc": "CLUSTERED",
+          "is_primary_key": true,
+          "is_unique": true,
+          "is_unique_constraint": false,
+          "columns": [
+            {
+              "name": "MaHT",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        },
+        {
+          "name": "UX_HoanTien_CancellationPayment",
+          "type_desc": "NONCLUSTERED",
+          "is_primary_key": false,
+          "is_unique": true,
+          "is_unique_constraint": false,
+          "columns": [
+            {
+              "name": "MaHuy",
+              "is_descending_key": false,
+              "is_included_column": false
+            },
+            {
+              "name": "MaTT",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "name": "CK_HoanTien_SoTien",
+          "definition": "([SoTienHoan]>(0))",
+          "is_disabled": false,
+          "is_not_trusted": false
+        },
+        {
+          "name": "CK_HoanTien_PhuongThuc",
+          "definition": "([PhuongThuc]=N'Chuyển khoản' OR [PhuongThuc]=N'Tiền mặt')",
+          "is_disabled": false,
+          "is_not_trusted": false
+        },
+        {
+          "name": "CK_HoanTien_TrangThai",
+          "definition": "([TrangThai]=N'Từ chối' OR [TrangThai]=N'Đã hoàn' OR [TrangThai]=N'Chờ duyệt')",
+          "is_disabled": false,
+          "is_not_trusted": false
+        }
+      ]
+    },
+    {
+      "name": "HuyDatSan",
+      "columns": [
+        {
+          "name": "MaHuy",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "MaDatSan",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "NgayHuy",
+          "type": "datetime2",
+          "max_length": 8,
+          "precision": 27,
+          "scale": 7,
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF__HuyDatSan__NgayH__160F4887",
+          "default_definition": "(getdate())"
+        },
+        {
+          "name": "LyDo",
+          "type": "nvarchar",
+          "max_length": 510,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        },
+        {
+          "name": "NguoiHuy",
+          "type": "nvarchar",
+          "max_length": 40,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "TiLeHoan",
+          "type": "decimal",
+          "max_length": 5,
+          "precision": 5,
+          "scale": 2,
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF__HuyDatSan__TiLeH__17036CC0",
+          "default_definition": "((0))"
+        },
+        {
+          "name": "SoTienHoan",
+          "type": "decimal",
+          "max_length": 9,
+          "precision": 18,
+          "scale": 2,
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF__HuyDatSan__SoTie__17F790F9",
+          "default_definition": "((0))"
+        },
+        {
+          "name": "SoTienThucThuSnapshot",
+          "type": "decimal",
+          "max_length": 9,
+          "precision": 18,
+          "scale": 2,
+          "is_nullable": true,
+          "is_identity": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_HuyDatSan",
+          "type_desc": "CLUSTERED",
+          "is_primary_key": true,
+          "is_unique": true,
+          "is_unique_constraint": false,
+          "columns": [
+            {
+              "name": "MaHuy",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        },
+        {
+          "name": "UQ_HuyDatSan_DatSan",
+          "type_desc": "NONCLUSTERED",
+          "is_primary_key": false,
+          "is_unique": true,
+          "is_unique_constraint": true,
+          "columns": [
+            {
+              "name": "MaDatSan",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "name": "CK_HuyDatSan_NguoiHuy",
+          "definition": "([NguoiHuy]=N'Nhân viên' OR [NguoiHuy]=N'Khách hàng')",
+          "is_disabled": false,
+          "is_not_trusted": false
+        },
+        {
+          "name": "CK_HuyDatSan_TiLeHoan",
+          "definition": "([TiLeHoan]>=(0) AND [TiLeHoan]<=(100))",
+          "is_disabled": false,
+          "is_not_trusted": false
+        },
+        {
+          "name": "CK_HuyDatSan_SoTien",
+          "definition": "([SoTienHoan]>=(0))",
+          "is_disabled": false,
+          "is_not_trusted": false
+        },
+        {
+          "name": "CK_Huy_ThucThu",
+          "definition": "([SoTienThucThuSnapshot] IS NULL OR [SoTienThucThuSnapshot]>=(0) AND [SoTienHoan]<=round(([SoTienThucThuSnapshot]*[TiLeHoan])/(100),(2)))",
+          "is_disabled": false,
+          "is_not_trusted": false
+        }
+      ]
+    },
+    {
+      "name": "KhachHang",
+      "columns": [
+        {
+          "name": "MaKH",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "HoTen",
+          "type": "nvarchar",
+          "max_length": 200,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "SoDienThoai",
+          "type": "varchar",
+          "max_length": 15,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "Email",
+          "type": "varchar",
+          "max_length": 100,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        },
+        {
+          "name": "DiaChi",
+          "type": "nvarchar",
+          "max_length": 510,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        },
+        {
+          "name": "NgayDangKy",
+          "type": "date",
+          "max_length": 3,
+          "precision": 10,
+          "scale": 0,
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF__KhachHang__NgayD__440B1D61",
+          "default_definition": "(getdate())"
+        },
+        {
+          "name": "GhiChu",
+          "type": "nvarchar",
+          "max_length": 510,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_KhachHang",
+          "type_desc": "CLUSTERED",
+          "is_primary_key": true,
+          "is_unique": true,
+          "is_unique_constraint": false,
+          "columns": [
+            {
+              "name": "MaKH",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        },
+        {
+          "name": "UQ_KhachHang_SDT",
+          "type_desc": "NONCLUSTERED",
+          "is_primary_key": false,
+          "is_unique": true,
+          "is_unique_constraint": true,
+          "columns": [
+            {
+              "name": "SoDienThoai",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "KhungGio",
+      "columns": [
+        {
+          "name": "MaKhungGio",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "GioBatDau",
+          "type": "time",
+          "max_length": 5,
+          "precision": 16,
+          "scale": 7,
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "GioKetThuc",
+          "type": "time",
+          "max_length": 5,
+          "precision": 16,
+          "scale": 7,
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "ThoiLuong",
+          "type": "decimal",
+          "max_length": 5,
+          "precision": 4,
+          "scale": 2,
+          "is_nullable": false,
+          "is_identity": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_KhungGio",
+          "type_desc": "CLUSTERED",
+          "is_primary_key": true,
+          "is_unique": true,
+          "is_unique_constraint": false,
+          "columns": [
+            {
+              "name": "MaKhungGio",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "name": "CK_KhungGio_Gio",
+          "definition": "([GioKetThuc]>[GioBatDau])",
+          "is_disabled": false,
+          "is_not_trusted": false
+        },
+        {
+          "name": "CK_KhungGio_ThoiLuong",
+          "definition": "([ThoiLuong]>(0))",
+          "is_disabled": false,
+          "is_not_trusted": false
+        }
+      ]
+    },
+    {
+      "name": "KhuyenMai",
+      "columns": [
+        {
+          "name": "MaKM",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "TenKM",
+          "type": "nvarchar",
+          "max_length": 200,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "LoaiGiam",
+          "type": "nvarchar",
+          "max_length": 40,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "MucGiam",
+          "type": "decimal",
+          "max_length": 9,
+          "precision": 18,
+          "scale": 2,
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "DieuKien",
+          "type": "nvarchar",
+          "max_length": 510,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        },
+        {
+          "name": "NgayBatDau",
+          "type": "date",
+          "max_length": 3,
+          "precision": 10,
+          "scale": 0,
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "NgayKetThuc",
+          "type": "date",
+          "max_length": 3,
+          "precision": 10,
+          "scale": 0,
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "TrangThai",
+          "type": "bit",
+          "max_length": 1,
+          "precision": 1,
+          "scale": 0,
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF__KhuyenMai__Trang__66603565",
+          "default_definition": "((1))"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_KhuyenMai",
+          "type_desc": "CLUSTERED",
+          "is_primary_key": true,
+          "is_unique": true,
+          "is_unique_constraint": false,
+          "columns": [
+            {
+              "name": "MaKM",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "name": "CK_KhuyenMai_LoaiGiam",
+          "definition": "([LoaiGiam]=N'Số tiền' OR [LoaiGiam]=N'Phần trăm')",
+          "is_disabled": false,
+          "is_not_trusted": false
+        },
+        {
+          "name": "CK_KhuyenMai_MucGiam",
+          "definition": "([MucGiam]>(0))",
+          "is_disabled": false,
+          "is_not_trusted": false
+        },
+        {
+          "name": "CK_KhuyenMai_ThoiGian",
+          "definition": "([NgayKetThuc]>=[NgayBatDau])",
+          "is_disabled": false,
+          "is_not_trusted": false
+        }
+      ]
+    },
+    {
+      "name": "LoaiSan",
+      "columns": [
+        {
+          "name": "MaLoaiSan",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "TenLoaiSan",
+          "type": "nvarchar",
+          "max_length": 100,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "SoNguoi",
+          "type": "int",
+          "max_length": 4,
+          "precision": 10,
+          "scale": 0,
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "MoTa",
+          "type": "nvarchar",
+          "max_length": 510,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_LoaiSan",
+          "type_desc": "CLUSTERED",
+          "is_primary_key": true,
+          "is_unique": true,
+          "is_unique_constraint": false,
+          "columns": [
+            {
+              "name": "MaLoaiSan",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "name": "CK_LoaiSan_SoNguoi",
+          "definition": "([SoNguoi]>(0))",
+          "is_disabled": false,
+          "is_not_trusted": false
+        }
+      ]
+    },
+    {
+      "name": "NhanVien",
+      "columns": [
+        {
+          "name": "MaNV",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "HoTen",
+          "type": "nvarchar",
+          "max_length": 200,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "SoDienThoai",
+          "type": "varchar",
+          "max_length": 15,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        },
+        {
+          "name": "Email",
+          "type": "varchar",
+          "max_length": 100,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        },
+        {
+          "name": "ChucVu",
+          "type": "nvarchar",
+          "max_length": 100,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        },
+        {
+          "name": "BoPhan",
+          "type": "nvarchar",
+          "max_length": 100,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        },
+        {
+          "name": "NgayVaoLam",
+          "type": "date",
+          "max_length": 3,
+          "precision": 10,
+          "scale": 0,
+          "is_nullable": true,
+          "is_identity": false
+        },
+        {
+          "name": "TrangThai",
+          "type": "bit",
+          "max_length": 1,
+          "precision": 1,
+          "scale": 0,
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF__NhanVien__TrangT__46E78A0C",
+          "default_definition": "((1))"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_NhanVien",
+          "type_desc": "CLUSTERED",
+          "is_primary_key": true,
+          "is_unique": true,
+          "is_unique_constraint": false,
+          "columns": [
+            {
+              "name": "MaNV",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "name": "CK_NhanVien_BoPhan",
+          "definition": "([BoPhan]=N'Quản trị hệ thống' OR [BoPhan]=N'Kế toán' OR [BoPhan]=N'Nhân viên sân bóng')",
+          "is_disabled": false,
+          "is_not_trusted": false
+        }
+      ]
+    },
+    {
+      "name": "NhatKyHeThong",
+      "columns": [
+        {
+          "name": "MaNhatKy",
+          "type": "varchar",
+          "max_length": 15,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "MaTK",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "ThoiGian",
+          "type": "datetime",
+          "max_length": 8,
+          "precision": 23,
+          "scale": 3,
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF__NhatKyHeT__ThoiG__3F115E1A",
+          "default_definition": "(getdate())"
+        },
+        {
+          "name": "ChucNang",
+          "type": "nvarchar",
+          "max_length": 200,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        },
+        {
+          "name": "ThaoTac",
+          "type": "nvarchar",
+          "max_length": 40,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "DoiTuong",
+          "type": "nvarchar",
+          "max_length": 200,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        },
+        {
+          "name": "NoiDungThayDoi",
+          "type": "nvarchar",
+          "max_length": 1000,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        },
+        {
+          "name": "KetQua",
+          "type": "bit",
+          "max_length": 1,
+          "precision": 1,
+          "scale": 0,
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF__NhatKyHeT__KetQu__40058253",
+          "default_definition": "((1))"
+        },
+        {
+          "name": "GhiChu",
+          "type": "nvarchar",
+          "max_length": 510,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_NhatKyHeThong",
+          "type_desc": "CLUSTERED",
+          "is_primary_key": true,
+          "is_unique": true,
+          "is_unique_constraint": false,
+          "columns": [
+            {
+              "name": "MaNhatKy",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "name": "CK_NhatKy_ThaoTac",
+          "definition": "([ThaoTac]=N'Đăng xuất' OR [ThaoTac]=N'Đăng nhập' OR [ThaoTac]=N'Xóa' OR [ThaoTac]=N'Sửa' OR [ThaoTac]=N'Thêm')",
+          "is_disabled": false,
+          "is_not_trusted": false
+        }
+      ]
+    },
+    {
+      "name": "PhanHoi",
+      "columns": [
+        {
+          "name": "MaPhanHoi",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "MaKH",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "MaDatSan",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        },
+        {
+          "name": "NgayGui",
+          "type": "datetime",
+          "max_length": 8,
+          "precision": 23,
+          "scale": 3,
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF__PhanHoi__NgayGui__367C1819",
+          "default_definition": "(getdate())"
+        },
+        {
+          "name": "LoaiPhanHoi",
+          "type": "nvarchar",
+          "max_length": 100,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        },
+        {
+          "name": "NoiDung",
+          "type": "nvarchar",
+          "max_length": 1000,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "TrangThaiXuLy",
+          "type": "nvarchar",
+          "max_length": 40,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF__PhanHoi__TrangTh__37703C52",
+          "default_definition": "(N'Chờ xử lý')"
+        },
+        {
+          "name": "MaNV",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        },
+        {
+          "name": "NgayXuLy",
+          "type": "datetime",
+          "max_length": 8,
+          "precision": 23,
+          "scale": 3,
+          "is_nullable": true,
+          "is_identity": false
+        },
+        {
+          "name": "KetQuaXuLy",
+          "type": "nvarchar",
+          "max_length": 1000,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_PhanHoi",
+          "type_desc": "CLUSTERED",
+          "is_primary_key": true,
+          "is_unique": true,
+          "is_unique_constraint": false,
+          "columns": [
+            {
+              "name": "MaPhanHoi",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "name": "CK_PhanHoi_TrangThai",
+          "definition": "([TrangThaiXuLy]=N'Đã xử lý' OR [TrangThaiXuLy]=N'Đang xử lý' OR [TrangThaiXuLy]=N'Chờ xử lý')",
+          "is_disabled": false,
+          "is_not_trusted": false
+        },
+        {
+          "name": "CK_PhanHoi_NgayXuLy",
+          "definition": "([NgayXuLy] IS NULL OR [NgayXuLy]>=[NgayGui])",
+          "is_disabled": false,
+          "is_not_trusted": false
+        }
+      ]
+    },
+    {
+      "name": "PhanQuyen",
+      "columns": [
+        {
+          "name": "MaVaiTro",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "MaChucNang",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "Xem",
+          "type": "bit",
+          "max_length": 1,
+          "precision": 1,
+          "scale": 0,
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF__PhanQuyen__Xem__3B75D760",
+          "default_definition": "((0))"
+        },
+        {
+          "name": "Them",
+          "type": "bit",
+          "max_length": 1,
+          "precision": 1,
+          "scale": 0,
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF__PhanQuyen__Them__3C69FB99",
+          "default_definition": "((0))"
+        },
+        {
+          "name": "Sua",
+          "type": "bit",
+          "max_length": 1,
+          "precision": 1,
+          "scale": 0,
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF__PhanQuyen__Sua__3D5E1FD2",
+          "default_definition": "((0))"
+        },
+        {
+          "name": "Xoa",
+          "type": "bit",
+          "max_length": 1,
+          "precision": 1,
+          "scale": 0,
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF__PhanQuyen__Xoa__3E52440B",
+          "default_definition": "((0))"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_PhanQuyen",
+          "type_desc": "CLUSTERED",
+          "is_primary_key": true,
+          "is_unique": true,
+          "is_unique_constraint": false,
+          "columns": [
+            {
+              "name": "MaVaiTro",
+              "is_descending_key": false,
+              "is_included_column": false
+            },
+            {
+              "name": "MaChucNang",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "San",
+      "columns": [
+        {
+          "name": "MaSan",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "TenSan",
+          "type": "nvarchar",
+          "max_length": 100,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "MaLoaiSan",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "TrangThai",
+          "type": "nvarchar",
+          "max_length": 40,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF__San__TrangThai__571DF1D5",
+          "default_definition": "(N'Trống')"
+        },
+        {
+          "name": "MoTa",
+          "type": "nvarchar",
+          "max_length": 510,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_San",
+          "type_desc": "CLUSTERED",
+          "is_primary_key": true,
+          "is_unique": true,
+          "is_unique_constraint": false,
+          "columns": [
+            {
+              "name": "MaSan",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "name": "CK_San_TrangThai",
+          "definition": "([TrangThai]=N'Bảo trì' OR [TrangThai]=N'Đang sử dụng' OR [TrangThai]=N'Trống')",
+          "is_disabled": false,
+          "is_not_trusted": false
+        }
+      ]
+    },
+    {
+      "name": "SaoLuu",
+      "columns": [
+        {
+          "name": "MaSaoLuu",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "MaTK",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "ThoiGian",
+          "type": "datetime",
+          "max_length": 8,
+          "precision": 23,
+          "scale": 3,
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF__SaoLuu__ThoiGian__44CA3770",
+          "default_definition": "(getdate())"
+        },
+        {
+          "name": "LoaiThaoTac",
+          "type": "nvarchar",
+          "max_length": 40,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "DuongDan",
+          "type": "nvarchar",
+          "max_length": 510,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        },
+        {
+          "name": "KetQua",
+          "type": "bit",
+          "max_length": 1,
+          "precision": 1,
+          "scale": 0,
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF__SaoLuu__KetQua__45BE5BA9",
+          "default_definition": "((1))"
+        },
+        {
+          "name": "GhiChu",
+          "type": "nvarchar",
+          "max_length": 510,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_SaoLuu",
+          "type_desc": "CLUSTERED",
+          "is_primary_key": true,
+          "is_unique": true,
+          "is_unique_constraint": false,
+          "columns": [
+            {
+              "name": "MaSaoLuu",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "name": "CK_SaoLuu_LoaiThaoTac",
+          "definition": "([LoaiThaoTac]=N'Phục hồi' OR [LoaiThaoTac]=N'Sao lưu')",
+          "is_disabled": false,
+          "is_not_trusted": false
+        }
+      ]
+    },
+    {
+      "name": "TaiKhoan",
+      "columns": [
+        {
+          "name": "MaTK",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "TenDangNhap",
+          "type": "varchar",
+          "max_length": 50,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "MatKhau",
+          "type": "varchar",
+          "max_length": 255,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "MaVaiTro",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "MaKH",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        },
+        {
+          "name": "MaNV",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        },
+        {
+          "name": "NgayTao",
+          "type": "datetime",
+          "max_length": 8,
+          "precision": 23,
+          "scale": 3,
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF__TaiKhoan__NgayTa__4BAC3F29",
+          "default_definition": "(getdate())"
+        },
+        {
+          "name": "TrangThai",
+          "type": "nvarchar",
+          "max_length": 40,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF__TaiKhoan__TrangT__4CA06362",
+          "default_definition": "(N'Hoạt động')"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_TaiKhoan",
+          "type_desc": "CLUSTERED",
+          "is_primary_key": true,
+          "is_unique": true,
+          "is_unique_constraint": false,
+          "columns": [
+            {
+              "name": "MaTK",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        },
+        {
+          "name": "UQ_TaiKhoan_TenDangNhap",
+          "type_desc": "NONCLUSTERED",
+          "is_primary_key": false,
+          "is_unique": true,
+          "is_unique_constraint": true,
+          "columns": [
+            {
+              "name": "TenDangNhap",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "name": "CK_TaiKhoan_TrangThai",
+          "definition": "([TrangThai]=N'Khóa' OR [TrangThai]=N'Hoạt động')",
+          "is_disabled": false,
+          "is_not_trusted": false
+        },
+        {
+          "name": "CK_TaiKhoan_ChuSoHuu",
+          "definition": "([MaKH] IS NULL AND [MaNV] IS NOT NULL OR [MaKH] IS NOT NULL AND [MaNV] IS NULL)",
+          "is_disabled": false,
+          "is_not_trusted": false
+        }
+      ]
+    },
+    {
+      "name": "ThanhToan",
+      "columns": [
+        {
+          "name": "MaTT",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "MaDatSan",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "NgayThanhToan",
+          "type": "datetime",
+          "max_length": 8,
+          "precision": 23,
+          "scale": 3,
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF__ThanhToan__NgayT__0C85DE4D",
+          "default_definition": "(getdate())"
+        },
+        {
+          "name": "SoTien",
+          "type": "decimal",
+          "max_length": 9,
+          "precision": 18,
+          "scale": 2,
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "PhuongThuc",
+          "type": "nvarchar",
+          "max_length": 40,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "MaGiaoDich",
+          "type": "varchar",
+          "max_length": 50,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        },
+        {
+          "name": "TrangThai",
+          "type": "nvarchar",
+          "max_length": 40,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false,
+          "default_name": "DF__ThanhToan__Trang__0D7A0286",
+          "default_definition": "(N'Chờ xử lý')"
+        },
+        {
+          "name": "MaNV",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_ThanhToan",
+          "type_desc": "CLUSTERED",
+          "is_primary_key": true,
+          "is_unique": true,
+          "is_unique_constraint": false,
+          "columns": [
+            {
+              "name": "MaTT",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        },
+        {
+          "name": "IX_ThanhToan_BookingState",
+          "type_desc": "NONCLUSTERED",
+          "is_primary_key": false,
+          "is_unique": false,
+          "is_unique_constraint": false,
+          "columns": [
+            {
+              "name": "MaDatSan",
+              "is_descending_key": false,
+              "is_included_column": false
+            },
+            {
+              "name": "TrangThai",
+              "is_descending_key": false,
+              "is_included_column": false
+            },
+            {
+              "name": "SoTien",
+              "is_descending_key": false,
+              "is_included_column": true
+            }
+          ]
+        },
+        {
+          "name": "UX_ThanhToan_Idempotency",
+          "type_desc": "NONCLUSTERED",
+          "is_primary_key": false,
+          "is_unique": true,
+          "is_unique_constraint": false,
+          "filter_definition": "([MaGiaoDich] IS NOT NULL)",
+          "columns": [
+            {
+              "name": "MaGiaoDich",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "name": "CK_ThanhToan_SoTien",
+          "definition": "([SoTien]>(0))",
+          "is_disabled": false,
+          "is_not_trusted": false
+        },
+        {
+          "name": "CK_ThanhToan_PhuongThuc",
+          "definition": "([PhuongThuc]=N'Chuyển khoản' OR [PhuongThuc]=N'Tiền mặt')",
+          "is_disabled": false,
+          "is_not_trusted": false
+        },
+        {
+          "name": "CK_ThanhToan_TrangThai",
+          "definition": "([TrangThai]=N'Thất bại' OR [TrangThai]=N'Thành công' OR [TrangThai]=N'Chờ xử lý')",
+          "is_disabled": false,
+          "is_not_trusted": false
+        }
+      ]
+    },
+    {
+      "name": "TieuChiDanhGia",
+      "columns": [
+        {
+          "name": "MaTieuChi",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "TenTieuChi",
+          "type": "nvarchar",
+          "max_length": 200,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "MoTa",
+          "type": "nvarchar",
+          "max_length": 510,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_TieuChiDanhGia",
+          "type_desc": "CLUSTERED",
+          "is_primary_key": true,
+          "is_unique": true,
+          "is_unique_constraint": false,
+          "columns": [
+            {
+              "name": "MaTieuChi",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "VaiTro",
+      "columns": [
+        {
+          "name": "MaVaiTro",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "TenVaiTro",
+          "type": "nvarchar",
+          "max_length": 100,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "MoTa",
+          "type": "nvarchar",
+          "max_length": 510,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_VaiTro",
+          "type_desc": "CLUSTERED",
+          "is_primary_key": true,
+          "is_unique": true,
+          "is_unique_constraint": false,
+          "columns": [
+            {
+              "name": "MaVaiTro",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "XacNhanSan",
+      "columns": [
+        {
+          "name": "MaXacNhan",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "MaDatSan",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "MaNV",
+          "type": "varchar",
+          "max_length": 10,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "ThoiGianNhan",
+          "type": "datetime",
+          "max_length": 8,
+          "precision": 23,
+          "scale": 3,
+          "is_nullable": false,
+          "is_identity": false
+        },
+        {
+          "name": "ThoiGianKetThuc",
+          "type": "datetime",
+          "max_length": 8,
+          "precision": 23,
+          "scale": 3,
+          "is_nullable": true,
+          "is_identity": false
+        },
+        {
+          "name": "TinhTrangSan",
+          "type": "nvarchar",
+          "max_length": 510,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        },
+        {
+          "name": "GhiChu",
+          "type": "nvarchar",
+          "max_length": 510,
+          "precision": 0,
+          "scale": 0,
+          "collation_name": "SQL_Latin1_General_CP1_CI_AS",
+          "is_nullable": true,
+          "is_identity": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_XacNhanSan",
+          "type_desc": "CLUSTERED",
+          "is_primary_key": true,
+          "is_unique": true,
+          "is_unique_constraint": false,
+          "columns": [
+            {
+              "name": "MaXacNhan",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        },
+        {
+          "name": "UQ_XacNhanSan_DatSan",
+          "type_desc": "NONCLUSTERED",
+          "is_primary_key": false,
+          "is_unique": true,
+          "is_unique_constraint": true,
+          "columns": [
+            {
+              "name": "MaDatSan",
+              "is_descending_key": false,
+              "is_included_column": false
+            }
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "name": "CK_XacNhanSan_ThoiGian",
+          "definition": "([ThoiGianKetThuc] IS NULL OR [ThoiGianKetThuc]>=[ThoiGianNhan])",
+          "is_disabled": false,
+          "is_not_trusted": false
+        }
+      ]
+    }
+  ],
+  "foreignKeys": [
+    {
+      "name": "FK_BangGia_KhungGio",
+      "child": "BangGia",
+      "parent": "KhungGio",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaKhungGio",
+          "parent": "MaKhungGio"
+        }
+      ]
+    },
+    {
+      "name": "FK_BangGia_LoaiSan",
+      "child": "BangGia",
+      "parent": "LoaiSan",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaLoaiSan",
+          "parent": "MaLoaiSan"
+        }
+      ]
+    },
+    {
+      "name": "FK_BaoCao_TaiKhoan",
+      "child": "BaoCao",
+      "parent": "TaiKhoan",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaTK",
+          "parent": "MaTK"
+        }
+      ]
+    },
+    {
+      "name": "FK_CTDG_DanhGia",
+      "child": "ChiTietDanhGia",
+      "parent": "DanhGia",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaDanhGia",
+          "parent": "MaDanhGia"
+        }
+      ]
+    },
+    {
+      "name": "FK_CTDG_TieuChi",
+      "child": "ChiTietDanhGia",
+      "parent": "TieuChiDanhGia",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaTieuChi",
+          "parent": "MaTieuChi"
+        }
+      ]
+    },
+    {
+      "name": "FK_CTDV_DatSan",
+      "child": "ChiTietDichVu",
+      "parent": "DatSan",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaDatSan",
+          "parent": "MaDatSan"
+        }
+      ]
+    },
+    {
+      "name": "FK_CTDV_DichVu",
+      "child": "ChiTietDichVu",
+      "parent": "DichVu",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaDV",
+          "parent": "MaDV"
+        }
+      ]
+    },
+    {
+      "name": "FK_CTDV_NhanVien",
+      "child": "ChiTietDichVu",
+      "parent": "NhanVien",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaNV",
+          "parent": "MaNV"
+        }
+      ]
+    },
+    {
+      "name": "FK_DanhGia_DatSan",
+      "child": "DanhGia",
+      "parent": "DatSan",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaDatSan",
+          "parent": "MaDatSan"
+        }
+      ]
+    },
+    {
+      "name": "FK_DanhGia_KhachHang",
+      "child": "DanhGia",
+      "parent": "KhachHang",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaKH",
+          "parent": "MaKH"
+        }
+      ]
+    },
+    {
+      "name": "FK_DanhGia_San",
+      "child": "DanhGia",
+      "parent": "San",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaSan",
+          "parent": "MaSan"
+        }
+      ]
+    },
+    {
+      "name": "FK_DatSan_KhachHang",
+      "child": "DatSan",
+      "parent": "KhachHang",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaKH",
+          "parent": "MaKH"
+        }
+      ]
+    },
+    {
+      "name": "FK_DatSan_KhungGio",
+      "child": "DatSan",
+      "parent": "KhungGio",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaKhungGio",
+          "parent": "MaKhungGio"
+        }
+      ]
+    },
+    {
+      "name": "FK_DatSan_KhuyenMai",
+      "child": "DatSan",
+      "parent": "KhuyenMai",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaKM",
+          "parent": "MaKM"
+        }
+      ]
+    },
+    {
+      "name": "FK_DatSan_NhanVien",
+      "child": "DatSan",
+      "parent": "NhanVien",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaNV",
+          "parent": "MaNV"
+        }
+      ]
+    },
+    {
+      "name": "FK_DatSan_San",
+      "child": "DatSan",
+      "parent": "San",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaSan",
+          "parent": "MaSan"
+        }
+      ]
+    },
+    {
+      "name": "FK_HD_DatSan",
+      "child": "HoaDon",
+      "parent": "DatSan",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaDatSan",
+          "parent": "MaDatSan"
+        }
+      ]
+    },
+    {
+      "name": "FK_HD_TaiKhoan",
+      "child": "HoaDon",
+      "parent": "TaiKhoan",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaTKLap",
+          "parent": "MaTK"
+        }
+      ]
+    },
+    {
+      "name": "FK_HoanTien_HuyDatSan",
+      "child": "HoanTien",
+      "parent": "HuyDatSan",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaHuy",
+          "parent": "MaHuy"
+        }
+      ]
+    },
+    {
+      "name": "FK_HoanTien_NhanVien",
+      "child": "HoanTien",
+      "parent": "NhanVien",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaNV",
+          "parent": "MaNV"
+        }
+      ]
+    },
+    {
+      "name": "FK_HoanTien_ThanhToan",
+      "child": "HoanTien",
+      "parent": "ThanhToan",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaTT",
+          "parent": "MaTT"
+        }
+      ]
+    },
+    {
+      "name": "FK_HuyDatSan_DatSan",
+      "child": "HuyDatSan",
+      "parent": "DatSan",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaDatSan",
+          "parent": "MaDatSan"
+        }
+      ]
+    },
+    {
+      "name": "FK_NhatKy_TaiKhoan",
+      "child": "NhatKyHeThong",
+      "parent": "TaiKhoan",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaTK",
+          "parent": "MaTK"
+        }
+      ]
+    },
+    {
+      "name": "FK_PhanHoi_DatSan",
+      "child": "PhanHoi",
+      "parent": "DatSan",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaDatSan",
+          "parent": "MaDatSan"
+        }
+      ]
+    },
+    {
+      "name": "FK_PhanHoi_KhachHang",
+      "child": "PhanHoi",
+      "parent": "KhachHang",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaKH",
+          "parent": "MaKH"
+        }
+      ]
+    },
+    {
+      "name": "FK_PhanHoi_NhanVien",
+      "child": "PhanHoi",
+      "parent": "NhanVien",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaNV",
+          "parent": "MaNV"
+        }
+      ]
+    },
+    {
+      "name": "FK_PhanQuyen_ChucNang",
+      "child": "PhanQuyen",
+      "parent": "ChucNang",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaChucNang",
+          "parent": "MaChucNang"
+        }
+      ]
+    },
+    {
+      "name": "FK_PhanQuyen_VaiTro",
+      "child": "PhanQuyen",
+      "parent": "VaiTro",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaVaiTro",
+          "parent": "MaVaiTro"
+        }
+      ]
+    },
+    {
+      "name": "FK_San_LoaiSan",
+      "child": "San",
+      "parent": "LoaiSan",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaLoaiSan",
+          "parent": "MaLoaiSan"
+        }
+      ]
+    },
+    {
+      "name": "FK_SaoLuu_TaiKhoan",
+      "child": "SaoLuu",
+      "parent": "TaiKhoan",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaTK",
+          "parent": "MaTK"
+        }
+      ]
+    },
+    {
+      "name": "FK_TaiKhoan_KhachHang",
+      "child": "TaiKhoan",
+      "parent": "KhachHang",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaKH",
+          "parent": "MaKH"
+        }
+      ]
+    },
+    {
+      "name": "FK_TaiKhoan_NhanVien",
+      "child": "TaiKhoan",
+      "parent": "NhanVien",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaNV",
+          "parent": "MaNV"
+        }
+      ]
+    },
+    {
+      "name": "FK_TaiKhoan_VaiTro",
+      "child": "TaiKhoan",
+      "parent": "VaiTro",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaVaiTro",
+          "parent": "MaVaiTro"
+        }
+      ]
+    },
+    {
+      "name": "FK_ThanhToan_DatSan",
+      "child": "ThanhToan",
+      "parent": "DatSan",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaDatSan",
+          "parent": "MaDatSan"
+        }
+      ]
+    },
+    {
+      "name": "FK_ThanhToan_NhanVien",
+      "child": "ThanhToan",
+      "parent": "NhanVien",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaNV",
+          "parent": "MaNV"
+        }
+      ]
+    },
+    {
+      "name": "FK_XacNhanSan_DatSan",
+      "child": "XacNhanSan",
+      "parent": "DatSan",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaDatSan",
+          "parent": "MaDatSan"
+        }
+      ]
+    },
+    {
+      "name": "FK_XacNhanSan_NhanVien",
+      "child": "XacNhanSan",
+      "parent": "NhanVien",
+      "on_delete": "NO_ACTION",
+      "on_update": "NO_ACTION",
+      "is_disabled": false,
+      "is_not_trusted": false,
+      "columns": [
+        {
+          "child": "MaNV",
+          "parent": "MaNV"
+        }
+      ]
+    }
+  ],
+  "modules": [
+    {
+      "name": "fn_TyLeHoan",
+      "type": "FN",
+      "definition": "\r\nCREATE   FUNCTION dbo.fn_TyLeHoan\r\n(\r\n    @BatDau datetime2(7),\r\n    @Huy datetime2(7)\r\n)\r\nRETURNS decimal(5,2)\r\nAS\r\nBEGIN\r\n    RETURN\r\n        CASE\r\n            WHEN @Huy <= DATEADD(hour,-10,@BatDau) THEN 100\r\n            WHEN @Huy <= DATEADD(hour,-2,@BatDau) THEN 50\r\n            ELSE 0\r\n        END;\r\nEND;\r\n",
+      "uses_ansi_nulls": true,
+      "uses_quoted_identifier": true
+    },
+    {
+      "name": "fn_BookingNetCash",
+      "type": "IF",
+      "definition": "CREATE FUNCTION dbo.fn_BookingNetCash(@Booking varchar(10)) RETURNS TABLE AS RETURN (SELECT ISNULL(SUM(SoTienThucNhan),0) net FROM dbo.V_ThuChiThucNhan WHERE MaDatSan=@Booking);",
+      "uses_ansi_nulls": true,
+      "uses_quoted_identifier": true,
+      "dependencies": [
+        {
+          "name": "V_ThuChiThucNhan"
+        }
+      ]
+    },
+    {
+      "name": "fn_BookingReceipts",
+      "type": "IF",
+      "definition": "CREATE FUNCTION dbo.fn_BookingReceipts(@Booking varchar(10)) RETURNS TABLE AS RETURN (SELECT ISNULL(SUM(SoTien),0) thu FROM dbo.ThanhToan WHERE MaDatSan=@Booking AND TrangThai=N'Thành công');",
+      "uses_ansi_nulls": true,
+      "uses_quoted_identifier": true,
+      "dependencies": [
+        {
+          "name": "ThanhToan"
+        }
+      ]
+    },
+    {
+      "name": "fn_BookingRefunds",
+      "type": "IF",
+      "definition": "CREATE FUNCTION dbo.fn_BookingRefunds(@Booking varchar(10)) RETURNS TABLE AS RETURN (SELECT ISNULL(SUM(CASE WHEN h.TrangThai=N'Đã hoàn' THEN h.SoTienHoan ELSE 0 END),0) hoan,ISNULL(SUM(CASE WHEN h.TrangThai=N'Chờ duyệt' THEN h.SoTienHoan ELSE 0 END),0) choHoan FROM dbo.HoanTien h JOIN dbo.ThanhToan t ON t.MaTT=h.MaTT WHERE t.MaDatSan=@Booking);",
+      "uses_ansi_nulls": true,
+      "uses_quoted_identifier": true,
+      "dependencies": [
+        {
+          "name": "HoanTien"
+        },
+        {
+          "name": "ThanhToan"
+        }
+      ]
+    },
+    {
+      "name": "fn_KhungGioTrongTheoNgay",
+      "type": "IF",
+      "definition": "CREATE FUNCTION dbo.fn_KhungGioTrongTheoNgay(@Ngay date) RETURNS TABLE AS RETURN (\r\n SELECT s.MaSan,s.TenSan,l.TenLoaiSan,k.MaKhungGio,k.GioBatDau,k.GioKetThuc,@Ngay NgayChoi\r\n FROM dbo.San s JOIN dbo.LoaiSan l ON l.MaLoaiSan=s.MaLoaiSan CROSS JOIN dbo.KhungGio k\r\n WHERE @Ngay IS NOT NULL AND s.TrangThai<>N'Bảo trì'\r\n AND k.GioBatDau>='07:00' AND k.GioKetThuc<='22:00'\r\n AND NOT EXISTS(SELECT 1 FROM dbo.DatSan d WHERE d.MaSan=s.MaSan AND d.NgayChoi=@Ngay\r\n AND d.TrangThai<>N'Đã hủy' AND d.GioBatDau<k.GioKetThuc AND d.GioKetThuc>k.GioBatDau));",
+      "uses_ansi_nulls": true,
+      "uses_quoted_identifier": false,
+      "dependencies": [
+        {
+          "name": "DatSan"
+        },
+        {
+          "name": "KhungGio"
+        },
+        {
+          "name": "LoaiSan"
+        },
+        {
+          "name": "San"
+        }
+      ]
+    },
+    {
+      "name": "fn_ReportDays",
+      "type": "IF",
+      "definition": "CREATE FUNCTION dbo.fn_ReportDays(@From date,@To date) RETURNS TABLE AS RETURN (WITH digits(n) AS (SELECT n FROM (VALUES(0),(1),(2),(3),(4),(5),(6),(7),(8),(9))x(n)) SELECT DATEADD(day,a.n+10*b.n+100*c.n,@From) Ngay FROM digits a CROSS JOIN digits b CROSS JOIN digits c WHERE @From IS NOT NULL AND @To>=@From AND DATEDIFF(day,@From,@To)<=366 AND a.n+10*b.n+100*c.n<=DATEDIFF(day,@From,@To));",
+      "uses_ansi_nulls": true,
+      "uses_quoted_identifier": true
+    },
+    {
+      "name": "usp_ReportFinance",
+      "type": "P ",
+      "definition": "CREATE PROCEDURE dbo.usp_ReportFinance @From date,@To date,@Pitch varchar(10)='' AS\r\nBEGIN\r\n SET NOCOUNT ON;\r\n BEGIN TRY\r\n IF @From IS NULL OR @To IS NULL OR @To<@From OR DATEDIFF(day,@From,@To)>366 OR @To='99991231' OR @Pitch IS NULL THROW 51010,'Invalid report range or pitch',1;\r\n WITH days AS (SELECT Ngay FROM dbo.fn_ReportDays(@From,@To)) , rev AS (SELECT Ngay,SUM(TienSan) san,SUM(TienDichVu) dv,SUM(TienGiam) giam,SUM(DoanhThu) doanhThu FROM V_Phase6_Revenue WHERE Ngay>=@From AND Ngay<DATEADD(day,1,@To) AND (@Pitch='' OR MaSan=@Pitch) GROUP BY Ngay), cash AS (SELECT CAST(v.ThoiDiem AS date) Ngay,SUM(CASE WHEN v.Loai=N'Thu' THEN v.SoTienThucNhan ELSE 0 END) thu,SUM(CASE WHEN v.Loai=N'Hoàn' THEN -v.SoTienThucNhan ELSE 0 END) hoan,SUM(v.SoTienThucNhan) net FROM V_ThuChiThucNhan v JOIN DatSan d ON d.MaDatSan=v.MaDatSan WHERE v.ThoiDiem>=@From AND v.ThoiDiem<DATEADD(day,1,@To) AND (@Pitch='' OR d.MaSan=@Pitch) GROUP BY CAST(v.ThoiDiem AS date)) SELECT z.Ngay ngay,ISNULL(r.san,0) tienSan,ISNULL(r.dv,0) tienDichVu,ISNULL(r.giam,0) tienGiam,ISNULL(r.doanhThu,0) doanhThu,ISNULL(c.thu,0) tienThu,ISNULL(c.hoan,0) tienHoan,ISNULL(c.net,0) thucNhan FROM days z LEFT JOIN rev r ON r.Ngay=z.Ngay LEFT JOIN cash c ON c.Ngay=z.Ngay ORDER BY z.Ngay OPTION(MAXRECURSION 366);\r\n END TRY\r\n BEGIN CATCH\r\n THROW;\r\n END CATCH;\r\nEND;",
+      "uses_ansi_nulls": true,
+      "uses_quoted_identifier": true,
+      "dependencies": [
+        {
+          "name": "DatSan"
+        },
+        {
+          "name": "fn_ReportDays"
+        },
+        {
+          "name": "V_Phase6_Revenue"
+        },
+        {
+          "name": "V_ThuChiThucNhan"
+        }
+      ]
+    },
+    {
+      "name": "usp_ReportPaymentMethods",
+      "type": "P ",
+      "definition": "CREATE PROCEDURE dbo.usp_ReportPaymentMethods @From date,@To date,@Pitch varchar(10)='' AS\r\nBEGIN\r\n SET NOCOUNT ON;\r\n BEGIN TRY\r\n IF @From IS NULL OR @To IS NULL OR @To<@From OR DATEDIFF(day,@From,@To)>366 OR @To='99991231' OR @Pitch IS NULL THROW 51010,'Invalid report range or pitch',1;\r\n SELECT v.PhuongThuc phuongThuc,SUM(CASE WHEN v.Loai=N'Thu' THEN 1 ELSE 0 END) soGiaoDich,SUM(CASE WHEN v.Loai=N'Thu' THEN v.SoTienThucNhan ELSE 0 END) tienThu,SUM(CASE WHEN v.Loai=N'Hoàn' THEN 1 ELSE 0 END) soGiaoDichHoan,SUM(CASE WHEN v.Loai=N'Hoàn' THEN -v.SoTienThucNhan ELSE 0 END) tienHoan,SUM(v.SoTienThucNhan) thucNhan FROM V_ThuChiThucNhan v JOIN DatSan d ON d.MaDatSan=v.MaDatSan WHERE v.ThoiDiem>=@From AND v.ThoiDiem<DATEADD(day,1,@To) AND (@Pitch='' OR d.MaSan=@Pitch) GROUP BY v.PhuongThuc ORDER BY v.PhuongThuc;\r\n END TRY\r\n BEGIN CATCH\r\n THROW;\r\n END CATCH;\r\nEND;",
+      "uses_ansi_nulls": true,
+      "uses_quoted_identifier": true,
+      "dependencies": [
+        {
+          "name": "DatSan"
+        },
+        {
+          "name": "V_ThuChiThucNhan"
+        }
+      ]
+    },
+    {
+      "name": "usp_ReportReconciliation",
+      "type": "P ",
+      "definition": "CREATE PROCEDURE dbo.usp_ReportReconciliation @From date,@To date,@Pitch varchar(10)='' AS\r\nBEGIN\r\n SET NOCOUNT ON;\r\n BEGIN TRY\r\n IF @From IS NULL OR @To IS NULL OR @To<@From OR DATEDIFF(day,@From,@To)>366 OR @To='99991231' OR @Pitch IS NULL THROW 51010,'Invalid report range or pitch',1;\r\n SELECT d.MaDatSan maDatSan,s.TenSan tenSan,d.NgayChoi ngayChoi,d.TrangThai trangThai,h.MaHoaDon maHoaDon,h.DaChot daChot,d.TongTien tongBooking,h.TongTien tongHoaDon,h.DaThanhToan thuHoaDon,h.ConLai conLai,ISNULL(p.thu,0) tienThu,ISNULL(r.hoan,0) tienHoan,ISNULL(r.choHoan,0) choHoan,ISNULL(v.net,0) soThucNhan FROM DatSan d JOIN San s ON s.MaSan=d.MaSan LEFT JOIN HoaDon h ON h.MaDatSan=d.MaDatSan CROSS APPLY dbo.fn_BookingReceipts(d.MaDatSan) p CROSS APPLY dbo.fn_BookingRefunds(d.MaDatSan) r CROSS APPLY dbo.fn_BookingNetCash(d.MaDatSan) v WHERE d.NgayChoi>=@From AND d.NgayChoi<=@To AND (@Pitch='' OR d.MaSan=@Pitch) ORDER BY d.NgayChoi,d.MaDatSan;\r\n END TRY\r\n BEGIN CATCH\r\n THROW;\r\n END CATCH;\r\nEND;",
+      "uses_ansi_nulls": true,
+      "uses_quoted_identifier": true,
+      "dependencies": [
+        {
+          "name": "DatSan"
+        },
+        {
+          "name": "fn_BookingNetCash"
+        },
+        {
+          "name": "fn_BookingReceipts"
+        },
+        {
+          "name": "fn_BookingRefunds"
+        },
+        {
+          "name": "HoaDon"
+        },
+        {
+          "name": "San"
+        }
+      ]
+    },
+    {
+      "name": "usp_ReportTopServices",
+      "type": "P ",
+      "definition": "CREATE PROCEDURE dbo.usp_ReportTopServices @Day date AS\r\nBEGIN\r\n SET NOCOUNT ON;\r\n BEGIN TRY\r\n IF @Day IS NULL OR @Day='99991231' THROW 51010,'Invalid day',1;\r\n SELECT TOP(5) c.MaDV maDV,v.TenDV tenDV,SUM(c.SoLuong*c.SoDonViMoiQuyCach) soDonVi,SUM(c.ThanhTien) tienDichVu FROM ChiTietDichVu c JOIN DichVu v ON v.MaDV=c.MaDV JOIN V_Phase6_Revenue r ON r.MaDatSan=c.MaDatSan WHERE r.Ngay=@Day GROUP BY c.MaDV,v.TenDV ORDER BY SUM(c.SoLuong*c.SoDonViMoiQuyCach) DESC,c.MaDV;\r\n END TRY\r\n BEGIN CATCH\r\n THROW;\r\n END CATCH;\r\nEND;",
+      "uses_ansi_nulls": true,
+      "uses_quoted_identifier": true,
+      "dependencies": [
+        {
+          "name": "ChiTietDichVu"
+        },
+        {
+          "name": "DichVu"
+        },
+        {
+          "name": "V_Phase6_Revenue"
+        }
+      ]
+    },
+    {
+      "name": "usp_ReportUsage",
+      "type": "P ",
+      "definition": "CREATE PROCEDURE dbo.usp_ReportUsage @From date,@To date,@Pitch varchar(10)='' AS\r\nBEGIN\r\n SET NOCOUNT ON;\r\n BEGIN TRY\r\n IF @From IS NULL OR @To IS NULL OR @To<@From OR DATEDIFF(day,@From,@To)>366 OR @To='99991231' OR @Pitch IS NULL THROW 51010,'Invalid report range or pitch',1;\r\n WITH days AS (SELECT Ngay FROM dbo.fn_ReportDays(@From,@To)) SELECT z.Ngay ngay,s.MaSan maSan,s.TenSan tenSan,COUNT(u.MaDatSan) soBooking,ISNULL(SUM(u.DaSuDung),0) soDaSuDung,ISNULL(SUM(CASE WHEN u.TrangThai=N'Đã hủy' THEN 1 ELSE 0 END),0) soDaHuy,ISNULL(SUM(u.PhutDat),0) phutDat,900 phutCongSuat,CAST(ISNULL(SUM(u.PhutDat),0)/60.0 AS decimal(18,2)) gioDat,CAST(ISNULL(SUM(u.PhutDat),0)*100.0/900 AS decimal(18,2)) tyLeLapDay FROM days z CROSS JOIN San s LEFT JOIN V_Phase6_UsageBooking u ON u.NgayChoi=z.Ngay AND u.MaSan=s.MaSan WHERE (@Pitch='' OR s.MaSan=@Pitch) GROUP BY z.Ngay,s.MaSan,s.TenSan ORDER BY z.Ngay,s.MaSan OPTION(MAXRECURSION 366);\r\n END TRY\r\n BEGIN CATCH\r\n THROW;\r\n END CATCH;\r\nEND;",
+      "uses_ansi_nulls": true,
+      "uses_quoted_identifier": true,
+      "dependencies": [
+        {
+          "name": "fn_ReportDays"
+        },
+        {
+          "name": "San"
+        },
+        {
+          "name": "V_Phase6_UsageBooking"
+        }
+      ]
+    },
+    {
+      "name": "TRG_AuditContentImmutable",
+      "type": "TR",
+      "definition": "CREATE TRIGGER dbo.TRG_AuditContentImmutable ON dbo.NhatKyHeThong AFTER UPDATE AS\n BEGIN\n SET NOCOUNT ON;\n IF EXISTS(SELECT * FROM inserted EXCEPT SELECT * FROM deleted)\n THROW 51023,'Audit records are append-only; content cannot be rewritten',1;\n END;",
+      "uses_ansi_nulls": true,
+      "uses_quoted_identifier": true
+    },
+    {
+      "name": "TRG_CapNhatTienDatSan",
+      "type": "TR",
+      "definition": "\r\n/* ============================================================\r\n   9. TRIGGER TỰ ĐỘNG TÍNH TIỀN CHO PHIẾU ĐẶT SÂN (RB5)\r\n   ============================================================ */\r\nCREATE TRIGGER TRG_CapNhatTienDatSan\r\nON ChiTietDichVu\r\nAFTER INSERT, UPDATE, DELETE\r\nAS\r\nBEGIN\r\n    SET NOCOUNT ON;\r\n\r\n    ;WITH ds AS (\r\n        SELECT MaDatSan FROM inserted\r\n        UNION\r\n        SELECT MaDatSan FROM deleted\r\n    )\r\n    UPDATE d\r\n    SET    d.TienDichVu = ISNULL(ct.Tong, 0)\r\n    FROM   DatSan d\r\n           JOIN ds ON ds.MaDatSan = d.MaDatSan\r\n           OUTER APPLY (SELECT SUM(ThanhTien) AS Tong\r\n                        FROM ChiTietDichVu c\r\n                        WHERE c.MaDatSan = d.MaDatSan) ct;\r\nEND;\r\n",
+      "uses_ansi_nulls": true,
+      "uses_quoted_identifier": true,
+      "dependencies": [
+        {
+          "name": "ChiTietDichVu"
+        },
+        {
+          "name": "DatSan"
+        }
+      ]
+    },
+    {
+      "name": "TRG_SealedInvoiceSnapshot",
+      "type": "TR",
+      "definition": "CREATE TRIGGER dbo.TRG_SealedInvoiceSnapshot ON dbo.HoaDon AFTER UPDATE AS\n BEGIN\n SET NOCOUNT ON;\n IF EXISTS(SELECT MaHoaDon,MaDatSan,MaTKLap,TienSan,TienDichVu,TienGiam,TongTien,DaChot,NgayLap FROM deleted WHERE DaChot=1\n EXCEPT SELECT MaHoaDon,MaDatSan,MaTKLap,TienSan,TienDichVu,TienGiam,TongTien,DaChot,NgayLap FROM inserted)\n THROW 51026,'Sealed invoice identity and amounts cannot change; received total/status may be synchronized',1;\n END;",
+      "uses_ansi_nulls": true,
+      "uses_quoted_identifier": true
+    },
+    {
+      "name": "TRG_ServicePriceSnapshot",
+      "type": "TR",
+      "definition": "CREATE TRIGGER dbo.TRG_ServicePriceSnapshot ON dbo.ChiTietDichVu AFTER UPDATE AS\n BEGIN\n SET NOCOUNT ON;\n IF EXISTS(SELECT MaChiTiet,MaDatSan,MaDV,DonGia,DonGiaDonViSnapshot,Nguon,QuyCach,SoDonViMoiQuyCach FROM inserted\n EXCEPT SELECT MaChiTiet,MaDatSan,MaDV,DonGia,DonGiaDonViSnapshot,Nguon,QuyCach,SoDonViMoiQuyCach FROM deleted)\n THROW 51024,'Service SKU/price snapshot is immutable; only quantity may change before financial closing',1;\n END;",
+      "uses_ansi_nulls": true,
+      "uses_quoted_identifier": true
+    },
+    {
+      "name": "TRG_SuccessfulPaymentSnapshot",
+      "type": "TR",
+      "definition": "CREATE TRIGGER dbo.TRG_SuccessfulPaymentSnapshot ON dbo.ThanhToan AFTER UPDATE AS\n BEGIN\n SET NOCOUNT ON;\n IF EXISTS(SELECT MaTT,MaDatSan,SoTien,PhuongThuc,MaGiaoDich,TrangThai,NgayThanhToan,MaNV FROM deleted WHERE TrangThai=N'Thành công'\n EXCEPT SELECT MaTT,MaDatSan,SoTien,PhuongThuc,MaGiaoDich,TrangThai,NgayThanhToan,MaNV FROM inserted)\n THROW 51025,'A received payment is immutable; record a separate authorized refund',1;\n END;",
+      "uses_ansi_nulls": true,
+      "uses_quoted_identifier": true
+    },
+    {
+      "name": "V_DoanhThuPhatSinhTheoNgay",
+      "type": "V ",
+      "definition": "CREATE VIEW dbo.V_DoanhThuPhatSinhTheoNgay AS\r\n SELECT Ngay,COUNT(*) SoHoaDon,SUM(TienSan) TienSan,SUM(TienDichVu) TienDichVu,\r\n SUM(TienGiam) TienGiam,SUM(DoanhThu) DoanhThu FROM dbo.V_Phase6_Revenue GROUP BY Ngay;",
+      "uses_ansi_nulls": true,
+      "uses_quoted_identifier": false,
+      "dependencies": [
+        {
+          "name": "V_Phase6_Revenue"
+        }
+      ]
+    },
+    {
+      "name": "V_DoanhThuTheoNgay",
+      "type": "V ",
+      "definition": "CREATE VIEW dbo.V_DoanhThuTheoNgay AS\r\n SELECT Ngay,PhuongThuc,SoGiaoDich,TongTien FROM dbo.V_ThuTienTheoNgay;",
+      "uses_ansi_nulls": true,
+      "uses_quoted_identifier": false,
+      "dependencies": [
+        {
+          "name": "V_ThuTienTheoNgay"
+        }
+      ]
+    },
+    {
+      "name": "V_KhungGioTrong",
+      "type": "V ",
+      "definition": "CREATE VIEW dbo.V_KhungGioTrong AS\r\n SELECT MaSan,TenSan,TenLoaiSan,MaKhungGio,GioBatDau,GioKetThuc,NgayChoi\r\n FROM dbo.fn_KhungGioTrongTheoNgay(CONVERT(date,SYSDATETIMEOFFSET() AT TIME ZONE 'SE Asia Standard Time'));",
+      "uses_ansi_nulls": true,
+      "uses_quoted_identifier": false,
+      "dependencies": [
+        {
+          "name": "fn_KhungGioTrongTheoNgay"
+        }
+      ]
+    },
+    {
+      "name": "V_Phase6_Revenue",
+      "type": "V ",
+      "definition": "CREATE VIEW dbo.V_Phase6_Revenue AS\r\n SELECT d.MaDatSan,d.MaSan,CAST(x.ThoiGianKetThuc AS date) Ngay,\r\n COALESCE(h.TienSan,d.TienSan) TienSan,COALESCE(h.TienDichVu,d.TienDichVu) TienDichVu,\r\n COALESCE(h.TienGiam,d.TienGiam) TienGiam,COALESCE(h.TongTien,d.TongTien) DoanhThu\r\n FROM dbo.DatSan d JOIN (SELECT MaDatSan,MAX(ThoiGianKetThuc) ThoiGianKetThuc FROM dbo.XacNhanSan\r\n WHERE ThoiGianKetThuc IS NOT NULL GROUP BY MaDatSan) x ON x.MaDatSan=d.MaDatSan\r\n LEFT JOIN dbo.HoaDon h ON h.MaDatSan=d.MaDatSan\r\n WHERE d.TrangThai<>N'Đã hủy';",
+      "uses_ansi_nulls": true,
+      "uses_quoted_identifier": false,
+      "dependencies": [
+        {
+          "name": "DatSan"
+        },
+        {
+          "name": "HoaDon"
+        },
+        {
+          "name": "XacNhanSan"
+        }
+      ]
+    },
+    {
+      "name": "V_Phase6_UsageBooking",
+      "type": "V ",
+      "definition": "CREATE VIEW dbo.V_Phase6_UsageBooking AS\r\n SELECT d.MaDatSan,d.MaSan,d.NgayChoi,d.TrangThai,\r\n CASE WHEN d.TrangThai=N'Đã hủy' THEN 0 ELSE\r\n CASE WHEN d.GioKetThuc<=CONVERT(time,'07:00') OR d.GioBatDau>=CONVERT(time,'22:00') THEN 0 ELSE\r\n DATEDIFF(minute,CASE WHEN d.GioBatDau<CONVERT(time,'07:00') THEN CONVERT(time,'07:00') ELSE d.GioBatDau END,\r\n CASE WHEN d.GioKetThuc>CONVERT(time,'22:00') THEN CONVERT(time,'22:00') ELSE d.GioKetThuc END) END END PhutDat,\r\n CONVERT(int,CASE WHEN EXISTS(SELECT 1 FROM dbo.XacNhanSan x WHERE x.MaDatSan=d.MaDatSan AND x.ThoiGianKetThuc IS NOT NULL) THEN 1 ELSE 0 END) DaSuDung\r\n FROM dbo.DatSan d;",
+      "uses_ansi_nulls": true,
+      "uses_quoted_identifier": false,
+      "dependencies": [
+        {
+          "name": "DatSan"
+        },
+        {
+          "name": "XacNhanSan"
+        }
+      ]
+    },
+    {
+      "name": "V_ThuChiThucNhan",
+      "type": "V ",
+      "definition": "CREATE VIEW dbo.V_ThuChiThucNhan AS\r\n SELECT MaTT MaGiaoDich,MaDatSan,NgayThanhToan ThoiDiem,PhuongThuc,SoTien SoTienThucNhan,N'Thu' Loai FROM dbo.ThanhToan WHERE TrangThai=N'Thành công'\r\n UNION ALL SELECT h.MaHT,t.MaDatSan,h.NgayXacNhan,h.PhuongThuc,-h.SoTienHoan,N'Hoàn' FROM dbo.HoanTien h\r\n JOIN dbo.ThanhToan t ON t.MaTT=h.MaTT WHERE h.TrangThai=N'Đã hoàn';",
+      "uses_ansi_nulls": true,
+      "uses_quoted_identifier": true,
+      "dependencies": [
+        {
+          "name": "HoanTien"
+        },
+        {
+          "name": "ThanhToan"
+        }
+      ]
+    },
+    {
+      "name": "V_ThuTienTheoNgay",
+      "type": "V ",
+      "definition": "CREATE VIEW dbo.V_ThuTienTheoNgay AS\r\n SELECT CAST(NgayThanhToan AS date) Ngay,PhuongThuc,COUNT(*) SoGiaoDich,SUM(SoTien) TongTien\r\n FROM dbo.ThanhToan WHERE TrangThai=N'Thành công' GROUP BY CAST(NgayThanhToan AS date),PhuongThuc;",
+      "uses_ansi_nulls": true,
+      "uses_quoted_identifier": false,
+      "dependencies": [
+        {
+          "name": "ThanhToan"
+        }
+      ]
+    },
+    {
+      "name": "V_TyLeLapDay",
+      "type": "V ",
+      "definition": "CREATE VIEW dbo.V_TyLeLapDay AS\r\n SELECT NgayChoi,SoLuotDat,(SELECT COUNT(*) FROM dbo.San)*(SELECT COUNT(*) FROM dbo.KhungGio) TongKhungGio,\r\n TyLeLapDay,PhutDat,PhutCongSuat FROM dbo.V_TyLeSuDungTheoNgay;",
+      "uses_ansi_nulls": true,
+      "uses_quoted_identifier": false,
+      "dependencies": [
+        {
+          "name": "KhungGio"
+        },
+        {
+          "name": "San"
+        },
+        {
+          "name": "V_TyLeSuDungTheoNgay"
+        }
+      ]
+    },
+    {
+      "name": "V_TyLeSuDungTheoNgay",
+      "type": "V ",
+      "definition": "CREATE VIEW dbo.V_TyLeSuDungTheoNgay AS\r\n SELECT u.NgayChoi,COUNT(CASE WHEN u.TrangThai<>N'Đã hủy' THEN 1 END) SoLuotDat,\r\n SUM(CONVERT(bigint,u.PhutDat)) PhutDat,\r\n (SELECT COUNT_BIG(*)*900 FROM dbo.San) PhutCongSuat,\r\n CAST(100.0*SUM(CONVERT(bigint,u.PhutDat))/NULLIF((SELECT COUNT_BIG(*)*900 FROM dbo.San),0) AS decimal(18,2)) TyLeLapDay\r\n FROM dbo.V_Phase6_UsageBooking u GROUP BY u.NgayChoi;",
+      "uses_ansi_nulls": true,
+      "uses_quoted_identifier": false,
+      "dependencies": [
+        {
+          "name": "San"
+        },
+        {
+          "name": "V_Phase6_UsageBooking"
+        }
+      ]
+    }
+  ]
+}

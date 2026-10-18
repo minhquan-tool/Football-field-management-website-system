@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tra Cứu Lịch Đặt Sân - FC-UTE</title>
+    <link rel="stylesheet" href="css/tailwind.css">
+    <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+    <link href="vendor/montserrat/montserrat.css" rel="stylesheet">
+    
+    
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f4f7f6;
+        }
+        #toast {
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.3s linear;
+            transform: translateY(-20px);
+        }
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+<link rel="stylesheet" href="css/fc-ute.css"><link rel="stylesheet" href="css/experience.css"><script src="js/ui.js" defer></script></head>
+<body class="flex h-screen overflow-hidden text-gray-800">
+
+    <!-- Sidebar -->
+    <aside class="w-72 bg-white shadow-2xl flex flex-col h-full hidden md:flex z-20 border-r border-gray-100">
+        <div class="h-20 flex items-center justify-center border-b border-gray-100 px-4 bg-white">
+            <img src="assets/hcmute-logo.png" 
+                 alt="Logo HCMUTE" class="h-12 w-12 object-contain mr-3">
+            <div class="flex flex-col">
+                <span class="font-bold text-xl text-brand-700 leading-tight">FC-UTE</span>
+                <span class="text-[10px] text-gray-500 font-semibold uppercase">Vận hành & Quản lý</span>
+            </div>
+        </div>
+
+        <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-6"><div data-navigation-loading>Đang tải chức năng theo quyền…</div></nav>
+
+        <div class="p-4 border-t border-gray-100 bg-gray-50">
+            <a href="Dang_nhap.html" class="flex items-center gap-3 text-gray-600 hover:text-red-600 hover:bg-red-50 px-4 py-2.5 rounded-xl font-bold transition-colors">
+                <i class="fa-solid fa-arrow-right-from-bracket w-5 text-center"></i> Đăng xuất
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col h-full overflow-hidden relative">
+        <header class="h-20 bg-white shadow-sm flex items-center justify-between px-6 lg:px-8 z-10 border-b border-gray-100">
+            <div>
+                <h2 class="text-xl font-bold text-gray-800">Tra Cứu & Quản Lý Lịch Đặt Sân</h2>
+                <p class="text-xs text-gray-400">Theo dõi booking, nhận/trả sân và tình trạng tài chính</p>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <a href="Dat_san_tai_quay.html" class="bg-brand-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-brand-700 transition-colors shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-plus"></i> Đặt Sân Mới
+                </a>
+            </div>
+        </header>
+
+        <main class="flex-1 overflow-y-auto p-6 lg:p-8 space-y-6">
+            <!-- Filter Toolbar -->
+            <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 items-end">
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Ngày Chơi</label>
+                    <input type="date" id="filterDate" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Sân Bóng</label>
+                    <select id="filterPitch" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 outline-none"><option value="">Tất cả sân</option></select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Khung Giờ</label>
+                    <select id="filterSlot" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 outline-none"><option value="">Tất cả khung giờ</option></select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Trạng Thái</label>
+                    <select id="filterStatus" class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+                        <option value="">Tất cả trạng thái</option>
+                        <option value="Chờ xác nhận">Chờ xác nhận</option>
+                        <option value="Đã xác nhận">Đã xác nhận</option>
+                        <option value="Đã sử dụng">Đã sử dụng</option>
+                        <option value="Đã hủy">Đã hủy</option>
+                    </select>
+                </div>
+                <div>
+                    <button onclick="applyFilters()" class="w-full bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 rounded-xl text-sm transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-filter"></i> Lọc Kết Quả
+                    </button>
+                </div>
+            </div>
+
+            <p id="calendarFeedback" class="text-sm text-brand-700" role="status" aria-live="polite"></p>
+            <!-- Bảng Lịch Đặt Sân -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                    <h3 class="font-bold text-base text-gray-800">Danh Sách Phiếu Đặt Sân</h3>
+                    <span class="text-xs text-gray-500 font-medium">Hiển thị <span id="bookingCount" class="font-bold text-brand-600">—</span> lượt đặt</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-gray-50 text-gray-600 font-bold uppercase text-xs border-b border-gray-200">
+                            <tr>
+                                <th class="p-4">Mã Đặt</th>
+                                <th class="p-4">Khách Hàng</th>
+                                <th class="p-4">Sân & Loại</th>
+                                <th class="p-4">Thời Gian Đá</th>
+                                <th class="p-4">Tổng Tiền</th>
+                                <th class="p-4">Trạng Thái</th>
+                                <th class="p-4 text-center">Hành Động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bookingRows" class="divide-y divide-gray-100"></tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Chi Tiết Phiếu Đặt Sân -->
+    <div id="detailModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden">
+            <div class="bg-brand-600 px-6 py-4 flex justify-between items-center text-white">
+                <h3 class="font-bold text-lg" id="modalBookingId">Chi Tiết Phiếu Đặt Sân</h3>
+                <button onclick="closeDetailModal()" class="text-white/80 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="grid grid-cols-2 gap-3 text-xs bg-gray-50 p-4 rounded-xl">
+                    <div>
+                        <span class="text-gray-400 uppercase">Khách hàng:</span>
+                        <p class="font-bold text-gray-800 text-sm" id="detailCustomer">—</p>
+                    </div>
+                    <div>
+                        <span class="text-gray-400 uppercase">Sân bóng:</span>
+                        <p class="font-bold text-gray-800 text-sm" id="detailPitch">—</p>
+                    </div>
+                    <div>
+                        <span class="text-gray-400 uppercase">Thời gian:</span>
+                        <p class="font-bold text-gray-800" id="detailTime">—</p>
+                    </div>
+                    <div>
+                        <span class="text-gray-400 uppercase">Trạng thái:</span>
+                        <p class="font-bold text-brand-600" id="detailStatus">—</p>
+                    </div>
+                </div>
+
+                <div>
+<h4 class="text-xs font-bold text-gray-700 uppercase mb-2">Chi tiết tiền đã lưu</h4><p id="detailAmounts" class="text-xs text-gray-600"></p><p id="detailNote" class="text-xs text-gray-600 mt-2"></p></div>
+                <div class="border-t border-gray-100 pt-3 flex justify-between items-baseline">
+                    <span class="text-sm font-bold text-gray-700 uppercase">Tổng cộng:</span>
+                    <span class="text-2xl font-black text-brand-600" id="detailTotal">—</span>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-3">
+                    <button onclick="closeDetailModal()" class="px-5 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-xs font-bold">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Hủy Đặt Sân -->
+    <div id="cancelModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden">
+            <div class="bg-red-600 px-6 py-4 flex justify-between items-center text-white">
+                <h3 class="font-bold text-lg">Hủy Đặt Sân</h3>
+                <button onclick="closeCancelModal()" class="text-white/80 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="cancelForm" data-api-ready="true" class="p-6 space-y-4">
+                <input type="hidden" id="cancelBookingId">
+                <p class="text-sm text-gray-600">Bạn đang thực hiện hủy phiếu đặt sân <span class="font-bold text-red-600" id="cancelBookingCode">—</span>.</p>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Lý Do Hủy <span class="text-red-500">*</span></label>
+                    <textarea id="cancelReason" maxlength="255" rows="3" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-red-500 outline-none" placeholder="Nhập lý do khách hủy hoặc sân có sự cố..." required></textarea>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Người Yêu Cầu</label>
+                        <select id="cancelRequester" disabled class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none">
+                            <option value="Khách hàng">Khách hàng</option>
+                            <option value="Nhân viên">Nhân viên / Sân bóng</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Tỷ Lệ Hoàn (%)</label>
+                        <input type="number" id="cancelRefundRate" min="0" max="100" value="0" disabled class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none font-bold">
+                    </div>
+                </div>
+                <p class="text-xs text-gray-500">Hủy booking chưa nhận sân và chưa đến giờ chơi. Mức hoàn dựa trên thời điểm hủy và tiền thực thu; kế toán/quản lý xác nhận hoàn thực tế.</p>
+                <div class="flex justify-end gap-3 pt-3">
+                    <button type="button" onclick="closeCancelModal()" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg text-xs font-bold">Quay lại</button>
+                    <button type="submit" class="px-5 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-bold shadow-md">Xác Nhận Hủy</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-24 right-5 bg-white border-l-4 border-brand-600 shadow-xl rounded-md px-6 py-4 flex items-center z-50">
+        <div class="text-brand-600 mr-3 text-xl"><i class="fa-solid fa-circle-check"></i></div>
+        <div>
+            <h4 class="text-gray-800 font-bold text-sm">Thông báo</h4>
+            <p id="toastMessage" class="text-gray-600 text-xs mt-1"></p>
+        </div>
+    </div>
+
+
+    <div id="operationsModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full mx-auto my-8 overflow-hidden">
+            <div class="bg-brand-600 px-6 py-4 flex justify-between items-center text-white">
+                <h3 id="operationsTitle" class="font-bold text-lg">Nhận sân / Dịch vụ</h3>
+                <button id="operationsClose" type="button" aria-label="Đóng">✕</button>
+            </div>
+            <div class="p-6 space-y-4">
+                <p id="operationsFeedback" class="text-sm text-brand-700" role="status" aria-live="polite"></p>
+                <p id="operationsSummary" class="text-sm font-bold"></p>
+                <div class="flex gap-3"><button id="checkInButton" type="button" class="bg-green-600 text-white px-4 py-2 rounded-xl font-bold text-sm">Nhận sân</button>
+                    <button id="checkOutButton" type="button" class="bg-brand-600 text-white px-4 py-2 rounded-xl font-bold text-sm">Trả sân / chốt dịch vụ</button></div>
+                <form id="serviceLineForm" class="flex flex-wrap gap-3 items-end" data-api-ready="true">
+                    <label class="text-sm">Dịch vụ <select id="serviceCatalog" class="block border border-gray-300 rounded-xl p-2"></select></label>
+                    <label class="text-sm">Số lượng <input id="serviceQuantity" type="number" min="1" max="2147483647" value="1" required class="block border border-gray-300 rounded-xl p-2 w-24"></label>
+                    <button id="addServiceButton" type="submit" class="bg-brand-600 text-white px-4 py-2 rounded-xl text-sm font-bold">Thêm dịch vụ</button>
+                <label class="text-sm">Quy cách<select id="servicePack" class="block border rounded-xl p-2"><option value="DON_VI">Đơn vị</option><option value="LOC_6">Lốc 6</option></select></label><span id="servicePreview" class="text-sm"></span></form>
+                <div class="overflow-x-auto"><table class="w-full text-sm text-left"><thead class="bg-gray-50"><tr><th class="p-2">Dịch vụ</th><th class="p-2">SL</th><th class="p-2">Giá đã lưu</th><th class="p-2">Thành tiền</th><th class="p-2">Thao tác</th></tr></thead><tbody id="serviceLines"></tbody></table></div>
+                <p id="operationsAmounts" class="text-sm font-bold text-brand-700"></p>
+                <p class="text-xs text-gray-500">Xem Chi tiết booking để mở hóa đơn, thanh toán và lịch sử hoàn tiền. Trả sân chốt dịch vụ; không tự thu tiền.</p>
+            </div>
+        </div>
+    </div>
+    <script src="js/role-navigation.js" defer></script>
+    <script src="js/auth.js" defer></script>
+    <script src="js/booking-receipt.js" defer></script>
+    <script src="js/bookings.js" defer></script>
+    <script src="js/service-catalog.js" defer></script>
+    <script src="js/operations.js" defer></script>
+    <script src="js/finance.js" defer></script>
+</body>
+</html>
+

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký tài khoản - Quản Lý Sân Bóng FC-UTE</title>
+    <link rel="stylesheet" href="css/tailwind.css">
+    <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+    <link href="vendor/montserrat/montserrat.css" rel="stylesheet">
+    
+    
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-image: url('assets/football-field.svg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .input-group:focus-within .input-icon {
+            color: #1d4ed8;
+        }
+        #toast {
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.3s linear;
+        }
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+<link rel="stylesheet" href="css/fc-ute.css"><link rel="stylesheet" href="css/experience.css"><script src="js/ui.js" defer></script></head>
+<body class="min-h-screen flex items-center justify-center relative bg-gray-900 bg-opacity-60 bg-blend-overlay p-4 py-8 fc-auth-page">
+
+<main class="fc-auth-shell" id="fcMainContent">
+        <aside class="fc-auth-story" aria-label="Chào mừng đến FC-UTE">
+            <a class="fc-auth-wordmark" href="Trang_chu.html"><img class="fc-brand-logo" src="assets/hcmute-logo.png" alt="">FC-UTE</a>
+            <div><h2>Hẹn đồng đội.<br>Chọn giờ ra sân.</h2><p>Tra cứu sân trống, đặt lịch và theo dõi hóa đơn trong cùng một tài khoản.</p><img class="fc-auth-pitch" src="assets/pitch-blueprint.svg" alt="" width="720" height="540"></div>
+            <small>Sân bóng ĐH SPKT TP.HCM<br>Khung giờ đặt sân · 07:00–22:00</small>
+        </aside>
+    <div class="glass-card w-full max-w-lg rounded-2xl shadow-2xl p-8 relative overflow-hidden my-4">
+        <!-- Top decorative bar -->
+        <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-brand-400 via-brand-600 to-brand-500"></div>
+
+        <a class="fc-auth-back" href="Trang_chu.html"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Về trang chủ</a>
+        <!-- Header -->
+        <div class="text-center mb-6">
+            <img src="assets/hcmute-logo.png" 
+                 alt="Logo Trường" 
+                 class="mx-auto h-20 w-20 object-contain drop-shadow-md mb-3">
+            
+            <h1 class="text-2xl font-bold text-gray-800">Tạo tài khoản</h1>
+            <p class="text-sm text-gray-500 mt-1">Đăng ký để đặt sân và theo dõi lịch hẹn của bạn.</p>
+        </div>
+
+        <form id="registerForm" class="space-y-4">
+            <!-- Họ và tên -->
+            <div>
+                <label for="fullName" class="block text-xs font-bold text-gray-700 uppercase mb-1">Họ và tên <span class="text-red-500">*</span></label>
+                <div class="input-group relative rounded-lg shadow-sm">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fa-regular fa-user input-icon text-gray-400 transition-colors"></i>
+                    </div>
+                    <input type="text" id="fullName" name="fullName" autocomplete="name" 
+                        class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-brand-500 focus:border-brand-500 text-sm outline-none text-gray-700" 
+                        placeholder="Nguyễn Văn A" required>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Số điện thoại -->
+                <div>
+                    <label for="phoneNumber" class="block text-xs font-bold text-gray-700 uppercase mb-1">Số điện thoại <span class="text-red-500">*</span></label>
+                    <div class="input-group relative rounded-lg shadow-sm">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-phone input-icon text-gray-400 transition-colors text-xs"></i>
+                        </div>
+                        <input type="tel" id="phoneNumber" name="phoneNumber" autocomplete="tel" 
+                            class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-brand-500 focus:border-brand-500 text-sm outline-none text-gray-700" 
+                            placeholder="0987654321" required>
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <label for="email" class="block text-xs font-bold text-gray-700 uppercase mb-1">Email</label>
+                    <div class="input-group relative rounded-lg shadow-sm">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fa-regular fa-envelope input-icon text-gray-400 transition-colors text-xs"></i>
+                        </div>
+                        <input type="email" id="email" name="email" autocomplete="email" 
+                            class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-brand-500 focus:border-brand-500 text-sm outline-none text-gray-700" 
+                            placeholder="name@example.com">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tên đăng nhập -->
+            <div>
+                <label for="username" class="block text-xs font-bold text-gray-700 uppercase mb-1">Tên đăng nhập <span class="text-red-500">*</span></label>
+                <div class="input-group relative rounded-lg shadow-sm">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fa-solid fa-id-badge input-icon text-gray-400 transition-colors"></i>
+                    </div>
+                    <input type="text" id="username" name="username" autocomplete="username" 
+                        class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-brand-500 focus:border-brand-500 text-sm outline-none text-gray-700" 
+                        placeholder="Ví dụ: quan_da" required aria-describedby="usernameHint">
+                </div>
+                <p id="usernameHint" class="text-xs text-gray-600 mt-1">3–50 ký tự không dấu: chữ, số, dấu chấm, gạch dưới hoặc gạch ngang; không có khoảng trắng.</p>
+            </div>
+
+            <!-- Mật khẩu & Nhập lại mật khẩu -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="password" class="block text-xs font-bold text-gray-700 uppercase mb-1">Mật khẩu <span class="text-red-500">*</span></label>
+                    <div class="input-group relative rounded-lg shadow-sm">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-lock input-icon text-gray-400 transition-colors text-xs"></i>
+                        </div>
+                        <input type="password" id="password" minlength="10" maxlength="72" name="password" autocomplete="new-password" 
+                            class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-brand-500 focus:border-brand-500 text-sm outline-none text-gray-700" 
+                            placeholder="Nhập mật khẩu mới..." aria-describedby="registerPasswordHint" required>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="confirmPassword" class="block text-xs font-bold text-gray-700 uppercase mb-1">Xác nhận MK <span class="text-red-500">*</span></label>
+                    <div class="input-group relative rounded-lg shadow-sm">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-shield-halved input-icon text-gray-400 transition-colors text-xs"></i>
+                        </div>
+                        <input type="password" id="confirmPassword" minlength="10" maxlength="72" name="confirmPassword" autocomplete="new-password" 
+                            class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-brand-500 focus:border-brand-500 text-sm outline-none text-gray-700" 
+                            placeholder="Nhập lại mật khẩu" aria-describedby="registerPasswordHint" required>
+                    </div>
+                </div>
+            </div>
+
+            <p id="registerPasswordHint" class="text-xs text-gray-600">Mật khẩu tối thiểu 10 ký tự, tối đa 72 byte UTF-8.</p>
+            <!-- Điều khoản -->
+            <div class="flex items-center text-xs text-gray-600 pt-1">
+                <input id="agreeTerms" type="checkbox" required class="h-4 w-4 text-brand-600 focus:ring-brand-500 border-gray-300 rounded mr-2">
+                <label for="agreeTerms">Tôi đồng ý với <a aria-disabled="true" tabindex="-1" title="Chức năng chưa triển khai" class="text-brand-600 underline font-semibold">Quy định và Chính sách đặt sân</a></label>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="pt-2">
+                <button type="submit" 
+                    class="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-md text-sm font-bold text-white bg-brand-600 hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 transition-colors transform active:scale-[0.98]">
+                    <i class="fa-solid fa-user-plus mr-2"></i> ĐĂNG KÝ NGAY
+                </button>
+            </div>
+        </form>
+
+        <!-- Login Link -->
+        <div class="mt-6 text-center text-sm text-gray-600 border-t border-gray-200 pt-4">
+            Bạn đã có tài khoản? 
+            <a href="Dang_nhap.html" class="font-bold text-brand-600 hover:text-brand-700 hover:underline transition-colors">Đăng nhập</a>
+        </div>
+    </div>
+
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-5 right-5 bg-white border-l-4 border-brand-600 shadow-xl rounded-md px-6 py-4 flex items-center z-50">
+        <div class="text-brand-600 mr-3 text-xl">
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <div>
+            <h4 class="text-gray-800 font-bold text-sm">Thông báo</h4>
+            <p id="toastMessage" class="text-gray-600 text-xs mt-1"></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('registerForm');
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+
+            function showToast(msg, duration = 3000) {
+                toastMessage.textContent = msg;
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), duration);
+            }
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                SanBong.fieldErrors(form);
+                const pass = document.getElementById('password').value;
+                const confirmPass = document.getElementById('confirmPassword').value;
+
+                if (pass !== confirmPass) {
+                    showToast('Mật khẩu xác nhận không khớp! Vui lòng kiểm tra lại.');
+                    return;
+                }
+
+                const payload = {
+                    hoTen: document.getElementById('fullName').value,
+                    soDienThoai: document.getElementById('phoneNumber').value,
+                    email: document.getElementById('email').value,
+                    tenDangNhap: document.getElementById('username').value,
+                    matKhau: pass
+                };
+
+                const btn = form.querySelector('button[type="submit"]');
+                const orig = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Đang đăng ký...';
+                btn.disabled = true;
+
+                try {
+                    await SanBong.request('auth/register', {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+                    });
+                    showToast('Đăng ký tài khoản thành công!');
+                    setTimeout(() => window.location.href = 'Dang_nhap.html?' + SanBong.bookingIntent(), 1000);
+                } catch (err) {
+                    SanBong.fieldErrors(form,err.fieldErrors,{hoTen:'fullName',soDienThoai:'phoneNumber',email:'email',tenDangNhap:'username',matKhau:'password'});
+                    showToast(err.message || 'Không thể đăng ký. Vui lòng thử lại.');
+                } finally {
+                    btn.innerHTML = orig;
+                    btn.disabled = false;
+                }
+            });
+        });
+    </script>
+    <script src="js/role-navigation.js" defer></script>
+    <script src="js/auth.js" defer></script>
+</body>
+</html>
+

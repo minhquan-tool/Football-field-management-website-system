@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Tài Khoản & Phân Quyền - FC-UTE</title>
+    <link rel="stylesheet" href="css/tailwind.css">
+    <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+    <link href="vendor/montserrat/montserrat.css" rel="stylesheet">
+    
+    
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f4f7f6;
+        }
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 10px;
+        }
+        #toast {
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.3s linear;
+            transform: translateY(-20px);
+        }
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+    <style>[hidden] { display: none !important; }</style>
+<link rel="stylesheet" href="css/fc-ute.css"><link rel="stylesheet" href="css/experience.css"><script src="js/ui.js" defer></script></head>
+<body class="flex h-screen overflow-hidden text-gray-800">
+
+    <!-- Sidebar (Đồng bộ với màn hình chính hệ thống) -->
+    <aside class="w-72 bg-white shadow-2xl flex flex-col h-full hidden md:flex z-20 border-r border-gray-100">
+        <!-- Logo -->
+        <div class="h-20 flex items-center justify-center border-b border-gray-100 px-4 bg-white">
+            <img src="assets/hcmute-logo.png" 
+                 alt="Logo HCMUTE" class="h-12 w-12 object-contain mr-3">
+            <div class="flex flex-col">
+                <span class="font-bold text-xl text-brand-700 leading-tight">FC-UTE</span>
+                <span class="text-[10px] text-gray-500 font-semibold uppercase">Quản trị hệ thống</span>
+            </div>
+        </div>
+
+        <!-- Menu Links -->
+        <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-6"><div data-navigation-loading>Đang tải chức năng theo quyền…</div></nav>
+
+        <div class="p-4 border-t border-gray-100 bg-gray-50">
+            <a href="Dang_nhap.html" class="flex items-center gap-3 text-gray-600 hover:text-red-600 hover:bg-red-50 px-4 py-2.5 rounded-xl font-bold transition-colors">
+                <i class="fa-solid fa-arrow-right-from-bracket w-5 text-center"></i> Đăng xuất
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="flex-1 flex flex-col h-full overflow-hidden relative">
+        
+        <!-- Header (Đồng bộ với hình mẫu) -->
+        <header class="h-20 bg-white shadow-sm flex items-center justify-between px-6 lg:px-8 z-10 border-b border-gray-100">
+            <h2 class="text-xl font-bold text-gray-800">Quản Lý Tài Khoản & Phân Quyền</h2>
+
+            <div class="flex items-center gap-5">
+                <a href="Man_hinh_chinh_TK&amp;PQ_HT.html#logs" class="text-gray-400 hover:text-brand-600 transition-colors" title="Nhật ký hoạt động">
+                    <i class="fa-solid fa-clock-rotate-left text-lg"></i>
+                </a>
+                <div class="h-8 w-px bg-gray-200"></div>
+                <div class="flex items-center gap-3 cursor-pointer">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-sm font-bold text-gray-800" data-account-name>Đang tải...</p>
+                        <p class="text-xs text-brand-600 font-medium">Chủ sân</p>
+                    </div>
+                    <div class="h-10 w-10 rounded-full bg-brand-100 border-2 border-brand-500 flex items-center justify-center text-brand-700">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <main class="flex-1 overflow-y-auto p-6 lg:p-8">
+            
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h3 class="text-lg font-bold text-gray-800">Danh Sách Tài Khoản Hệ Thống</h3>
+                    <p class="text-xs text-gray-500 mt-0.5">Quản lý nhân viên, tài khoản và quyền từ SQL Server.</p>
+                </div>
+                <button id="newAccountButton" type="button" class="bg-brand-600 text-white px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-brand-700 transition-colors shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-user-plus"></i> Thêm tài khoản mới
+                </button>
+            </div>
+
+<p id="adminStatus" role="status" class="text-sm my-3"></p>
+<div class="flex gap-3 my-3"><label>Tìm tài khoản <input id="accountSearch" class="border rounded-lg p-2" maxlength="100"></label><button id="refreshAccounts" class="text-brand-600 font-bold">Tải lại</button></div>
+<form id="accountForm" hidden class="bg-white border rounded-2xl p-5 mb-4 flex flex-wrap gap-3" data-api-ready="true">
+<label>Nhân viên<select id="accountEmployee" required class="border rounded-lg p-2"></select></label>
+<label>Tên đăng nhập<input id="accountUsername" placeholder="Nhập tên đăng nhập..." autocomplete="username" pattern="[a-zA-Z0-9_.-]{3,50}" required maxlength="50" class="border rounded-lg p-2"></label>
+<label>Vai trò<select id="accountRole" required class="border rounded-lg p-2"></select></label>
+<label>Mật khẩu mới<input id="accountPassword" placeholder="Nhập mật khẩu mới..." title="Ít nhất 10 ký tự, tối đa 72 byte UTF-8; không dùng mật khẩu demo/phổ biến" type="password" autocomplete="new-password" required minlength="10" maxlength="72" class="border rounded-lg p-2"></label>
+<div class="fc-form-actions"><button class="bg-brand-600 text-white p-2 rounded-lg">Lưu tài khoản</button><button id="closeAccountForm" type="button" class="p-2 fc-secondary-action">Đóng</button></div></form>
+            <!-- Bảng danh sách tài khoản -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-8">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-gray-100 text-xs font-bold text-gray-400 uppercase bg-gray-50">
+                                <th class="py-3 px-4">Mã TK</th>
+                                <th class="py-3 px-4">Họ và tên</th>
+                                <th class="py-3 px-4">Tên đăng nhập</th>
+                                <th class="py-3 px-4">Bộ phận / Vai trò</th>
+                                <th class="py-3 px-4">Ngày tạo</th>
+                                <th class="py-3 px-4">Trạng thái</th>
+                                <th class="py-3 px-4 text-center">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="accountRows" class="text-sm divide-y divide-gray-50"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-1"><i class="fa-solid fa-shield-halved text-brand-600 mr-2"></i> Phân Quyền Chức Năng</h3>
+<label class="text-sm font-bold">Vai trò <select id="permissionRole" class="border border-gray-200 rounded-lg px-3 py-2 my-3"></select></label>
+                <p class="text-xs text-gray-500 mb-6">Thiết lập quyền Xem, Thêm, Sửa, Xóa tương ứng theo từng phân hệ nghiệp vụ.</p>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-gray-200 text-xs font-bold text-gray-400 uppercase bg-gray-50">
+                                <th class="py-3 px-4">STT</th>
+                                <th class="py-3 px-4">Chức năng hệ thống</th>
+                                <th class="py-3 px-4 text-center">Xem</th>
+                                <th class="py-3 px-4 text-center">Thêm</th>
+                                <th class="py-3 px-4 text-center">Sửa</th>
+                                <th class="py-3 px-4 text-center">Xóa</th>
+                            </tr>
+                        </thead>
+                        <tbody id="permissionRows" class="text-sm divide-y divide-gray-100"></tbody>
+                    </table>
+                </div>
+
+                <div class="mt-6 flex justify-end">
+                    <button id="savePermissions" disabled class="bg-brand-600 text-white px-6 py-3 rounded-xl text-sm font-bold hover:bg-brand-700 transition-colors shadow-sm">
+                        Lưu Thay Đổi Phân Quyền
+                    </button>
+                </div>
+            </div>
+
+
+<section id="employees" class="bg-white rounded-2xl border p-6 mt-6">
+<h3 class="font-bold text-lg">Nhân viên</h3><form id="employeeFilter" class="flex flex-wrap gap-3 my-3" data-api-ready="true"><input id="employeeSearch" placeholder="Tên, mã, điện thoại" maxlength="100" class="border rounded-lg p-2"><select id="employeeActive" class="border rounded-lg p-2"><option value="">Tất cả</option><option value="true">Đang làm</option><option value="false">Ngừng làm</option></select><button class="text-brand-600 font-bold">Tra cứu</button><button id="newEmployee" type="button" class="text-brand-600 font-bold">Thêm nhân viên</button></form>
+<form id="employeeForm" hidden data-api-ready="true" class="border rounded-xl p-4 flex flex-wrap gap-3 mb-3">
+<input id="employeeId" type="hidden"><label>Họ tên<input id="employeeName" required maxlength="100" class="border rounded-lg p-2"></label><label>Điện thoại<input id="employeePhone" pattern="[0-9+ ]{8,15}" maxlength="15" class="border rounded-lg p-2"></label><label>Email<input id="employeeEmail" type="email" maxlength="100" class="border rounded-lg p-2"></label><label>Chức vụ<input id="employeeTitle" maxlength="50" class="border rounded-lg p-2"></label><label>Bộ phận<select id="employeeDepartment" class="border rounded-lg p-2"><option>Nhân viên sân bóng</option><option>Kế toán</option><option>Quản trị hệ thống</option></select></label><label>Ngày vào làm<input id="employeeDate" type="date" class="border rounded-lg p-2"></label><label><input id="employeeWorking" type="checkbox" checked> Đang làm</label><div class="fc-form-actions"><button class="bg-brand-600 text-white p-2 rounded-lg">Lưu nhân viên</button><button id="closeEmployeeForm" type="button" class="fc-secondary-action">Đóng</button></div></form>
+<div class="overflow-x-auto"><table class="w-full text-sm"><thead><tr><th>Mã</th><th>Họ tên</th><th>Điện thoại</th><th>Bộ phận</th><th>Trạng thái</th><th>Tài khoản</th><th>Chi tiết/sửa</th></tr></thead><tbody id="employeeRows"></tbody></table></div><div class="flex gap-3 mt-3"><button id="employeePrev">Trước</button><span id="employeePage"></span><button id="employeeNext">Sau</button></div>
+</section>
+<section id="logs" class="bg-white rounded-2xl border p-6 mt-6"><h3 class="font-bold text-lg">Nhật ký hoạt động (chỉ đọc)</h3>
+<form id="logFilter" data-api-ready="true" class="flex flex-wrap gap-3 my-3"><label>Từ<input id="logFrom" type="date" required class="border rounded-lg p-2"></label><label>Đến<input id="logTo" type="date" required class="border rounded-lg p-2"></label><input id="logActor" placeholder="Mã tài khoản" maxlength="10" class="border rounded-lg p-2"><input id="logAction" placeholder="Hành động" maxlength="20" class="border rounded-lg p-2"><input id="logModule" placeholder="Module" maxlength="100" class="border rounded-lg p-2"><input id="logTarget" placeholder="Đối tượng" maxlength="100" class="border rounded-lg p-2"><button class="text-brand-600 font-bold">Tra cứu</button></form>
+<div class="overflow-x-auto"><table class="w-full text-sm"><thead><tr><th>Thời gian</th><th>Tài khoản</th><th>Hành động</th><th>Module</th><th>Đối tượng</th><th>Nội dung</th></tr></thead><tbody id="logRows"></tbody></table></div><div class="flex gap-3 mt-3"><button id="logPrev">Trước</button><span id="logPage"></span><button id="logNext">Sau</button></div></section>
+        </main>
+    </div>
+
+    <!-- Custom Toast -->
+    <div id="toast" class="fixed top-24 right-5 bg-white border-l-4 border-green-500 shadow-xl rounded-md px-6 py-4 flex items-center z-50">
+        <div class="text-green-500 mr-3 text-2xl">
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <div>
+            <h4 class="text-gray-800 font-bold text-sm">Thành công!</h4>
+            <p id="toastText" class="text-gray-600 text-xs mt-1">Thao tác quản trị hệ thống đã được ghi nhận.</p>
+        </div>
+    </div>
+
+    <script>
+        function showActionToast(message) {
+            document.getElementById('toastText').innerText = message;
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        function showToast(msg) {
+            showActionToast(msg);
+        }
+    </script>
+    <script src="js/role-navigation.js" defer></script>
+    <script src="js/auth.js" defer></script>
+    <script src="js/permissions.js" defer></script>
+    <script src="js/admin.js" defer></script>
+</body>
+</html>

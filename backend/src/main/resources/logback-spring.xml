@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+ <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+ <appender name="APPLICATION" class="ch.qos.logback.core.rolling.RollingFileAppender">
+  <file>${LOG_FILE:-logs/application.log}</file>
+  <encoder><charset>UTF-8</charset><pattern>${FILE_LOG_PATTERN}</pattern></encoder>
+  <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+   <fileNamePattern>${LOG_FILE:-logs/application.log}.%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
+   <maxFileSize>10MB</maxFileSize><maxHistory>14</maxHistory><totalSizeCap>200MB</totalSizeCap>
+  </rollingPolicy>
+ </appender>
+ <appender name="ERRORS" class="ch.qos.logback.core.rolling.RollingFileAppender">
+  <file>${LOG_FILE:-logs/application.log}.error</file>
+  <filter class="ch.qos.logback.classic.filter.ThresholdFilter"><level>ERROR</level></filter>
+  <encoder><charset>UTF-8</charset><pattern>${FILE_LOG_PATTERN}</pattern></encoder>
+  <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+   <fileNamePattern>${LOG_FILE:-logs/application.log}.error.%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
+   <maxFileSize>10MB</maxFileSize><maxHistory>14</maxHistory><totalSizeCap>100MB</totalSizeCap>
+  </rollingPolicy>
+ </appender>
+ <springProfile name="!internal">
+  <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+  <root level="INFO"><appender-ref ref="CONSOLE"/><appender-ref ref="APPLICATION"/><appender-ref ref="ERRORS"/></root>
+ </springProfile>
+ <springProfile name="internal">
+  <root level="INFO"><appender-ref ref="APPLICATION"/><appender-ref ref="ERRORS"/></root>
+ </springProfile>
+</configuration>

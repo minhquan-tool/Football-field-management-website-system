@@ -1,0 +1,10 @@
+# Internal server: explicitly supply URL/credentials; do not inherit dev connection defaults.
+server:
+  address: ${APP_HOST:0.0.0.0}
+spring:
+  datasource:
+    url: ${APP_DB_URL}
+app:
+  environment: internal
+  security:
+    migrate-legacy-passwords: false

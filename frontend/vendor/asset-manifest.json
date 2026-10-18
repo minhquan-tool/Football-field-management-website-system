@@ -1,0 +1,78 @@
+{
+  "recordedAt": "2026-10-17T18:17:01.1443684+07:00",
+  "files": [
+    {
+      "path": "vendor/fontawesome/LICENSE.txt",
+      "bytes": 1548,
+      "sha256": "E779748DFE75E84F974DF3C7BC07F842011A100159158B0F1F49B2F2A5A515CB"
+    },
+    {
+      "path": "vendor/fontawesome/css/all.min.css",
+      "bytes": 89220,
+      "sha256": "8D321D88CB97FDEDC3189506C25DE9292C6E73A60EBAAB496243346C6404480E"
+    },
+    {
+      "path": "vendor/fontawesome/webfonts/fa-brands-400.ttf",
+      "bytes": 180148,
+      "sha256": "9E122861BC5F7D6190D580B22ACC5B1C3F8CDBA9F495593CCCD3B47D2CBFA2FD"
+    },
+    {
+      "path": "vendor/fontawesome/webfonts/fa-brands-400.woff2",
+      "bytes": 104544,
+      "sha256": "29BC44694C394921D1F00271128A2E4CD8293516216E24EAC07A73FA821FC1F5"
+    },
+    {
+      "path": "vendor/fontawesome/webfonts/fa-regular-400.ttf",
+      "bytes": 60380,
+      "sha256": "709034805D10429D24862AD685D561808328329DEBDBCA4F70487B508320A3FF"
+    },
+    {
+      "path": "vendor/fontawesome/webfonts/fa-regular-400.woff2",
+      "bytes": 23900,
+      "sha256": "FA79FC4F2559112FF3DD27CF5BE216D9B5F88066CEEF728264F5A3A1A195FC1E"
+    },
+    {
+      "path": "vendor/fontawesome/webfonts/fa-solid-900.ttf",
+      "bytes": 303480,
+      "sha256": "1782156BFA2054DB429277B42F143298A1CE03437C05E2779CA7875112B19D3C"
+    },
+    {
+      "path": "vendor/fontawesome/webfonts/fa-solid-900.woff2",
+      "bytes": 126828,
+      "sha256": "1B099F88C06ED0869872561C157F0EC9CBE133A0939D9ECE4EE1E1F54BD4683D"
+    },
+    {
+      "path": "vendor/fontawesome/webfonts/fa-v4compatibility.ttf",
+      "bytes": 10556,
+      "sha256": "FDE941C0964FAB984F6AF0697B3FEC92E7DF384EEC9941BABFD3E4CBBD6211C2"
+    },
+    {
+      "path": "vendor/fontawesome/webfonts/fa-v4compatibility.woff2",
+      "bytes": 4956,
+      "sha256": "B3ABFCCCE275536BEAAEBA990E900A0C08ED2FEFBABF4A8BCBB2E2FFE3F2431F"
+    },
+    {
+      "path": "vendor/montserrat/Montserrat-Variable.ttf",
+      "bytes": 744936,
+      "sha256": "0F7B311B2F3279E4EEF9B2F968BCDBAB6E28F4DAEB1F049F4F278A902BCD82F7"
+    },
+    {
+      "path": "vendor/montserrat/montserrat.css",
+      "bytes": 233,
+      "sha256": "15ADB17B2AC97C12EF25D3346254DBFDF88437BD18C11122F406FF97F4A36834"
+    },
+    {
+      "path": "vendor/montserrat/OFL.txt",
+      "bytes": 4400,
+      "sha256": "8B7141C03FA4F8D44E6345D5D4931709290F0F67875E452E95AC1FD3A027802E"
+    },
+    {
+      "path": "vendor/tailwind/LICENSE.txt",
+      "bytes": 1071,
+      "sha256": "60E0B68C0F35C078EEF3A5D29419D0B03FF84EC1DF9C3F9D6E39A519A5AE7985"
+    }
+  ],
+  "logoSource": "https://upload.wikimedia.org/wikipedia/commons/b/b9/Logo_Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_H%E1%BB%8Dc_S%C6%B0_Ph%E1%BA%A1m_K%E1%BB%B9_Thu%E1%BA%ADt_TP_H%E1%BB%93_Ch%C3%AD_Minh.png",
+  "logoSha256": "7F924CE2601D0590EE227D3529CC20D7E563AF336FCE2CD441B6FFFD0C23B5F9",
+  "tailwindCompilerSha256": "67F1C5E3F5A03406A7BF5BADF5ADA09B79F3AE78EC43450C15F7E983068DA346"
+}

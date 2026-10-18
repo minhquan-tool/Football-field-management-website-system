@@ -1,0 +1,19 @@
+<!doctype html><html lang="vi"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>QR UI fixture — no real payments</title>
+<style>[hidden]{display:none!important}*{box-sizing:border-box}body{margin:12px;font:16px Arial}input,select{max-width:100%}img{max-width:100%;height:auto}form{display:flex;flex-wrap:wrap;gap:8px}section{padding:8px;border:1px solid #ddd}p{overflow-wrap:anywhere}</style>
+<div id="detailModal"><div><div class="p-6"><p id="detailTotal"></p><p id="detailAmounts"></p></div></div></div>
+<script>
+const params=new URLSearchParams(location.search);const role=params.get('role')||'VT01';
+window.audit={posts:[],requests:[],quoteDelay:0,failQuote:false};
+const views={};function view(id){return views[id] ||= {booking:{maDatSan:id,trangThai:'Đã xác nhận',tongTien:90000,tienSan:90000,tienDichVu:0,tienGiam:0},invoice:null,payments:[],refunds:[]};}
+window.openDetailModal=async()=>{};
+window.SanBong={randomId:()=>crypto.randomUUID(),request:async(path,options={})=>{
+ audit.requests.push(path);
+ if(path.includes('transfer-instructions')){const url=new URL('http://fixture/'+path),amount=Number(url.searchParams.get('amount')),id=path.split('/')[2];if(audit.quoteDelay)await new Promise(resolve=>setTimeout(resolve,audit.quoteDelay));if(audit.failQuote)throw Error('QR_UNAVAILABLE');return {bankName:'MB TEST ONLY',bankBin:'970422',accountNumber:'000000123456',accountName:'TEST RECIPIENT',amount,description:'FCUTE '+id,qrAvailable:!audit.noImage,qrUrl:audit.noImage?'':'/qr-fixture.svg'};}
+ if(options.method==='POST'&&path.endsWith('/promotion')){const body=JSON.parse(options.body);audit.posts.push({path,body});if(audit.couponDelay)await new Promise(resolve=>setTimeout(resolve,audit.couponDelay));if(body.maKM!=='TEST10')throw Error('Mã khuyến mãi không hợp lệ');const row=view(path.split('/')[2]);row.booking.tienGiam=9000;row.booking.tongTien=81000;row.promotionCode='TEST10';row.invoice={maHoaDon:'HD'+row.booking.maDatSan,tienSan:90000,tienDichVu:0,tienGiam:9000,tongTien:81000,daThanhToan:0,conLai:81000,daChot:false};return row;}
+ if(options.method==='POST'){const body=JSON.parse(options.body);audit.posts.push({path,body});const id=path.split('/')[2];const row=view(id);row.invoice={maHoaDon:'HD'+id,tienSan:90000,tienDichVu:0,tienGiam:0,tongTien:90000,daThanhToan:0,conLai:90000,daChot:false};row.payments.push({maTT:'TTPENDING',phuongThuc:body.phuongThuc,soTien:body.soTien,trangThai:'Chờ xử lý',idempotencyKey:body.idempotencyKey});return row;}
+ if(path.endsWith('cancel-preview'))return {thoiDiem:'fixture',tiLeHoan:100,thucThu:0,soTienHoan:0};if(path==='finance/promotions')return [];if(path.startsWith('finance/bookings/'))return view(path.split('/')[2]);throw Error('Unexpected fixture route '+path);
+}};
+if(role==='VT02'){const row=view('DSA');row.payments=[{maTT:'CASH',phuongThuc:'Tiền mặt',soTien:10000,trangThai:'Chờ xử lý'},{maTT:'BANK',phuongThuc:'Chuyển khoản',soTien:10000,trangThai:'Chờ xử lý'}];}
+</script><script src="/finance.js"></script><script>
+document.dispatchEvent(new CustomEvent('sanbong:authenticated',{detail:{maVaiTro:role,permissions:['CN04_XEM','CN04_THEM']}}));openDetailModal('DSA');
+</script></html>
