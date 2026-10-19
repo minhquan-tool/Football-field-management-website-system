@@ -322,6 +322,8 @@ Khác mục 7.1, lệnh này chạy suite runtime đã chọn. Không dùng đ�
 
 ## 8. Đăng nhập và sử dụng
 
+Hướng dẫn có ảnh cho khách hàng, nhân viên sân, kế toán và chủ sân: [bản Word](docs/HUONG_DAN_SU_DUNG_FC_UTE.docx) · [đọc trực tiếp](docs/HUONG_DAN_SU_DUNG_FC_UTE.md). Tài liệu cập nhật ngày 19/10/2026, ảnh sử dụng dữ liệu minh họa.
+
 Tài khoản SQL trong dotenv chỉ kết nối backend với database. Người dùng web đăng nhập bằng TaiKhoan được liên kết đúng vai trò.
 
 - Khách mới dùng **Đăng ký** khi dữ liệu/permission nền đã chuẩn bị.
