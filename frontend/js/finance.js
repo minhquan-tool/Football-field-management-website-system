@@ -59,6 +59,10 @@
         const metrics=[['Đã xác nhận thu',paid,''],[cancelled?'Lượt đặt đã hủy':'Còn thiếu trên hóa đơn',cancelled?null:invoice?.conLai,'fc-money-due'],['Chờ xác nhận hoàn',pendingRefund,'fc-money-refund']];
         for(const [label,value,css]of metrics){const card=document.createElement('div');card.className=css;const caption=document.createElement('span');caption.textContent=label;const amount=document.createElement('strong');amount.textContent=value==null?(cancelled?'Xem chính sách hoàn':'Chưa lập hóa đơn'):money(value);card.append(caption,amount);amounts.append(card);}
         $('financeSummary').textContent = invoice ? `${invoice.maHoaDon} · Sân ${money(invoice.tienSan)} + Dịch vụ ${money(invoice.tienDichVu)} − Giảm ${money(invoice.tienGiam)} = ${money(invoice.tongTien)} · Đã trả ${money(invoice.daThanhToan)} · Còn thiếu ${money(invoice.conLai)} · ${invoice.trangThai} · ${invoice.daChot ? 'Đã chốt' : 'Có thể bổ sung khi sử dụng'} · ${invoice.hoanTatTaiChinh ? 'Hoàn tất tài chính' : 'Chưa hoàn tất tài chính'}` : `Chưa lập hóa đơn · Snapshot tổng booking ${money(current.booking.tongTien)}`;
+        if (account.maVaiTro === 'VT03') {
+            panel.querySelector('h3').textContent = 'Thanh toán · ' + bookingId;
+            $('financeSummary').textContent = invoice ? `${invoice.maHoaDon} · ${invoice.daChot ? 'Đã chốt' : 'Chưa chốt'}` : '';
+        }
         $('financeInvoiceForm').hidden = !employee() || !allowed('CN04_THEM') || cancelled || invoice?.daChot;
         if (account.maVaiTro === 'VT02') $('financeSummary').textContent = invoice ? `Đã thu: ${money(paid)} · Còn lại: ${money(invoice.conLai)}` : '';
         const pending=current.payments.some(p=>p.trangThai==='Chờ xử lý');
@@ -97,6 +101,7 @@
         if(!employee()&&$('financeMethod').value==='Chuyển khoản'&&!matchingTransfer())$('financePayButton').disabled=true;
     }
     async function load(id, mutationRefresh = false) {
+        panel.hidden = false;
         if (busy && !mutationRefresh) return false;
         const requestVersion = ++version; bookingId = id; current = null; status('Đang tải...');
         clearTransfer();$('financePaymentHelp').textContent='';
@@ -143,10 +148,18 @@
     function renderTransactions() {
         const body = document.getElementById('financeTransactions'); if (!body) return;
         const date=document.getElementById('financeTransactionDate')?.value;
-        const rows=transactionRows.filter(row=>!date||row.ngayThanhToan?.slice(0,10)===date);body.replaceChildren();
-        for (const row of rows) { const tr = document.createElement('tr'); for (const value of [row.maTT, row.maDatSan, row.hoTen, row.phuongThuc, money(row.soTien), row.trangThai]) { const td = document.createElement('td'); td.className = 'p-3'; td.textContent = value; tr.append(td); } tr.lastChild.append(button('Xem hóa đơn',event=>{event.stopPropagation();load(row.maDatSan);}));tr.addEventListener('click',()=>load(row.maDatSan));body.append(tr); }
-        if (!rows.length) { const tr = document.createElement('tr'), td = document.createElement('td'); td.colSpan = 6; td.textContent = date?'Không có giao dịch trong ngày đã chọn.':'Chưa có giao dịch.'; tr.append(td); body.append(tr); }
+        const state=document.getElementById('financeTransactionState')?.value || '';
+        const rows=transactionRows.filter(row=>(!date||row.ngayThanhToan?.slice(0,10)===date)&&(!state||row.trangThai===state));body.replaceChildren();
+        for (const row of rows) {
+            const tr=document.createElement('tr');
+            for(const value of [row.maTT,row.maDatSan,row.hoTen,row.phuongThuc,money(row.soTien)]){const td=document.createElement('td');td.textContent=value;tr.append(td);}
+            const stateCell=document.createElement('td'),badge=document.createElement('span');badge.textContent=row.trangThai;badge.className='fc-status';badge.dataset.state=row.trangThai;stateCell.append(badge);tr.append(stateCell);
+            const time=document.createElement('td');time.textContent=(row.ngayThanhToan||'').replace('T',' ');tr.append(time);
+            const action=document.createElement('td');action.append(button('Xem chi tiết',()=>load(row.maDatSan)));tr.append(action);body.append(tr);
+        }
+        if(!rows.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=8;td.textContent='Không có giao dịch phù hợp.';tr.append(td);body.append(tr);}
     }
+
     async function ledger() {
         const body = document.getElementById('financeTransactions'); if (!body) return;
         const result = await SanBong.request('finance/transactions');transactionRows=result.payments;renderTransactions();
@@ -154,16 +167,28 @@
         for (const [id,value] of [['financeGross',gross],['financeActual',result.thucNhan],['financeRefundTotal',refunds]]) if (document.getElementById(id)) document.getElementById(id).textContent = money(value);
         document.getElementById('financeNet').textContent = 'Thực nhận sau hoàn (toàn bộ): ' + money(result.thucNhan);
         const queue = document.getElementById('financeRefundQueue'); queue.replaceChildren();
-        for (const row of result.refunds) { const p = document.createElement('p'); p.textContent = `${row.maHT} · ${row.maDatSan} · ${money(row.soTienHoan)} · ${row.trangThai}`; p.append(button('Xem booking', () => load(row.maDatSan))); queue.append(p); }
+        if(result.refunds.length){const title=document.createElement('h3');title.textContent='Yêu cầu hoàn tiền';title.className='font-bold mt-5 mb-3';queue.append(title);}
+        for (const row of result.refunds) { const p = document.createElement('p'); p.textContent = `${row.maHT} · ${row.maDatSan} · ${money(row.soTienHoan)} · ${row.trangThai}`; p.append(button('Xem chi tiết', () => load(row.maDatSan))); queue.append(p); }
     }
     document.addEventListener('sanbong:authenticated', async e => {
         account = e.detail; if (!allowed('CN04_XEM')) return;
 
         if (document.getElementById('financeTransactions')) {
+            document.body.classList.add('accountant-workspace');
+            document.title='Thu tiền & Hoàn tiền - FC-UTE';
+            panel.classList.add('accountant-payment-panel'); panel.hidden=true;
+            panel.querySelector('h3').textContent='Chi tiết thanh toán';
             const host = document.getElementById('financeHost'); host.append(panel);
             document.getElementById('financeLookup').addEventListener('submit', e => { e.preventDefault(); if (!busy) load(document.getElementById('financeBookingId').value.trim()); });
             document.getElementById('financeTransactionDate')?.addEventListener('change',renderTransactions);
-            try { await ledger(); } catch (error) { status(error.message, true); }
+            document.getElementById('financeTransactionState')?.addEventListener('change',renderTransactions);
+            document.getElementById('financeLedgerRefresh')?.addEventListener('click',async event=>{
+                event.currentTarget.disabled=true;
+                try{await ledger();document.getElementById('financeLedgerStatus').textContent='';}
+                catch(error){document.getElementById('financeLedgerStatus').textContent=error.message;}
+                finally{document.getElementById('financeLedgerRefresh').disabled=false;}
+            });
+            try { await ledger(); } catch (error) { document.getElementById('financeLedgerStatus').textContent=error.message; }
         } else if (document.getElementById('detailModal')) {
             if (!employee()) {
                 panel.classList.add('customer-payment-panel');

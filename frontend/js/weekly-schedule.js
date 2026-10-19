@@ -1,6 +1,6 @@
 /* Weekly read model. All booking mutations stay in the existing booking workspace. */
 (() => {
-    const $=id=>document.getElementById(id),hourHeight=72,dayNames=['Thứ 2','Thứ 3','Thứ 4','Thứ 5','Thứ 6','Thứ 7','Chủ nhật'];
+    const $=id=>document.getElementById(id),hourHeight=108,dayNames=['Thứ 2','Thứ 3','Thứ 4','Thứ 5','Thứ 6','Thứ 7','Chủ nhật'];
     let version=0,optionsReady=false,loaded=false;
     const today=()=>{const parts=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Ho_Chi_Minh',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());const value=key=>parts.find(p=>p.type===key).value;return `${value('year')}-${value('month')}-${value('day')}`;};
     function date(value){if(!/^\d{4}-\d{2}-\d{2}$/.test(value))throw Error('Chọn ngày trong tuần hợp lệ.');const result=new Date(value+'T00:00:00Z');if(!Number.isFinite(result.getTime())||result.toISOString().slice(0,10)!==value)throw Error('Ngày không hợp lệ.');return result;}
@@ -16,7 +16,7 @@
     function render(data,pitchLabel,stateLabel){
         const days=Array.from({length:7},(_,index)=>add(data.weekStart,index));const groups=days.map(day=>lanes(data.bookings.filter(b=>b.ngayChoi===day)));
         const items=groups.flatMap(group=>group.items);const startHour=Math.floor(Math.min(7*60,...items.map(i=>i.start))/60),endHour=Math.ceil(Math.max(22*60,...items.map(i=>i.end))/60),height=(endHour-startHour)*hourHeight;
-        const board=$('scheduleBoard');const widths=groups.map(group=>Math.max(130,group.ends.length*110));board.style.gridTemplateColumns='64px '+widths.map(width=>`minmax(${width}px,1fr)`).join(' ');board.style.minWidth=(64+widths.reduce((a,b)=>a+b,0))+'px';
+        const board=$('scheduleBoard');const widths=groups.map(group=>Math.max(130,group.ends.length*152));board.style.gridTemplateColumns='64px '+widths.map(width=>`minmax(${width}px,1fr)`).join(' ');board.style.minWidth=(64+widths.reduce((a,b)=>a+b,0))+'px';
         board.append(node('div','Giờ đá','schedule-corner'));days.forEach((day,index)=>{const header=node('div',null,'schedule-day-title'+(index>=5?' weekend':'')+(day===data.today?' today':''));header.append(node('strong',dayNames[index]),node('span',format(day)+(day===data.today?' · Hôm nay':'')));board.append(header);});
         const axis=node('div',null,'schedule-time-axis');axis.style.height=height+'px';for(let hour=startHour;hour<endHour;hour++){const row=node('div',String(hour).padStart(2,'0')+':00','schedule-hour');row.style.top=(hour-startHour)*hourHeight+'px';row.style.height=hourHeight+'px';axis.append(row);}board.append(axis);
         groups.forEach((group,index)=>{const column=node('div',null,'schedule-day'+(days[index]===data.today?' today':''));column.style.gridColumn=String(index+2);column.style.height=height+'px';column.setAttribute('aria-label',dayNames[index]+' '+format(days[index]));

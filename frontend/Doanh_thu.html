@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Doanh thu - FC-UTE</title>
+<link rel="stylesheet" href="vendor/montserrat/montserrat.css"><link rel="stylesheet" href="vendor/fontawesome/css/all.min.css">
+<link rel="stylesheet" href="css/tailwind.css"><link rel="stylesheet" href="css/fc-ute.css"><link rel="stylesheet" href="css/experience.css"><link rel="stylesheet" href="css/revenue.css">
+<script src="js/ui.js" defer></script></head><body class="revenue-page"><nav></nav><main>
+<div class="revenue-heading"><div><h1>Doanh thu</h1><p id="revenueRange"></p></div><button type="button" id="revenueRefresh" class="admin-refresh-button" aria-label="Tải lại doanh thu" title="Tải lại doanh thu"><i class="fa-solid fa-arrow-rotate-right" aria-hidden="true"></i></button></div>
+<form id="revenueFilters" data-api-ready="true" class="revenue-filters">
+<label>Tổng hợp theo<select id="revenuePeriod"><option value="day">Ngày</option><option value="week">Tuần</option><option value="month" selected>Tháng</option><option value="year">Năm</option></select></label>
+<label>Năm<input id="revenueYear" type="number" min="1753" max="9998" step="1" required></label>
+<label id="revenueMonthLabel" hidden>Tháng<select id="revenueMonth"></select></label>
+<label>Sân bóng<select id="revenuePitch"><option value="">Tất cả sân</option></select></label>
+<button type="submit" class="revenue-primary">Xem doanh thu</button></form>
+<p id="revenueStatus" role="status" aria-live="polite"></p>
+<section id="revenueTotals" class="revenue-totals" aria-label="Tổng hợp tài chính"></section>
+<section class="revenue-chart-card"><div class="revenue-chart-toolbar"><div><h2 id="revenueChartTitle">Doanh thu khi trả sân</h2><p id="revenueDefinition">Ghi nhận khi hoàn thành lượt sử dụng sân.</p></div>
+<div class="revenue-chart-options"><label class="sr-only" for="revenueMetric">Chỉ tiêu biểu đồ</label><select id="revenueMetric"><option value="doanhThu">Doanh thu khi trả sân</option><option value="tienThu">Tiền đã thu</option><option value="tienHoan">Tiền đã hoàn</option><option value="thucNhan">Thực nhận</option></select>
+<div class="revenue-chart-toggle" role="group" aria-label="Kiểu biểu đồ"><button id="revenueBar" type="button" aria-pressed="true"><i class="fa-solid fa-chart-column" aria-hidden="true"></i> Cột</button><button id="revenueLine" type="button" aria-pressed="false"><i class="fa-solid fa-chart-line" aria-hidden="true"></i> Đường</button></div></div></div>
+<p id="revenueTrend"></p><div id="revenueChart" class="revenue-chart-scroll" tabindex="0" role="region" aria-label="Biểu đồ doanh thu, có thể cuộn ngang"></div>
+<details class="revenue-data"><summary>Xem bảng số liệu</summary><div class="overflow-x-auto"><table><thead><tr><th>Kỳ</th><th>Doanh thu khi trả sân</th><th>Đã thu</th><th>Đã hoàn</th><th>Thực nhận</th></tr></thead><tbody id="revenueRows"></tbody></table></div></details></section>
+</main><script src="js/role-navigation.js" defer></script><script src="js/auth.js" defer></script><script src="js/revenue.js" defer></script></body></html>

@@ -18,8 +18,9 @@ window.SanBongNavigation = (() => {
             ['Tiếp nhận phản hồi', 'Phan_hoi.html', 'CN05_XEM']
         ],
         VT03: [
-            ['Giao dịch / Hóa đơn / Hoàn tiền', 'Man_hinh_chinh_NVKT.html', 'CN04_XEM'],
-            ['Doanh thu / Đối soát / Báo cáo', 'Bao_cao.html', 'CN06_XEM']
+            ['Thu tiền & Hoàn tiền', 'Man_hinh_chinh_NVKT.html', 'CN04_XEM'],
+            ['Doanh thu', 'Doanh_thu.html', 'CN06_XEM'],
+            ['Đối soát & Báo cáo', 'Bao_cao.html', 'CN06_XEM']
         ],
         VT04: [
             ['Tổng quan', 'Man_hinh_chinh.html', 'CN06_XEM'],
@@ -28,10 +29,11 @@ window.SanBongNavigation = (() => {
             ['Đặt sân tại quầy', 'Dat_san_tai_quay.html', 'CN02_THEM'],
             ['Quản lý sân', 'Quan_ly_san.html', 'CN02_XEM'],
             ['Giao dịch / Hoàn tiền', 'Man_hinh_chinh_NVKT.html', 'CN04_XEM'],
-            ['Nhân viên / Tài khoản / Phân quyền', 'Man_hinh_chinh_TK&PQ_HT.html', 'CN07_XEM'],
-            ['Danh mục / Giá / Khuyến mãi', 'Cau_hinh_san.html', 'CN02_XEM'],
+            ['Nhân sự & Phân quyền', 'Man_hinh_chinh_TK&PQ_HT.html', 'CN07_XEM'],
+            ['Cấu hình kinh doanh', 'Cau_hinh_san.html', 'CN02_XEM'],
             ['Phản hồi', 'Phan_hoi.html', 'CN05_XEM'],
             ['Báo cáo', 'Bao_cao.html', 'CN06_XEM'],
+            ['Doanh thu', 'Doanh_thu.html', 'CN06_XEM'],
             ['Nhật ký', 'Man_hinh_chinh_TK&PQ_HT.html#logs', 'CN08_XEM'],
             ['Sao lưu / Phục hồi', 'Sao_luu.html', 'CN08_XEM']
         ]
@@ -96,7 +98,7 @@ window.SanBongNavigation = (() => {
         for (const [label, href] of items(account)) {
             const link = document.createElement('a');
             link.href = href; link.textContent = label;
-            const icons={'Man_hinh_chinh_KH.html':'house','Man_hinh_chinh.html':'chart-pie','Man_hinh_chinh_NVKH.html':'table-columns','Man_hinh_chinh_NVKT.html':'receipt','Lich_da_bong.html':'calendar-days','Quan_ly_lich_dat_san.html':'calendar-check','Dat_san_tai_quay.html':'calendar-plus','Quan_ly_san.html':'futbol','Bao_cao.html':'chart-line','Phan_hoi.html':'comments','Man_hinh_chinh_TK&PQ_HT.html':'users-gear','Cau_hinh_san.html':'sliders','Sao_luu.html':'database'};
+            const icons={'Man_hinh_chinh_KH.html':'house','Man_hinh_chinh.html':'chart-pie','Man_hinh_chinh_NVKH.html':'table-columns','Man_hinh_chinh_NVKT.html':'receipt','Lich_da_bong.html':'calendar-days','Quan_ly_lich_dat_san.html':'calendar-check','Dat_san_tai_quay.html':'calendar-plus','Quan_ly_san.html':'futbol','Bao_cao.html':'chart-line','Doanh_thu.html':'chart-column','Phan_hoi.html':'comments','Man_hinh_chinh_TK&PQ_HT.html':'users-gear','Cau_hinh_san.html':'sliders','Sao_luu.html':'database'};
             const icon=document.createElement('i');icon.className='fa-solid fa-'+(icons[href.split('#')[0]]||'circle-dot')+' fc-menu-icon';icon.setAttribute('aria-hidden','true');link.prepend(icon);
             const selected = decodeURIComponent(location.pathname.split('/').pop()) === href.split('#')[0];
             link.className = (sidebar ? 'block px-4 py-3 rounded-xl ' : 'inline-block px-3 py-2 rounded-lg ') +

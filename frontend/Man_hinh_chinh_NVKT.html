@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản Lý Tài Chính - Kế Toán FC-UTE</title>
+    <title>Thu tiền &amp; Hoàn tiền - FC-UTE</title>
     <link rel="stylesheet" href="css/tailwind.css">
     <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
     <link href="vendor/montserrat/montserrat.css" rel="stylesheet">
@@ -54,7 +54,7 @@
         
         <!-- Header -->
         <header class="h-20 bg-white shadow-sm flex items-center justify-between px-6 lg:px-8 z-10 border-b border-gray-100">
-            <h2 class="text-xl font-bold text-gray-800">Bảng Điều Khiển </h2>
+            <h2 class="text-xl font-bold text-gray-800">Thu tiền &amp; Hoàn tiền</h2>
 
             <div class="flex items-center gap-4">
                 <div class="flex items-center gap-3 cursor-pointer">
@@ -70,7 +70,7 @@
         </header>
 
         <!-- Dashboard Content -->
-        <main class="flex-1 overflow-y-auto p-6 lg:p-8"><section class="bg-white rounded-2xl p-6 border mb-4" id="financeHost"><h2 class="font-bold text-lg">Hóa đơn và giao dịch thực tế</h2><p id="financeNet" class="text-sm"></p><form id="financeLookup" data-api-ready="true" class="flex flex-wrap gap-3 my-3"><label>Mã booking<input id="financeBookingId" maxlength="10" required class="border rounded-lg p-2"></label><button class="bg-brand-600 text-white rounded-lg p-2">Tra cứu hóa đơn</button></form><div id="financeRefundQueue" class="text-sm"></div></section>
+        <main class="flex-1 overflow-y-auto p-6 lg:p-8"><section class="bg-white rounded-2xl p-6 border mb-4" id="financeHost"><h2 class="font-bold text-lg">Tra cứu lượt đặt</h2><p id="financeNet" class="text-sm" hidden></p><form id="financeLookup" data-api-ready="true" class="flex flex-wrap gap-3 my-3"><label>Mã đặt sân<input id="financeBookingId" maxlength="10" required class="border rounded-lg p-2"></label><button class="bg-brand-600 text-white rounded-lg p-2">Tìm kiếm</button></form><div id="financeRefundQueue" class="text-sm"></div></section>
             
             <!-- Cards Thống Kê Tài Chính -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
@@ -79,7 +79,7 @@
                         <i class="fa-solid fa-money-bill-wave"></i>
                     </div>
                     <div>
-                        <p class="text-xs text-gray-500 font-bold uppercase mb-1">Tổng tiền đã thu (toàn bộ)</p>
+                        <p class="text-xs text-gray-500 font-bold uppercase mb-1">Đã thu (tất cả)</p>
                         <h3 class="text-2xl font-black text-gray-800"><span id="financeGross">—</span></h3>
                     </div>
                 </div>
@@ -89,7 +89,7 @@
                         <i class="fa-solid fa-money-check-dollar"></i>
                     </div>
                     <div>
-                        <p class="text-xs text-gray-500 font-bold uppercase mb-1">Thực nhận sau hoàn (toàn bộ)</p>
+                        <p class="text-xs text-gray-500 font-bold uppercase mb-1">Thực nhận (tất cả)</p>
                         <h3 class="text-2xl font-black text-gray-800"><span id="financeActual">—</span></h3>
                     </div>
                 </div>
@@ -99,28 +99,30 @@
                         <i class="fa-solid fa-triangle-exclamation"></i>
                     </div>
                     <div>
-                        <p class="text-xs text-gray-500 font-bold uppercase mb-1">Tiền đã hoàn (toàn bộ)</p>
+                        <p class="text-xs text-gray-500 font-bold uppercase mb-1">Đã hoàn (tất cả)</p>
                         <h3 class="text-2xl font-black text-gray-800"><span id="financeRefundTotal">—</span></h3>
                     </div>
                 </div>
             </div>
 
             <!-- Giao dịch gần đây & Đối soát -->
-            <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 gap-8">
                 
                 <!-- Bảng Giao dịch thanh toán gần đây (2 cột) -->
-                <div class="xl:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
                     <div class="flex flex-wrap gap-3 justify-between items-center mb-6">
-                        <h3 class="text-lg font-bold text-gray-800"><i class="fa-solid fa-list-check text-brand-600 mr-2"></i> Giao Dịch Thanh Toán</h3>
-                        <div class="flex gap-2">
+                        <h3 class="text-lg font-bold text-gray-800"><i class="fa-solid fa-list-check text-brand-600 mr-2"></i> Giao dịch thu tiền</h3>
+                        <div class="finance-transaction-controls flex gap-2">
                             <input id="financeTransactionDate" aria-label="Lọc giao dịch theo ngày thanh toán" type="date" class="border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-600 outline-none focus:border-brand-500" title="Lọc bảng giao dịch theo ngày thanh toán; các thẻ tổng tính toàn bộ">
+                            <select id="financeTransactionState" aria-label="Trạng thái giao dịch" class="border rounded-lg p-2"><option value="">Tất cả trạng thái</option><option>Chờ xử lý</option><option>Thành công</option><option>Thất bại</option></select>
+                            <button type="button" id="financeLedgerRefresh" aria-label="Tải lại giao dịch" title="Tải lại giao dịch" class="border rounded-lg p-2"><i class="fa-solid fa-arrow-rotate-right" aria-hidden="true"></i></button>
                             <button onclick="location.href='Bao_cao.html'" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors">
-                                <i class="fa-solid fa-download mr-1"></i> CSV / In báo cáo
+                                <i class="fa-solid fa-download mr-1"></i> Đối soát &amp; Báo cáo
                             </button>
                         </div>
                     </div>
 
-                    <div class="overflow-x-auto">
+                    <p id="financeLedgerStatus" role="status"></p><div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse">
                             <thead>
                                 <tr class="border-b border-gray-100 text-xs font-bold text-gray-400 uppercase">
@@ -129,7 +131,7 @@
                                     <th class="py-3 px-3">Khách Hàng</th>
                                     <th class="py-3 px-3">Phương Thức</th>
                                     <th class="py-3 px-3">Số Tiền</th>
-                                    <th class="py-3 px-3">Trạng Thái</th>
+                                    <th class="py-3 px-3">Trạng Thái</th><th class="py-3 px-3">Thời gian giao dịch</th><th class="py-3 px-3">Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody id="financeTransactions" class="text-sm divide-y divide-gray-50"></tbody>
@@ -137,7 +139,7 @@
                     </div>
                 </div>
 
-<div class="bg-white rounded-2xl shadow-sm border p-6"><h3 class="font-bold">Đối soát nội bộ</h3><p class="text-sm text-gray-500 mt-3">Thực nhận là tổng giao dịch thành công trừ khoản đã hoàn. Nhân viên xác minh tiền mặt/chuyển khoản thực tế trước khi xác nhận. Báo cáo theo ngày có chức năng in và xuất CSV. Đối soát ngân hàng thực hiện theo chứng từ thực tế; ứng dụng không kết nối ngân hàng.</p></div>
+
             </div>
         </main>
     </div>

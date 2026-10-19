@@ -6,7 +6,7 @@ Direction: sports booking with a calm operations workspace. Keep the blue FC-UTE
 
 Tokens: primary #1d4ed8, primary-hover #1e40af, ink #14243b, muted #526279, border #dbe4ef, canvas #f3f6fb, surface #ffffff. Navy #132c54 on staff sidebar. Semantic success #176344 on #e5f5ee, warning #87570a on #fff4d6, danger #b42332 on #fff0f0. Do not communicate status with color alone.
 
-Typography: bundled Montserrat, Arial, sans-serif. Body 16px, dense data >=14px where practical; labels 13–14px. Line-height 1.5–1.65. Heading hierarchy, no all-caps paragraphs.
+Typography: bundled Montserrat, Arial, sans-serif. Body, inputs and actions 16px; table data, labels and supporting text 14px; role navigation 15px. Workspace headings 28–32px, section headings 22px, subheadings 20px, key financial totals 28–36px. Weekly calendar uses 108px/hour and 152px event lanes to accommodate readable 14px event text. Line-height 1.5–1.65. Heading hierarchy, no all-caps paragraphs.
 
 Spacing: 4/8px rhythm, 16/24/32px sections; 44px minimum controls; 12px corner controls, 16px cards. Use calm borders with restrained shadows. Avoid extra motion/dependencies.
 

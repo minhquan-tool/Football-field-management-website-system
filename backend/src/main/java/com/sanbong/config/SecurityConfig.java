@@ -40,7 +40,7 @@ public class SecurityConfig {
                 .requestMatchers("/Phan_hoi.html","/feedback","/feedback/**").hasAnyRole("CUSTOMER","PITCH_STAFF","ADMIN")
                 .requestMatchers("/Cau_hinh_san.html","/Sao_luu.html","/configuration/**").hasRole("ADMIN")
                 .requestMatchers("/Man_hinh_chinh.html").hasRole("ADMIN")
-                .requestMatchers("/Man_hinh_chinh_NVKT.html").hasAnyRole("ACCOUNTANT","ADMIN")
+                .requestMatchers("/Man_hinh_chinh_NVKT.html","/Doanh_thu.html").hasAnyRole("ACCOUNTANT","ADMIN")
                 .requestMatchers("/Man_hinh_chinh_NVKH.html","/Dat_san_tai_quay.html","/Quan_ly_san.html")
                     .hasAnyRole("PITCH_STAFF","ADMIN")
                 .requestMatchers("/Lich_da_bong.html","/staff/weekly-schedule").hasAnyRole("PITCH_STAFF","ADMIN")

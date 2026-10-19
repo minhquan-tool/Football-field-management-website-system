@@ -7,7 +7,7 @@ document.addEventListener('sanbong:authenticated', async event=>{
         data=await SanBong.request('configuration');const host=$('configurationRows');host.replaceChildren();
         const labels={id:'Mã',ten:'Tên',soNguoi:'Số người',moTa:'Mô tả / Điều kiện',batDau:'Bắt đầu',ketThuc:'Kết thúc',thoiLuong:'Số giờ',donGia:'Đơn giá / Mức giảm',loaiSan:'Loại sân',khungGio:'Khung giờ',loaiNgay:'Loại ngày',tuNgay:'Từ ngày',denNgay:'Đến ngày',hoatDong:'Đang áp dụng',loaiGiam:'Loại giảm'};
         for(const [kind,title]of [['types','Loại sân'],['hourly','Giá theo giờ cho lượt đặt mới'],['slots','Khung giờ của dữ liệu cũ'],['prices','Bảng giá của dữ liệu cũ'],['promotions','Khuyến mãi']]){
-            const section=document.createElement('section');section.className='bg-white border rounded-xl p-4 my-4';host.append(section);const h=document.createElement('h2');h.textContent=title;h.className='font-bold';section.append(h);
+            const section=document.createElement('section');section.className='bg-white border rounded-xl p-4 my-4';section.dataset.configurationKind=kind;section.hidden=kind!==$('configurationKind').value;host.append(section);const h=document.createElement('h2');h.textContent=title;h.className='font-bold';section.append(h);
             for(const source of data[kind]){
                 const row=kind==='hourly'?{id:source.MaCa,batDau:source.GioBatDau,ketThuc:source.GioKetThuc,donGia:source.DonGia}:source;
                 const p=document.createElement('p');p.className='text-sm py-2 border-b';p.textContent=Object.entries(row).map(([k,v])=>(labels[k]||k)+': '+(typeof v==='boolean'?(v?'Có':'Không'):(v??''))).join(' · ');section.append(p);
@@ -17,7 +17,7 @@ document.addEventListener('sanbong:authenticated', async event=>{
             if(!data[kind].length){const p=document.createElement('p');p.textContent='Chưa có dữ liệu';section.append(p);}
         }
     }
-    $('configurationKind').onchange=form;form();
+    $('configurationKind').onchange=()=>{form();for(const section of document.querySelectorAll('[data-configuration-kind]'))section.hidden=section.dataset.configurationKind!==$('configurationKind').value;};form();
     $('configurationForm').onsubmit=async e=>{e.preventDefault();const button=e.currentTarget.querySelector('button');button.disabled=true;const body=Object.fromEntries(new FormData(e.currentTarget));for(const k of ['donGia','soNguoi'])if(body[k])body[k]=Number(body[k]);if($('configurationKind').value==='promotions')body.hoatDong=e.currentTarget.elements.hoatDong.checked;for(const k of ['denNgay'])if(body[k]==='')body[k]=null;
         try{await SanBong.request('configuration/'+$('configurationKind').value,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});tell('Đã lưu; giá và hóa đơn cũ được giữ nguyên.');await load();}catch(err){tell(err.message,true);}finally{button.disabled=false;}};
     if(!event.detail.permissions.includes('CN02_SUA'))$('configurationForm').hidden=true;

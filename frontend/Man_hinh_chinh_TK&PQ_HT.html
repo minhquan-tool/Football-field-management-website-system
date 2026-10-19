@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản Lý Tài Khoản & Phân Quyền - FC-UTE</title>
+    <title>Nhân sự &amp; Phân quyền - FC-UTE</title>
     <link rel="stylesheet" href="css/tailwind.css">
     <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
     <link href="vendor/montserrat/montserrat.css" rel="stylesheet">
@@ -67,7 +67,7 @@
         
         <!-- Header (Đồng bộ với hình mẫu) -->
         <header class="h-20 bg-white shadow-sm flex items-center justify-between px-6 lg:px-8 z-10 border-b border-gray-100">
-            <h2 class="text-xl font-bold text-gray-800">Quản Lý Tài Khoản & Phân Quyền</h2>
+            <h2 class="text-xl font-bold text-gray-800">Nhân sự &amp; Phân quyền</h2>
 
             <div class="flex items-center gap-5">
                 <a href="Man_hinh_chinh_TK&amp;PQ_HT.html#logs" class="text-gray-400 hover:text-brand-600 transition-colors" title="Nhật ký hoạt động">
@@ -91,8 +91,8 @@
             
             <div class="flex justify-between items-center mb-6">
                 <div>
-                    <h3 class="text-lg font-bold text-gray-800">Danh Sách Tài Khoản Hệ Thống</h3>
-                    <p class="text-xs text-gray-500 mt-0.5">Quản lý nhân viên, tài khoản và quyền từ SQL Server.</p>
+                    <h3 class="text-lg font-bold text-gray-800">Tài khoản</h3>
+
                 </div>
                 <button id="newAccountButton" type="button" class="bg-brand-600 text-white px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-brand-700 transition-colors shadow-sm flex items-center gap-2">
                     <i class="fa-solid fa-user-plus"></i> Thêm tài khoản mới
@@ -100,7 +100,7 @@
             </div>
 
 <p id="adminStatus" role="status" class="text-sm my-3"></p>
-<div class="flex gap-3 my-3"><label>Tìm tài khoản <input id="accountSearch" class="border rounded-lg p-2" maxlength="100"></label><button id="refreshAccounts" class="text-brand-600 font-bold">Tải lại</button></div>
+<div class="account-toolbar flex gap-3 my-3"><label>Tìm tài khoản <input id="accountSearch" class="border rounded-lg p-2" maxlength="100"></label><button type="button" id="refreshAccounts" class="admin-refresh-button" aria-label="Tải lại tài khoản" title="Tải lại tài khoản"><i class="fa-solid fa-arrow-rotate-right" aria-hidden="true"></i></button></div>
 <form id="accountForm" hidden class="bg-white border rounded-2xl p-5 mb-4 flex flex-wrap gap-3" data-api-ready="true">
 <label>Nhân viên<select id="accountEmployee" required class="border rounded-lg p-2"></select></label>
 <label>Tên đăng nhập<input id="accountUsername" placeholder="Nhập tên đăng nhập..." autocomplete="username" pattern="[a-zA-Z0-9_.-]{3,50}" required maxlength="50" class="border rounded-lg p-2"></label>
@@ -129,7 +129,7 @@
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
                 <h3 class="text-lg font-bold text-gray-800 mb-1"><i class="fa-solid fa-shield-halved text-brand-600 mr-2"></i> Phân Quyền Chức Năng</h3>
 <label class="text-sm font-bold">Vai trò <select id="permissionRole" class="border border-gray-200 rounded-lg px-3 py-2 my-3"></select></label>
-                <p class="text-xs text-gray-500 mb-6">Thiết lập quyền Xem, Thêm, Sửa, Xóa tương ứng theo từng phân hệ nghiệp vụ.</p>
+
 
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
@@ -159,11 +159,11 @@
 <h3 class="font-bold text-lg">Nhân viên</h3><form id="employeeFilter" class="flex flex-wrap gap-3 my-3" data-api-ready="true"><input id="employeeSearch" placeholder="Tên, mã, điện thoại" maxlength="100" class="border rounded-lg p-2"><select id="employeeActive" class="border rounded-lg p-2"><option value="">Tất cả</option><option value="true">Đang làm</option><option value="false">Ngừng làm</option></select><button class="text-brand-600 font-bold">Tra cứu</button><button id="newEmployee" type="button" class="text-brand-600 font-bold">Thêm nhân viên</button></form>
 <form id="employeeForm" hidden data-api-ready="true" class="border rounded-xl p-4 flex flex-wrap gap-3 mb-3">
 <input id="employeeId" type="hidden"><label>Họ tên<input id="employeeName" required maxlength="100" class="border rounded-lg p-2"></label><label>Điện thoại<input id="employeePhone" pattern="[0-9+ ]{8,15}" maxlength="15" class="border rounded-lg p-2"></label><label>Email<input id="employeeEmail" type="email" maxlength="100" class="border rounded-lg p-2"></label><label>Chức vụ<input id="employeeTitle" maxlength="50" class="border rounded-lg p-2"></label><label>Bộ phận<select id="employeeDepartment" class="border rounded-lg p-2"><option>Nhân viên sân bóng</option><option>Kế toán</option><option>Quản trị hệ thống</option></select></label><label>Ngày vào làm<input id="employeeDate" type="date" class="border rounded-lg p-2"></label><label><input id="employeeWorking" type="checkbox" checked> Đang làm</label><div class="fc-form-actions"><button class="bg-brand-600 text-white p-2 rounded-lg">Lưu nhân viên</button><button id="closeEmployeeForm" type="button" class="fc-secondary-action">Đóng</button></div></form>
-<div class="overflow-x-auto"><table class="w-full text-sm"><thead><tr><th>Mã</th><th>Họ tên</th><th>Điện thoại</th><th>Bộ phận</th><th>Trạng thái</th><th>Tài khoản</th><th>Chi tiết/sửa</th></tr></thead><tbody id="employeeRows"></tbody></table></div><div class="flex gap-3 mt-3"><button id="employeePrev">Trước</button><span id="employeePage"></span><button id="employeeNext">Sau</button></div>
+<div class="overflow-x-auto"><table class="w-full text-sm"><thead><tr><th>Mã</th><th>Họ tên</th><th>Điện thoại</th><th>Bộ phận</th><th>Trạng thái</th><th>Tài khoản</th><th>Chi tiết/sửa</th></tr></thead><tbody id="employeeRows"></tbody></table></div><div class="app-pagination mt-3"><button id="employeePrev">Trước</button><span id="employeePage"></span><button id="employeeNext">Sau</button></div>
 </section>
-<section id="logs" class="bg-white rounded-2xl border p-6 mt-6"><h3 class="font-bold text-lg">Nhật ký hoạt động (chỉ đọc)</h3>
+<section id="logs" class="bg-white rounded-2xl border p-6 mt-6"><h3 class="font-bold text-lg">Nhật ký hoạt động</h3>
 <form id="logFilter" data-api-ready="true" class="flex flex-wrap gap-3 my-3"><label>Từ<input id="logFrom" type="date" required class="border rounded-lg p-2"></label><label>Đến<input id="logTo" type="date" required class="border rounded-lg p-2"></label><input id="logActor" placeholder="Mã tài khoản" maxlength="10" class="border rounded-lg p-2"><input id="logAction" placeholder="Hành động" maxlength="20" class="border rounded-lg p-2"><input id="logModule" placeholder="Module" maxlength="100" class="border rounded-lg p-2"><input id="logTarget" placeholder="Đối tượng" maxlength="100" class="border rounded-lg p-2"><button class="text-brand-600 font-bold">Tra cứu</button></form>
-<div class="overflow-x-auto"><table class="w-full text-sm"><thead><tr><th>Thời gian</th><th>Tài khoản</th><th>Hành động</th><th>Module</th><th>Đối tượng</th><th>Nội dung</th></tr></thead><tbody id="logRows"></tbody></table></div><div class="flex gap-3 mt-3"><button id="logPrev">Trước</button><span id="logPage"></span><button id="logNext">Sau</button></div></section>
+<div class="overflow-x-auto"><table class="w-full text-sm"><thead><tr><th>Thời gian</th><th>Tài khoản</th><th>Hành động</th><th>Module</th><th>Đối tượng</th><th>Nội dung</th></tr></thead><tbody id="logRows"></tbody></table></div><div class="app-pagination mt-3"><button id="logPrev">Trước</button><span id="logPage"></span><button id="logNext">Sau</button></div></section>
         </main>
     </div>
 

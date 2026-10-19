@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Báo cáo — Hệ Thống Quản Lý Sân Bóng - FC-UTE</title>
+    <title>Đối soát &amp; Báo cáo - FC-UTE</title>
     <link rel="stylesheet" href="css/tailwind.css">
     <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
     <link href="vendor/montserrat/montserrat.css" rel="stylesheet">
@@ -87,12 +87,12 @@
         </header>
 
         <!-- Dashboard Content -->
-<main class="flex-1 overflow-y-auto p-6 lg:p-8"><h2 class="font-bold text-xl mb-3">Báo cáo nội bộ</h2><p id="reportStatus" role="status" class="text-sm mb-3"></p>
-<form id="reportFilter" data-api-ready="true" class="bg-white rounded-2xl border p-5 flex flex-wrap gap-3 mb-6"><label>Từ<input id="reportFrom" type="date" required class="border rounded-lg p-2"></label><label>Đến<input id="reportTo" type="date" required class="border rounded-lg p-2"></label><label>Sân<select id="reportPitch" class="border rounded-lg p-2"><option value="">Tất cả</option></select></label><label>Loại<select id="reportType" class="border rounded-lg p-2"></select></label><button class="bg-brand-600 text-white rounded-lg p-2">Tra cứu</button></form>
-<div id="refundFilters" hidden class="flex flex-wrap gap-3 mb-4"><select id="refundStatus" class="border rounded-lg p-2"><option value="">Tất cả trạng thái</option><option>Chờ duyệt</option><option>Đã hoàn</option><option>Từ chối</option></select><input id="refundBooking" placeholder="Mã booking" maxlength="10" class="border rounded-lg p-2"><select id="refundMethod" class="border rounded-lg p-2"><option value="">Mọi phương thức</option><option>Tiền mặt</option><option>Chuyển khoản</option></select></div>
+<main class="flex-1 overflow-y-auto p-6 lg:p-8"><h2 class="font-bold text-xl mb-3">Đối soát &amp; Báo cáo</h2><p id="reportStatus" role="status" class="text-sm mb-3"></p>
+<form id="reportFilter" data-api-ready="true" class="bg-white rounded-2xl border p-5 flex flex-wrap gap-3 mb-6"><label>Từ ngày<input id="reportFrom" type="date" required class="border rounded-lg p-2"></label><label>Đến ngày<input id="reportTo" type="date" required class="border rounded-lg p-2"></label><label>Sân<select id="reportPitch" class="border rounded-lg p-2"><option value="">Tất cả</option></select></label><label>Báo cáo<select id="reportType" class="border rounded-lg p-2"></select></label><button class="bg-brand-600 text-white rounded-lg p-2">Tìm kiếm</button></form>
+<div id="refundFilters" hidden class="flex flex-wrap gap-3 mb-4"><select id="refundStatus" class="border rounded-lg p-2"><option value="">Tất cả trạng thái</option><option>Chờ duyệt</option><option>Đã hoàn</option><option>Từ chối</option></select><input id="refundBooking" placeholder="Mã đặt sân" maxlength="10" class="border rounded-lg p-2"><select id="refundMethod" class="border rounded-lg p-2"><option value="">Mọi phương thức</option><option>Tiền mặt</option><option>Chuyển khoản</option></select></div>
 <p id="reportDefinition" class="text-xs mb-3"></p><div id="reportTotals" class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-5"></div>
-<div class="bg-white rounded-2xl border p-4 overflow-x-auto"><table class="w-full text-sm"><thead id="reportHead"></thead><tbody id="reportRows"></tbody></table><div id="reportPages" hidden class="flex gap-3 mt-3"><button id="reportPrev">Trước</button><span id="reportPage"></span><button id="reportNext">Sau</button></div></div>
-<section id="methodSection" hidden class="bg-white border rounded-2xl p-5 mt-5"><h3 class="font-bold mb-3">Theo phương thức (chỉ thu thành công; hoàn tách riêng)</h3><table class="w-full text-sm"><thead><tr><th>Phương thức</th><th>Số thu</th><th>Tiền thu</th><th>% tiền thu</th><th>Số hoàn</th><th>Tiền hoàn</th><th>Thực nhận</th></tr></thead><tbody id="methodRows"></tbody></table></section>
+<div class="bg-white rounded-2xl border p-4 overflow-x-auto"><table class="w-full text-sm"><thead id="reportHead"></thead><tbody id="reportRows"></tbody></table><div id="reportPages" hidden class="app-pagination mt-3"><button id="reportPrev">Trước</button><span id="reportPage"></span><button id="reportNext">Sau</button></div></div>
+<section id="methodSection" hidden class="bg-white border rounded-2xl p-5 mt-5"><h3 class="font-bold mb-3">Thu và hoàn theo phương thức</h3><table class="w-full text-sm"><thead><tr><th>Phương thức</th><th>Số thu</th><th>Tiền thu</th><th>% tiền thu</th><th>Số hoàn</th><th>Tiền hoàn</th><th>Thực nhận</th></tr></thead><tbody id="methodRows"></tbody></table></section>
 </main>
     </div>
 

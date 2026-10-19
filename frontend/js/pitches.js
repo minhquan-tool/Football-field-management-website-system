@@ -150,6 +150,7 @@ document.addEventListener('sanbong:authenticated', async event => {
         pitchElement('addPitchButton').hidden = pitchAccount.maVaiTro !== 'VT04';
         pitchElement('addPitchButton').disabled = pitchAccount.maVaiTro !== 'VT04' || !pitchCan('THEM');
         pitchElement('pitchForm').querySelector('[type="submit"]').disabled = !(pitchCan('THEM') || pitchCan('SUA'));
+        const initialStatus=new URLSearchParams(location.search).get('status');if(initialStatus&&[...pitchElement('filterStatus').options].some(o=>o.value===initialStatus))pitchElement('filterStatus').value=initialStatus;
         await loadPitches();
     } catch (error) { pitchElement('pitchFeedback').textContent = error.message; showToast(error.message); }
 });

@@ -2,7 +2,7 @@
 (() => {
     document.addEventListener('sanbong:authenticated', async event => {
         if (event.detail.maVaiTro !== 'VT04') return;
-        const panel = document.createElement('details'); panel.className = 'bg-white rounded-2xl border p-6 mb-4';
+        const panel = document.createElement('details'); panel.className = 'bg-white rounded-2xl border p-6 mb-4';panel.id='serviceCatalogPanel';
         const title = document.createElement('summary'); title.textContent = 'Quản lý danh mục dịch vụ'; title.className = 'font-bold cursor-pointer'; panel.append(title);
         const status = document.createElement('p'); status.className = 'text-sm my-2'; panel.append(status);
         if(event.detail.permissions.includes('CN03_THEM')) {
@@ -12,7 +12,7 @@
                 try{await SanBong.request('service-catalog',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});create.reset();await load();status.textContent='Đã thêm SKU mới.';}catch(error){status.textContent=error.message;}finally{button.disabled=false;}};
             panel.append(create);
         }
-        const rows = document.createElement('div'); panel.append(rows); document.querySelector('main').prepend(panel);
+        const rows = document.createElement('div'); panel.append(rows); document.querySelector('main').append(panel);
         async function load() {
             const catalog = await SanBong.request('service-catalog'); rows.replaceChildren();
             for (const item of catalog) {
