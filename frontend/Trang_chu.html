@@ -1,68 +1,204 @@
 <!doctype html>
 <html lang="vi">
 <head>
-    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>FC-UTE — Sân bóng ĐH SPKT TP.HCM</title>
-    <link rel="stylesheet" href="vendor/montserrat/montserrat.css"><link rel="stylesheet" href="css/public-home.css">
-<link rel="stylesheet" href="css/fc-ute.css"><link rel="stylesheet" href="css/experience.css"><script src="js/ui.js" defer></script></head>
+    <link rel="stylesheet" href="vendor/montserrat/montserrat.css">
+    <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/public-home.css">
+    <link rel="stylesheet" href="css/fc-ute.css">
+    <link rel="stylesheet" href="css/experience.css">
+    <script src="js/ui.js" defer></script>
+</head>
 <body data-public-page="true">
 <header class="site-header">
     <div class="container nav-wrap">
-        <a class="brand" href="Trang_chu.html" aria-label="FC-UTE trang chủ"><img class="brand-mark" src="assets/hcmute-logo.png" width="38" height="42" alt=""><span>FC<span class="brand-accent">-UTE</span><small>SÂN BÓNG ĐH SPKT TP.HCM</small></span></a>
-        <button id="navToggle" class="nav-toggle" type="button" aria-controls="mainNav" aria-expanded="false" aria-label="Mở menu"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+        <a class="brand" href="Trang_chu.html" aria-label="FC-UTE trang chủ">
+            <img class="brand-mark" src="assets/hcmute-logo.png" width="38" height="42" alt="Logo HCMUTE">
+            <span>FC<span class="brand-accent">-UTE</span><small>SÂN BÓNG ĐH SPKT TP.HCM</small></span>
+        </a>
+        <button id="navToggle" class="nav-toggle" type="button" aria-controls="mainNav" aria-expanded="false" aria-label="Mở menu">
+            <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
         <nav id="mainNav" aria-label="Điều hướng chính">
-            <a href="#tim-san">Tìm sân</a><a href="#ban-do">Bản đồ</a>
+            <a href="#tim-san">Tìm sân</a>
+            <a href="#ban-do">Bản đồ</a>
             <a href="#loai-san">Loại sân bóng</a>
-            <a class="guest-auth-button guest-login" href="Dang_nhap.html">Đăng nhập</a><a class="guest-auth-button guest-register" href="Dang_ky.html">Đăng ký</a>
+            <a class="guest-auth-button guest-login" href="Dang_nhap.html">Đăng nhập</a>
+            <a class="guest-auth-button guest-register" href="Dang_ky.html">Đăng ký</a>
         </nav>
     </div>
 </header>
 <main>
     <section class="hero">
-        <div class="container hero-content"><div class="hero-copy">
-            <span class="eyebrow">SÂN BÓNG ĐH SPKT TP.HCM</span>
-            <h1>Chọn giờ phù hợp.<br><span>Ra sân cùng đồng đội.</span></h1>
-            <p>Xem sân bóng, tra cứu khoảng giờ còn trống và tìm đường đến sân FC-UTE. Bạn có thể tìm sân trước khi đăng nhập.</p>
-            <div class="hero-actions"><a class="button button-light" href="#tim-san">Tìm sân ngay</a><a class="button button-outline" href="#ban-do">Xem bản đồ</a></div>
-            <div class="hero-facts"><div><strong id="pitchCount">—</strong><span>Sân trong danh mục</span></div><div><strong id="typeCount">—</strong><span>Loại sân bóng</span></div><div><strong>07:00–22:00</strong><span>Khung giờ đặt sân</span></div></div>
-        </div><figure class="hero-visual hero-campus"><img src="assets/hcmute-campus-background.png" width="832" height="466" fetchpriority="high" alt="Ảnh chụp từ trên cao khuôn viên ĐH SPKT TP.HCM và khu vực sân bóng"><figcaption><span class="campus-label">KHÔNG GIAN FC-UTE</span><span>Hẹn đồng đội tại sân bóng ĐH SPKT TP.HCM.</span></figcaption></figure>
+        <div class="container hero-content">
+            <div class="hero-copy">
+                <span class="eyebrow"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> SÂN BÓNG ĐH SPKT TP.HCM</span>
+                <h1>Chọn giờ phù hợp.<br><span>Ra sân cùng đồng đội.</span></h1>
+                <p>Xem sân bóng, tra cứu khoảng giờ còn trống và tìm đường đến sân FC-UTE. Bạn có thể tìm sân trước khi đăng nhập.</p>
+                <div class="hero-actions">
+                    <a class="button button-light" href="#tim-san"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> Tìm sân ngay</a>
+                    <a class="button button-outline" href="#ban-do"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Xem bản đồ</a>
+                </div>
+                <div class="hero-facts">
+                    <div class="hero-fact-card">
+                        <div class="hero-fact-icon"><i class="fa-solid fa-futbol" aria-hidden="true"></i></div>
+                        <div class="hero-fact-text">
+                            <strong id="pitchCount">—</strong>
+                            <span>Sân trong danh mục</span>
+                        </div>
+                    </div>
+                    <div class="hero-fact-card">
+                        <div class="hero-fact-icon"><i class="fa-solid fa-layer-group" aria-hidden="true"></i></div>
+                        <div class="hero-fact-text">
+                            <strong id="typeCount">—</strong>
+                            <span>Loại sân bóng</span>
+                        </div>
+                    </div>
+                    <div class="hero-fact-card">
+                        <div class="hero-fact-icon"><i class="fa-regular fa-clock" aria-hidden="true"></i></div>
+                        <div class="hero-fact-text">
+                            <strong>07:00–22:00</strong>
+                            <span>Khung giờ đặt sân</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <figure class="hero-visual hero-campus">
+                <img src="assets/hcmute-campus-background.png" width="832" height="466" fetchpriority="high" alt="Ảnh chụp từ trên cao khuôn viên ĐH SPKT TP.HCM và khu vực sân bóng">
+                <figcaption>
+                    <span class="campus-label"><i class="fa-solid fa-location-pin" aria-hidden="true"></i> KHÔNG GIAN FC-UTE</span>
+                    <span>Hẹn đồng đội tại sân bóng ĐH SPKT TP.HCM.</span>
+                </figcaption>
+            </figure>
         </div>
     </section>
     <section id="tim-san" class="container search-section" aria-labelledby="searchTitle">
-        <div class="search-panel"><h2 id="searchTitle">Tìm sân bóng tại FC-UTE</h2>
+        <div class="search-panel">
+            <div class="search-panel-head">
+                <div class="search-title-group">
+                    <span class="search-kicker"><i class="fa-solid fa-bolt text-yellow-400" aria-hidden="true"></i> TRA CỨU TRỰC TUYẾN</span>
+                    <h2 id="searchTitle">Tìm sân bóng tại FC-UTE</h2>
+                </div>
+                <div class="search-live-badge">
+                    <span class="live-dot" aria-hidden="true"></span>
+                    <span>Kiểm tra giờ trống thời gian thực</span>
+                </div>
+            </div>
             <form id="publicSearchForm">
-                <label>Tên hoặc mã sân<input id="publicQuery" maxlength="100" placeholder="Ví dụ: Sân số 1, S01…"></label>
-                <label>Loại sân<select id="publicType"><option value="">Tất cả loại sân</option></select></label>
-                <label>Ngày chơi<input id="publicDate" type="date" required></label>
-                <label>Giờ bắt đầu<input id="publicStart" type="time" min="07:00" max="21:59" step="60" required></label>
-                <label>Giờ kết thúc<input id="publicEnd" type="time" min="07:01" max="22:00" step="60" required></label>
-                <button id="publicSearchButton" class="button" disabled>Tìm giờ trống</button>
+                <div class="search-field">
+                    <label for="publicQuery"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> Tên hoặc mã sân</label>
+                    <input id="publicQuery" maxlength="100" placeholder="Ví dụ: Sân số 1, S01…">
+                </div>
+                <div class="search-field">
+                    <label for="publicType"><i class="fa-solid fa-layer-group" aria-hidden="true"></i> Loại sân</label>
+                    <select id="publicType"><option value="">Tất cả loại sân</option></select>
+                </div>
+                <div class="search-field">
+                    <label for="publicDate"><i class="fa-regular fa-calendar-days" aria-hidden="true"></i> Ngày chơi</label>
+                    <input id="publicDate" type="date" required>
+                </div>
+                <div class="search-field">
+                    <label for="publicStart"><i class="fa-regular fa-clock" aria-hidden="true"></i> Giờ bắt đầu</label>
+                    <input id="publicStart" type="time" min="07:00" max="21:59" step="60" required>
+                </div>
+                <div class="search-field">
+                    <label for="publicEnd"><i class="fa-regular fa-clock" aria-hidden="true"></i> Giờ kết thúc</label>
+                    <input id="publicEnd" type="time" min="07:01" max="22:00" step="60" required>
+                </div>
+                <div class="search-field search-field-submit">
+                    <button id="publicSearchButton" class="button" disabled>
+                        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                        <span>Tìm giờ trống</span>
+                    </button>
+                </div>
             </form>
             <p id="publicStatus" class="status" role="status" aria-live="polite">Đang tải danh mục sân…</p>
         </div>
     </section>
     <section id="loai-san" class="container pitches-section">
-        <div class="section-heading"><div><span class="section-kicker">SÂN BÓNG CỦA NHÓM</span><h2 id="resultsTitle">Danh mục sân FC-UTE</h2></div><button id="showAllPitches" class="text-button" type="button">Xem tất cả sân</button></div>
+        <div class="section-heading">
+            <div>
+                <span class="section-kicker">SÂN BÓNG CỦA NHÓM</span>
+                <h2 id="resultsTitle">Danh mục sân FC-UTE</h2>
+            </div>
+            <button id="showAllPitches" class="text-button" type="button">
+                <i class="fa-solid fa-rotate-right" aria-hidden="true"></i> Xem tất cả sân
+            </button>
+        </div>
         <p id="resultsNote" class="muted">Trạng thái hiện tại của sân khác với lịch trống theo ngày và giờ bạn chọn.</p>
         <div id="publicPitches" class="pitch-grid" aria-live="polite"></div>
     </section>
     <section id="ban-do" class="map-section">
         <div class="container map-grid">
-            <div><span class="section-kicker">HẸN NHAU TẠI SÂN</span><h2>Đường đến sân FC-UTE</h2><p>Sân bóng ĐH SPKT TP.HCM, trong khuôn viên trường. Điểm đến được đặt tại vị trí sân bóng theo liên kết của nhóm.</p>
-                <div class="map-links"><a id="openMap" class="button" target="_blank" rel="noopener noreferrer">Mở Google Maps ↗</a><a id="currentDirections" class="button button-secondary" target="_blank" rel="noopener noreferrer">Chỉ đường từ vị trí của tôi ↗</a></div>
-                <form id="directionsForm"><label>Điểm xuất phát<input id="directionsOrigin" maxlength="200" placeholder="Nhập địa chỉ hoặc địa điểm của bạn" required></label><button class="button button-secondary">Xem đường đi ↗</button></form>
-                <button id="locateCustomer" class="text-button" type="button">Dùng vị trí hiện tại để tạo đường đi</button>
+            <div class="map-info">
+                <span class="section-kicker">HẸN NHAU TẠI SÂN</span>
+                <h2>Đường đến sân FC-UTE</h2>
+                <p>Sân bóng ĐH SPKT TP.HCM, trong khuôn viên trường. Điểm đến được đặt tại vị trí sân bóng theo liên kết của nhóm.</p>
+                <div class="map-links">
+                    <a id="openMap" class="button" target="_blank" rel="noopener noreferrer">
+                        <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i> Mở Google Maps ↗
+                    </a>
+                    <a id="currentDirections" class="button button-secondary" target="_blank" rel="noopener noreferrer">
+                        <i class="fa-solid fa-location-arrow" aria-hidden="true"></i> Chỉ đường từ vị trí của tôi ↗
+                    </a>
+                </div>
+                <form id="directionsForm">
+                    <label for="directionsOrigin">Điểm xuất phát</label>
+                    <div class="directions-input-wrap">
+                        <input id="directionsOrigin" maxlength="200" placeholder="Nhập địa chỉ hoặc địa điểm của bạn" required>
+                        <button class="button button-secondary" type="submit">
+                            <i class="fa-solid fa-route" aria-hidden="true"></i> Xem đường đi ↗
+                        </button>
+                    </div>
+                </form>
+                <button id="locateCustomer" class="text-button" type="button">
+                    <i class="fa-solid fa-crosshairs" aria-hidden="true"></i> Dùng vị trí hiện tại để tạo đường đi
+                </button>
                 <p id="mapStatus" class="status" role="status" aria-live="polite">Vị trí chỉ được yêu cầu khi bạn bấm nút. Bạn cũng có thể nhập điểm xuất phát trong Google Maps.</p>
                 <a id="locatedDirections" class="button" target="_blank" rel="noopener noreferrer" hidden>Mở đường đi từ vị trí đã chọn ↗</a>
             </div>
-            <div class="map-frame"><iframe id="venueMap" title="Bản đồ sân bóng ĐH SPKT TP.HCM" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe><p class="muted">Nếu bản đồ không tải, dùng nút Mở Google Maps ở bên cạnh.</p></div>
+            <div class="map-frame">
+                <iframe id="venueMap" title="Bản đồ sân bóng ĐH SPKT TP.HCM" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+                <p class="muted"><i class="fa-solid fa-circle-info" aria-hidden="true"></i> Nếu bản đồ không tải, dùng nút Mở Google Maps ở bên cạnh.</p>
+            </div>
         </div>
     </section>
-    <section class="container booking-info"><h2>Từ xem sân đến đặt sân</h2><div class="steps"><article><b>01</b><h3>Tra cứu giờ trống</h3><p>Chọn ngày, khoảng giờ và loại sân bóng phù hợp với đội của bạn.</p></article><article><b>02</b><h3>Đăng nhập để đặt</h3><p>Đăng nhập hoặc đăng ký tài khoản để tiếp tục tại màn hình đặt sân.</p></article><article><b>03</b><h3>Theo dõi xác nhận</h3><p>Xem trạng thái booking và hóa đơn trong tài khoản của bạn.</p></article></div></section>
+    <section class="container booking-info">
+        <h2>Từ xem sân đến đặt sân</h2>
+        <div class="steps">
+            <article>
+                <b>01</b>
+                <h3>Tra cứu giờ trống</h3>
+                <p>Chọn ngày, khoảng giờ và loại sân bóng phù hợp với đội của bạn.</p>
+            </article>
+            <article>
+                <b>02</b>
+                <h3>Đăng nhập để đặt</h3>
+                <p>Đăng nhập hoặc đăng ký tài khoản để tiếp tục tại màn hình đặt sân.</p>
+            </article>
+            <article>
+                <b>03</b>
+                <h3>Theo dõi xác nhận</h3>
+                <p>Xem trạng thái booking và hóa đơn trong tài khoản của bạn.</p>
+            </article>
+        </div>
+    </section>
 </main>
-<footer><div class="container footer-wrap"><span><strong>FC-UTE</strong> · Hệ thống quản lý sân bóng</span><div><a href="Dang_nhap.html">Đăng nhập</a><a href="Dang_ky.html">Đăng ký</a><a href="#ban-do">Bản đồ</a></div></div></footer>
+<footer>
+    <div class="container footer-wrap">
+        <span><strong>FC-UTE</strong> · Hệ thống quản lý sân bóng</span>
+        <div>
+            <a href="Dang_nhap.html">Đăng nhập</a>
+            <a href="Dang_ky.html">Đăng ký</a>
+            <a href="#ban-do">Bản đồ</a>
+        </div>
+    </div>
+</footer>
 <script src="js/role-navigation.js" defer></script>
-    <script src="js/auth.js" defer></script>
+<script src="js/auth.js" defer></script>
 <script src="js/venue-map.js" defer></script>
 <script src="js/public-home.js" defer></script>
-</body></html>
+</body>
+</html>
