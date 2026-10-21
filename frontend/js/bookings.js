@@ -9,6 +9,7 @@
     const calendar = Boolean($('bookingRows'));
     let account, options, rows = [], selectedPitch = '', selectedSlot = '', customer, loading = true, saving = false, sequence = 0;
     let customerBusy = false;
+    let counterCustomerLookup;
     const allowed = action => account?.permissions.includes('CN02_' + action);
     function text(id, value) { if ($(id)) $(id).textContent = value; }
     function element(tag, value, css = '') {
@@ -103,7 +104,7 @@
         }
     }
     async function submit(event) {
-        event.preventDefault(); if (saving || loading) return;
+        event.preventDefault(); if (saving || loading || customerBusy) return;
         const row = rows.find(r => r.maSan === selectedPitch);
         if (!row || !customer) { feedback('Chọn khách hàng, sân và khung giờ khả dụng.', true); return; }
         saving = true; renderChoices();
@@ -124,7 +125,7 @@
             if(account.maVaiTro==='VT01'){const pay=element('a','Thanh toán ngay','bg-brand-600 text-white rounded-lg px-3 py-2 inline-block ml-3');pay.href=link.href+'&payment=1';box.append(pay);}
             selectedSlot = ''; await search();
         } catch (error) { feedback(error.message, true); await search(); }
-        finally { saving = false; if ($('counterBookingForm')) $('customerPhone').readOnly = $('customerName').readOnly = false; renderChoices(); }
+        finally { saving = false; if ($('counterBookingForm')) { $('customerPhone').readOnly = false; if(counterCustomerLookup) await counterCustomerLookup(); } renderChoices(); }
     }
     function fillSelect(id, data, key, label, first) {
         const select = $(id); select.replaceChildren();
@@ -310,14 +311,45 @@
                 $('playDate').addEventListener('change', search); $('bookingType').addEventListener('change', search);
                 if (options.customer) { customer = options.customer; text('bookingCustomerPhone', customer.soDienThoai); }
                 if ($('customerPhone')) {
-                    const updateCustomer = () => {
-                        const name = $('customerName').value.trim(), phone = $('customerPhone').value.trim();
-                        customer = name && phone && $('customerPhone').checkValidity() ? { hoTen: name, soDienThoai: phone } : null;
+                    const phoneInput=$('customerPhone'),nameInput=$('customerName');
+                    const status=element('p','','text-sm text-gray-600');status.id='counterCustomerStatus';status.setAttribute('role','status');status.setAttribute('aria-live','polite');
+                    phoneInput.setAttribute('aria-describedby',status.id);phoneInput.parentElement.append(status);
+                    const retry=element('button','Thử tra cứu lại','text-sm text-brand-700 underline');retry.type='button';retry.hidden=true;status.after(retry);
+                    let timer,lookupVersion=0,matchedPhone='',existingCustomer=null,lookupState='idle';
+                    function syncCustomer(){
+                        const phone=phoneInput.value.trim(),name=nameInput.value.trim();
+                        customer=matchedPhone===phone&&lookupState==='existing'?existingCustomer:
+                            matchedPhone===phone&&lookupState==='new'&&name?{hoTen:name,soDienThoai:phone}:null;
                         receipt();
-                    };
-                    $('customerPhone').addEventListener('input', updateCustomer);
-                    $('customerName').addEventListener('input', updateCustomer);
-                    updateCustomer();
+                    }
+                    async function lookup(){
+                        clearTimeout(timer);timer=null;const version=++lookupVersion,phone=phoneInput.value.trim();
+                        customer=null;existingCustomer=null;matchedPhone='';retry.hidden=true;
+                        nameInput.value='';nameInput.readOnly=true;lookupState='loading';
+                        if(!phone||!phoneInput.checkValidity()){
+                            customerBusy=false;lookupState='idle';status.textContent=phone?'Nhập số điện thoại hợp lệ để tra cứu.':'Nhập số điện thoại để tìm hồ sơ khách hàng.';receipt();return;
+                        }
+                        customerBusy=true;status.textContent='Đang tra cứu khách hàng…';receipt();
+                        try{
+                            const found=await SanBong.request('booking-customers?'+new URLSearchParams({phone}));
+                            if(version!==lookupVersion||phone!==phoneInput.value.trim())return;
+                            if(found.length>1)throw Error('Số điện thoại khớp nhiều hồ sơ. Vui lòng liên hệ quản lý.');
+                            matchedPhone=phone;
+                            if(found.length){existingCustomer=found[0];lookupState='existing';nameInput.value=existingCustomer.hoTen;status.textContent='Khách đã có hồ sơ tại sân.';}
+                            else{lookupState='new';nameInput.readOnly=false;status.textContent='Khách mới — vui lòng nhập họ tên.';}
+                        }catch(error){
+                            if(version!==lookupVersion||phone!==phoneInput.value.trim())return;
+                            lookupState='error';matchedPhone='';status.textContent='Không tra cứu được: '+error.message;retry.hidden=false;
+                        }finally{if(version===lookupVersion){customerBusy=false;syncCustomer();}}
+                    }
+                    phoneInput.addEventListener('input',()=>{
+                        clearTimeout(timer);++lookupVersion;customer=null;matchedPhone='';existingCustomer=null;lookupState='idle';
+                        nameInput.value='';nameInput.readOnly=true;retry.hidden=true;customerBusy=true;
+                        status.textContent='Đang chờ tra cứu số điện thoại…';receipt();timer=setTimeout(lookup,400);
+                    });
+                    phoneInput.addEventListener('blur',()=>{if(timer){clearTimeout(timer);timer=null;lookup();}});
+                    nameInput.addEventListener('input',syncCustomer);retry.addEventListener('click',lookup);
+                    counterCustomerLookup=lookup;await lookup();
                 }
                 ($('bookingForm') || $('counterBookingForm')).addEventListener('submit', submit); await search();
             }
