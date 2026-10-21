@@ -6,12 +6,12 @@
 <link rel="stylesheet" href="css/tailwind.css">
 
 <link rel="stylesheet" href="css/fc-ute.css"><link rel="stylesheet" href="css/experience.css"><script src="js/ui.js" defer></script>
-</head>
-<body class="bg-gray-50 text-gray-800 customer-account-page">
+<link rel="stylesheet" href="css/customer-pages.css"><link rel="stylesheet" href="vendor/montserrat/montserrat.css"><link rel="stylesheet" href="vendor/fontawesome/css/all.min.css"></head>
+<body data-customer-page="account" class="bg-gray-50 text-gray-800 customer-account-page">
 <nav class="bg-white border-b"></nav>
 <main class="max-w-6xl mx-auto p-6">
-<h1 class="text-2xl font-bold">Thông tin tài khoản</h1><p id="careStatus" role="status"></p>
-<form id="profileForm" class="bg-white p-5 my-4 grid gap-3">
+<header class="cp-heading"><div><p class="cp-kicker">Tài khoản khách hàng FC-UTE</p><h1>Thông tin tài khoản</h1><p>Cập nhật hồ sơ, bảo vệ tài khoản và gửi phản hồi đến sân.</p></div></header><p id="careStatus" role="status"></p>
+<div class="cp-account-grid"><form id="profileForm" class="bg-white p-5 my-4 grid gap-3">
 <h2 class="font-bold">Hồ sơ cá nhân</h2>
 <label>Họ tên<input id="profile_hoTen" autocomplete="name" required maxlength="100" class="border p-2 block w-full"></label>
 <label>Số điện thoại<input id="profile_soDienThoai" type="tel" autocomplete="tel" required pattern="\+?[0-9]+" minlength="7" maxlength="15" title="7–15 ký tự, chỉ gồm số và tối đa một dấu + đứng đầu" class="border p-2 block w-full"></label>
@@ -26,10 +26,10 @@
 <label>Xác nhận mật khẩu mới<input id="password_confirm" type="password" autocomplete="new-password" required minlength="10" maxlength="72" class="border p-2 block w-full"></label>
 <p id="passwordStatus" role="status"></p>
 <button class="bg-brand-600 text-white p-2 rounded">Đổi mật khẩu</button>
-<a id="passwordRelogin" href="Dang_nhap.html" class="text-brand-600 underline" hidden>Đăng nhập lại bằng mật khẩu mới</a>
+<a id="passwordRelogin" href="dang-nhap" class="text-brand-600 underline" hidden>Đăng nhập lại bằng mật khẩu mới</a>
 </form>
-<form id="feedbackForm" class="bg-white p-5 grid gap-3"><h2 class="font-bold">Gửi phản hồi</h2>
-<label>Mã đặt sân nếu có<input id="feedbackBooking" maxlength="10" class="border p-2 block"></label>
+</div><form id="feedbackForm" class="bg-white p-5 grid gap-3"><h2 class="font-bold">Gửi phản hồi</h2>
+<label for="feedbackBooking">Sân / Lượt đặt<select id="feedbackBooking" class="border p-2 block" aria-describedby="feedbackBookingStatus"><option value="">Phản hồi chung</option></select></label><div class="feedback-booking-navigation"><button id="feedbackBookingPrevious" type="button" disabled>Trước</button><span id="feedbackBookingPage"></span><button id="feedbackBookingNext" type="button" disabled>Sau</button></div><p id="feedbackBookingStatus" role="status" aria-live="polite"></p>
 <label>Loại phản hồi<select id="feedbackType" class="border p-2"><option>Góp ý</option><option>Khiếu nại</option><option>Hỗ trợ</option></select></label>
 <label>Nội dung phản hồi<textarea id="feedbackContent" required maxlength="500" class="border p-2 block w-full"></textarea></label>
 <button class="bg-brand-600 text-white p-2 rounded">Gửi phản hồi</button></form><section id="feedbackRows"></section>

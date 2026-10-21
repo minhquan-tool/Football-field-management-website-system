@@ -31,8 +31,8 @@
             transform: translateY(0);
         }
     </style>
-<link rel="stylesheet" href="css/fc-ute.css"><link rel="stylesheet" href="css/experience.css"><script src="js/ui.js" defer></script></head>
-<body class="text-gray-800 flex flex-col min-h-screen">
+<link rel="stylesheet" href="css/fc-ute.css"><link rel="stylesheet" href="css/experience.css"><script src="js/ui.js" defer></script><link rel="stylesheet" href="css/customer-pages.css"></head>
+<body data-customer-page="booking" class="text-gray-800 flex flex-col min-h-screen">
 
     <!-- Top Navigation (Giống Màn hình chính) -->
     <nav class="bg-white shadow-sm sticky top-0 z-50">
@@ -48,10 +48,10 @@
                 </div>
 
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="Man_hinh_chinh_KH.html" class="text-gray-500 hover:text-brand-600 font-medium transition-colors">Trang Chủ</a>
-                    <a href="Man_hinh_chinh_Dat_san_KH.html" class="text-brand-600 font-bold border-b-2 border-brand-600 pb-1">Đặt Sân</a>
+                    <a href="khach-hang" class="text-gray-500 hover:text-brand-600 font-medium transition-colors">Trang Chủ</a>
+                    <a href="dat-san" class="text-brand-600 font-bold border-b-2 border-brand-600 pb-1">Đặt Sân</a>
                     <a aria-disabled="true" tabindex="-1" title="Chức năng chưa triển khai" class="text-gray-500 hover:text-brand-600 font-medium transition-colors">Khuyến Mãi</a>
-                    <a href="Quan_ly_lich_dat_san.html" class="text-gray-500 hover:text-brand-600 font-medium transition-colors">Lịch Sử & Đánh Giá</a>
+                    <a href="lich-dat-cua-toi" class="text-gray-500 hover:text-brand-600 font-medium transition-colors">Lịch Sử & Đánh Giá</a>
                 </div>
 
                 <div class="flex items-center gap-5">
@@ -81,12 +81,12 @@
         
         <!-- Breadcrumb -->
         <div class="mb-6 text-sm font-medium text-gray-500">
-            <a href="Man_hinh_chinh_KH.html" class="hover:text-brand-600 transition-colors"><i class="fa-solid fa-house mr-1"></i> Trang chủ</a>
+            <a href="khach-hang" class="hover:text-brand-600 transition-colors"><i class="fa-solid fa-house mr-1"></i> Trang chủ</a>
             <span class="mx-2">/</span>
             <span class="text-brand-600 font-bold">Đặt sân bóng</span>
         </div>
 
-        <h1 class="text-2xl md:text-3xl font-black text-gray-800 mb-8">Tiến Hành Đặt Sân</h1>
+        <header class="cp-heading"><div><p class="cp-kicker">Hẹn đồng đội tại FC-UTE</p><h1>Đặt sân trực tuyến</h1><p>Chọn sân, khoảng giờ và dịch vụ. Giá được kiểm tra trực tiếp từ hệ thống.</p></div></header>
 
         <form id="bookingForm" data-api-ready="true" class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
             

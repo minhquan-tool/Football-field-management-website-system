@@ -1,0 +1,133 @@
+/* Customer-only skin. Shared calendar pages for other roles keep their existing UI. */
+body[data-customer-page][data-workspace="VT01"] {background:#f5f7fb;color:#162b49;font-family:Montserrat,Arial,sans-serif;font-size:15px;line-height:1.6}
+body[data-customer-page][data-workspace="VT01"] .fc-workspace > main {width:100%;max-width:1304px;margin:auto;padding:32px!important;min-width:0}
+body[data-customer-page][data-workspace="VT01"] main :is(h1,h2,h3) {color:#162b49;letter-spacing:-.025em;text-transform:none}
+body[data-customer-page][data-workspace="VT01"] main h1 {font-size:28px;font-weight:700;line-height:1.4;margin:0 0 8px}
+body[data-customer-page][data-workspace="VT01"] main :is(h2,h3) {font-size:18px;font-weight:600;line-height:1.5}
+body[data-customer-page][data-workspace="VT01"] .cp-heading {display:flex;justify-content:space-between;align-items:center;gap:24px;padding:28px;background:#fff;border:1px solid #dbe4ef;border-radius:18px;margin-bottom:24px}
+body[data-customer-page][data-workspace="VT01"] .cp-heading p {font-size:14px;color:#526279;margin:0;line-height:1.7}
+body[data-customer-page][data-workspace="VT01"] .cp-heading .cp-kicker {font-size:13px;font-weight:600;color:#173c9c;margin-bottom:8px}
+body[data-customer-page][data-workspace="VT01"] .cp-action {display:inline-flex;align-items:center;justify-content:center;min-height:46px;flex-shrink:0;padding:11px 18px;border-radius:10px;background:#1d4ed8;color:#fff;font-size:14px;font-weight:600}
+body[data-customer-page][data-workspace="VT01"] main :is(input:not([type=checkbox]):not([type=radio]):not([type=hidden]),select,textarea) {min-height:46px;max-width:100%;min-width:0;border:1px solid #a8b5c7;border-radius:10px;font-size:15px;padding:10px 12px;background:#fff;color:#162b49}
+body[data-customer-page][data-workspace="VT01"] main :is(input,textarea)::placeholder {color:#607087}
+body[data-customer-page][data-workspace="VT01"] main label {font-size:14px;font-weight:500;color:#334862;text-transform:none;letter-spacing:0}
+body[data-customer-page][data-workspace="VT01"] main button {min-height:44px;font-size:14px;font-weight:600;border-radius:10px;box-shadow:none;transform:none}
+body[data-customer-page][data-workspace="VT01"] :is(a,button,input,select,textarea):focus-visible {outline:3px solid #2563eb;outline-offset:3px}
+body[data-customer-page][data-workspace="VT01"] #careStatus {margin:16px 0;font-size:14px;line-height:1.7}
+body[data-customer-page][data-workspace="VT01"] > .fc-topbar {min-height:80px;padding:12px 24px;gap:16px;background:#fff;border-bottom:1px solid #dbe4ef;box-shadow:none}
+body[data-customer-page][data-workspace="VT01"] .fc-topbar .fc-brand {padding-left:42px;background:url('../assets/hcmute-logo.png') left center/30px 34px no-repeat;font-size:22px;color:#173c9c}
+body[data-customer-page][data-workspace="VT01"] .fc-topbar [data-role-menu] {padding:0;gap:4px}
+body[data-customer-page][data-workspace="VT01"] .fc-topbar [data-role-menu] a {font-size:13px;padding:10px 9px;min-height:44px}
+body[data-customer-page][data-workspace="VT01"] .fc-topbar .fc-account-name {font-size:13px;max-width:160px;overflow-wrap:anywhere}
+body[data-customer-page][data-workspace="VT01"] #promotionRows {display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:24px;margin:24px 0}
+body[data-customer-page][data-workspace="VT01"] #promotionRows .customer-promo-card {display:flex;flex-direction:column;gap:12px;padding:28px;border:1px solid #dbe4ef;border-radius:18px;background:#fff;box-shadow:none;min-width:0}
+body[data-customer-page][data-workspace="VT01"] #promotionRows .customer-promo-card::before {content:'\f06b';font-family:'Font Awesome 6 Free';font-weight:900;color:#173c9c;font-size:24px;order:0}
+body[data-customer-page][data-workspace="VT01"] #promotionRows h2 {order:1;font-size:21px;font-weight:700;margin:0}
+body[data-customer-page][data-workspace="VT01"] #promotionRows .promo-discount {order:2;display:block;width:100%;padding:20px;border-radius:12px;background:#edf3ff;color:#173c9c;font-size:28px;font-weight:700;line-height:1.4;font-variant-numeric:tabular-nums}
+body[data-customer-page][data-workspace="VT01"] #promotionRows p {order:3;margin:0;color:#526279;font-size:14px;line-height:1.7;overflow-wrap:anywhere}
+body[data-customer-page][data-workspace="VT01"] #promotionRows .promo-code {order:4;margin-top:auto;padding:12px 16px;border:1px solid #dbe4ef;border-radius:10px;background:#f5f7fb;color:#162b49;font-weight:600}
+body[data-customer-page][data-workspace="VT01"] .history-search-controls {display:grid;grid-template-columns:minmax(0,2fr) minmax(160px,1fr) auto;align-items:end;gap:16px;padding:24px;border:1px solid #dbe4ef;border-radius:16px;background:#fff;margin-bottom:20px}
+body[data-customer-page][data-workspace="VT01"] .history-search-controls label {display:flex;flex-direction:column;gap:8px}
+body[data-customer-page][data-workspace="VT01"] [data-history-summary] {color:#526279;font-size:14px;margin:16px 0}
+body[data-customer-page][data-workspace="VT01"] [data-history-cards] {display:grid;gap:20px}
+body[data-customer-page][data-workspace="VT01"] #historyRows article {padding:24px;border:1px solid #dbe4ef;border-radius:16px;background:#fff;box-shadow:none;min-width:0;margin:0}
+body[data-customer-page][data-workspace="VT01"] #historyRows article :is(p,li) {font-size:14px;line-height:1.7;color:#526279}
+body[data-customer-page][data-workspace="VT01"] #historyRows article a {display:inline-flex;align-items:center;min-height:44px;color:#173c9c}
+body[data-customer-page][data-workspace="VT01"] .history-pagination {display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:12px;margin-top:20px}
+body[data-customer-page][data-workspace="VT01"] #historyRows form {display:grid;gap:12px;padding-top:16px}
+body[data-customer-page][data-workspace="VT01"] .cp-account-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;align-items:start}
+body[data-customer-page][data-workspace="VT01"] :is(#profileForm,#passwordForm,#feedbackForm) {margin:0 0 24px;padding:28px;display:grid;gap:18px;background:#fff;border:1px solid #dbe4ef;border-radius:16px;box-shadow:none}
+body[data-customer-page][data-workspace="VT01"] :is(#profileForm,#passwordForm,#feedbackForm) label {display:flex;flex-direction:column;gap:8px}
+body[data-customer-page][data-workspace="VT01"] :is(#profileForm,#passwordForm,#feedbackForm) button {justify-self:start;padding:11px 20px}
+body[data-customer-page][data-workspace="VT01"] #feedbackContent {min-height:130px;resize:vertical}
+body[data-customer-page][data-workspace="VT01"] #feedbackRows article {padding:24px;background:#fff;border:1px solid #dbe4ef;border-radius:16px}
+body[data-customer-page][data-workspace="VT01"] #bookingForm {gap:24px;grid-template-columns:minmax(0,2fr) minmax(280px,1fr)}
+body[data-customer-page][data-workspace="VT01"] #bookingForm > div:first-child {grid-column:auto}
+body[data-customer-page][data-workspace="VT01"] #bookingForm > div:nth-child(2) {grid-column:auto}
+body[data-customer-page][data-workspace="VT01"] #bookingForm section {padding:24px;border:1px solid #dbe4ef;border-radius:16px;box-shadow:none;background:#fff}
+body[data-customer-page][data-workspace="VT01"] #bookingPitches {grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:12px}
+body[data-customer-page][data-workspace="VT01"] #bookingPitches button {padding:16px;min-height:80px;font-size:14px;font-weight:600;box-shadow:none}
+body[data-customer-page][data-workspace="VT01"] #bookingPitches button[aria-pressed=true] {background:#edf3ff;outline:2px solid #1d4ed8;outline-offset:0}
+body[data-customer-page][data-workspace="VT01"] #bookingForm > div:nth-child(2) > div {border:1px solid #dbe4ef;box-shadow:none;border-radius:16px;top:104px}
+body[data-customer-page][data-workspace="VT01"] #bookingForm > div:nth-child(2) h3 {font-size:18px;letter-spacing:0;text-transform:none;color:#fff}
+body[data-customer-page][data-workspace="VT01"] #bookingForm > div:nth-child(2) p {font-size:13px;line-height:1.7}
+body[data-customer-page][data-workspace="VT01"] #bookingForm [type=submit] {font-size:16px;text-transform:none;box-shadow:none;transform:none}
+body[data-customer-page][data-workspace="VT01"] #createdBooking {grid-column:1/-1}
+body[data-customer-page][data-workspace="VT01"] #prebookServices > div {padding:16px;border:1px solid #dbe4ef;border-radius:12px;margin:12px 0}
+body[data-customer-page][data-workspace="VT01"] .booking-search-panel {padding:24px;grid-template-columns:repeat(4,minmax(0,1fr)) auto;gap:16px;border:1px solid #dbe4ef;border-radius:16px;box-shadow:none}
+body[data-customer-page][data-workspace="VT01"] .booking-search-panel label {font-size:14px;margin-bottom:8px}
+body[data-customer-page][data-workspace="VT01"] main table {font-size:14px;min-width:780px}
+body[data-customer-page][data-workspace="VT01"] main table thead {background:#f5f7fb;text-transform:none;letter-spacing:0}
+body[data-customer-page][data-workspace="VT01"] main table th {font-size:13px;text-transform:none;padding:16px;font-weight:600}
+body[data-customer-page][data-workspace="VT01"] main table td {padding:16px;font-size:14px}
+@media(max-width:1199px){
+body[data-customer-page][data-workspace="VT01"] > .fc-topbar [data-mobile-menu] {display:inline-flex;min-height:44px;align-items:center;margin-left:auto}
+body[data-customer-page][data-workspace="VT01"] > .fc-topbar #fcPrimaryNavigation {display:none;position:absolute;top:100%!important;left:0;right:0;background:#fff;padding:16px;max-height:calc(100dvh - 80px);overflow:auto;border-bottom:1px solid #dbe4ef}
+body[data-customer-page][data-workspace="VT01"] > .fc-topbar #fcPrimaryNavigation:not(.hidden) {display:block}
+body[data-customer-page][data-workspace="VT01"] .fc-topbar [data-role-menu] {display:flex;flex-direction:column;align-items:stretch}
+body[data-customer-page][data-workspace="VT01"] .fc-topbar [data-role-menu] a {justify-content:flex-start;font-size:14px}
+body[data-customer-page][data-workspace="VT01"] .booking-search-panel {grid-template-columns:repeat(2,minmax(0,1fr))}
+body[data-customer-page][data-workspace="VT01"] .booking-search-panel > div:last-child {grid-column:1/-1}
+}
+.cp-calendar-heading {display:none}
+body[data-customer-page][data-workspace="VT01"] .cp-calendar-heading {display:flex}
+body[data-customer-page][data-workspace="VT01"] #passwordForm {grid-template-columns:1fr}
+body[data-customer-page][data-workspace="VT01"] #passwordStatus:empty {display:none}
+/* Compact customer booking and reservation payment dialog. */
+body[data-customer-page][data-workspace="VT01"] #feedbackForm>label:has(#feedbackBooking){grid-column:1/-1}
+body[data-customer-page][data-workspace="VT01"] .feedback-booking-navigation{display:flex;align-items:center;gap:12px;flex-wrap:wrap;grid-column:1/-1;font-size:13px}
+body[data-customer-page][data-workspace="VT01"] .feedback-booking-navigation button{min-height:44px;padding:8px 14px;border:1px solid #c8d5e5;background:#fff;color:#1749bd}
+body[data-customer-page][data-workspace="VT01"] #feedbackBookingStatus{grid-column:1/-1;font-size:13px;line-height:1.6;color:#526581}
+body[data-customer-page][data-workspace="VT01"] #detailModal>div{width:min(580px,100%);max-width:580px;max-height:88dvh}
+body[data-customer-page][data-workspace="VT01"] #detailModal>div>div:first-child{padding:14px 18px}
+body[data-customer-page][data-workspace="VT01"] #detailModal .p-6{padding:16px 18px}
+body[data-customer-page][data-workspace="VT01"] #detailModal .grid{padding:14px;gap:10px;grid-template-columns:1fr 1fr}
+body[data-customer-page][data-workspace="VT01"] #detailModal .grid :is(span,p){font-size:13px;line-height:1.5}
+body[data-customer-page][data-workspace="VT01"] #detailModal h4{font-size:14px}
+body[data-customer-page][data-workspace="VT01"] #detailTotal{font-size:24px}
+body[data-customer-page][data-workspace="VT01"] #detailNote:empty{display:none}
+body[data-customer-page][data-workspace="VT01"] .customer-payment-panel{padding:16px}
+body[data-customer-page][data-workspace="VT01"] .customer-payment-panel #financePaymentForm{display:flex;flex-direction:column;gap:14px;margin-top:14px}
+body[data-customer-page][data-workspace="VT01"] .customer-payment-panel #financePaymentForm[hidden]{display:none}
+body[data-customer-page][data-workspace="VT01"] .customer-payment-panel #financePaymentForm>label{font-size:13px;width:100%;flex:0 0 auto;align-self:stretch}
+body[data-customer-page][data-workspace="VT01"] .customer-payment-panel #financePaymentForm input:not([type=radio]){min-height:44px;font-size:15px}
+body[data-customer-page][data-workspace="VT01"] .customer-payment-panel #financeAmount{background:#eef3fb;font-weight:700;color:#1749bd;cursor:default}
+body[data-customer-page][data-workspace="VT01"] #reservationPaymentChoices{margin-top:14px;min-width:0}
+body[data-customer-page][data-workspace="VT01"] :is(#reservationPaymentChoices,#customerPaymentMethods) legend{font-size:13px;font-weight:700;margin-bottom:10px}
+body[data-customer-page][data-workspace="VT01"] .reservation-plans{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+body[data-customer-page][data-workspace="VT01"] .reservation-plans label{position:relative;display:flex;align-items:center;justify-content:center;min-height:68px;cursor:pointer;border:1px solid #dce5f0;border-radius:14px;background:#fff;padding:12px;font-size:14px}
+body[data-customer-page][data-workspace="VT01"] .reservation-plans label:has(input:checked){border:2px solid #2152df;background:#edf5ff;color:#1749bd}
+body[data-customer-page][data-workspace="VT01"] .reservation-plans label:has(input:disabled){opacity:.55;cursor:default}
+body[data-customer-page][data-workspace="VT01"] .reservation-plans input{position:absolute;opacity:0;width:1px;height:1px}
+body[data-customer-page][data-workspace="VT01"] .reservation-plans label:focus-within{outline:3px solid #8bb7ff;outline-offset:2px}
+body[data-customer-page][data-workspace="VT01"] .reservation-plans span{text-align:center}
+body[data-customer-page][data-workspace="VT01"] .reservation-plans small{display:block;font-size:12px;margin-top:4px}
+body[data-customer-page][data-workspace="VT01"] #reservationPaymentChoices>p{font-size:12px;line-height:1.6;color:#526581;margin-top:10px}
+body[data-customer-page][data-workspace="VT01"] #customerPaymentMethods{width:100%;min-width:0}
+body[data-customer-page][data-workspace="VT01"] #customerPaymentMethods label{display:flex;align-items:center;flex-direction:row;gap:10px;padding:12px;min-height:46px;border:1px solid #dce5f0;border-radius:12px;background:#fff;font-size:13px;margin-bottom:8px;cursor:pointer}
+body[data-customer-page][data-workspace="VT01"] #customerPaymentMethods input{min-height:0!important;width:16px!important;height:16px;accent-color:#2152df;padding:0!important}
+body[data-customer-page][data-workspace="VT01"] #customerPaymentMethods label:has(input:checked){border-color:#2152df;background:#f3f7ff}
+body[data-customer-page][data-workspace="VT01"] #financeQr{width:220px;height:auto;max-width:100%;margin:auto;display:block}
+body[data-customer-page][data-workspace="VT01"] #financeBankDetails{font-size:13px;line-height:1.7}
+body[data-customer-page][data-workspace="VT01"] #financeRefresh{display:none}
+@media(max-width:380px){body[data-customer-page][data-workspace="VT01"] #detailModal .grid{grid-template-columns:1fr}}
+@media(max-width:900px){
+body[data-customer-page][data-workspace="VT01"] #bookingForm {grid-template-columns:1fr}
+body[data-customer-page][data-workspace="VT01"] .cp-account-grid {grid-template-columns:1fr}
+body[data-customer-page][data-workspace="VT01"] .cp-heading {align-items:start;flex-direction:column}
+body[data-customer-page][data-workspace="VT01"] .history-search-controls {grid-template-columns:1fr 1fr}
+body[data-customer-page][data-workspace="VT01"] .history-search-controls button {grid-column:1/-1}
+}
+@media(max-width:600px){
+body[data-customer-page][data-workspace="VT01"] .fc-workspace > main {padding:20px 16px!important}
+body[data-customer-page][data-workspace="VT01"] .cp-heading {padding:22px 18px}
+body[data-customer-page][data-workspace="VT01"] main h1 {font-size:24px}
+body[data-customer-page][data-workspace="VT01"] .cp-action {width:100%}
+body[data-customer-page][data-workspace="VT01"] .fc-topbar .fc-account-name {display:none}
+body[data-customer-page][data-workspace="VT01"] :is(#profileForm,#passwordForm,#feedbackForm) {padding:22px 18px}
+body[data-customer-page][data-workspace="VT01"] #bookingForm section {padding:20px 16px}
+body[data-customer-page][data-workspace="VT01"] main :is(input:not([type=checkbox]):not([type=radio]):not([type=hidden]),select,textarea) {font-size:16px;padding:10px 8px}
+body[data-customer-page][data-workspace="VT01"] .booking-search-panel {grid-template-columns:1fr;padding:20px 16px}
+body[data-customer-page][data-workspace="VT01"] .history-search-controls {grid-template-columns:1fr;padding:20px 16px}
+body[data-customer-page][data-workspace="VT01"] #promotionRows .customer-promo-card {padding:24px}
+}

@@ -3,8 +3,8 @@
 <title>Lịch đá bóng theo tuần - FC-UTE</title>
 <link rel="stylesheet" href="css/tailwind.css">
 <link rel="stylesheet" href="css/fc-ute.css"><link rel="stylesheet" href="css/weekly-schedule.css">
-<link rel="stylesheet" href="css/experience.css"><script src="js/ui.js" defer></script></head>
-<body><nav aria-label="Điều hướng"></nav><main class="p-6">
+<link rel="stylesheet" href="css/experience.css"><script src="js/ui.js" defer></script><link rel="stylesheet" href="css/staff-dashboard.css"><link rel="stylesheet" href="css/staff-workspace.css"></head>
+<body data-staff-page="schedule"><nav aria-label="Điều hướng"></nav><main class="p-6">
 <div class="schedule-title"><div><p class="schedule-eyebrow">FC-UTE · Vận hành sân</p><h1 class="text-2xl font-bold">Lịch đá bóng</h1></div><button id="schedulePrint" type="button" disabled>In lịch tuần</button></div>
 <section class="schedule-controls" aria-label="Bộ lọc lịch đá bóng">
 <form id="scheduleFilters" data-api-ready="true"><label>Sân bóng<select id="schedulePitch"><option value="">Tất cả sân</option></select></label><label>Chọn ngày trong tuần<input id="scheduleDate" type="date" required min="0001-01-01" max="9999-12-25"></label><label>Trạng thái<select id="scheduleState"><option value="ALL">Tất cả trạng thái</option><option>Chờ xác nhận</option><option>Đã xác nhận</option><option>Đã sử dụng</option><option>Đã hủy</option></select></label><button type="submit">Xem lịch</button></form>

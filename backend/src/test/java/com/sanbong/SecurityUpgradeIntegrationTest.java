@@ -21,9 +21,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class SecurityUpgradeIntegrationTest {
  @Autowired MockMvc mvc; @Autowired ObjectMapper json; @Autowired JdbcTemplate jdbc;
  private ResultActions login(String username, String password) throws Exception {
-  var csrf=mvc.perform(get("/auth/csrf")).andExpect(status().isOk()).andReturn();
+  var csrf=mvc.perform(get("/api/auth/csrf")).andExpect(status().isOk()).andReturn();
   var data=json.readTree(csrf.getResponse().getContentAsString()).path("data");
-  return mvc.perform(post("/auth/login").session((MockHttpSession)csrf.getRequest().getSession())
+  return mvc.perform(post("/api/auth/login").session((MockHttpSession)csrf.getRequest().getSession())
     .header(data.path("headerName").asText(),data.path("token").asText())
     .param("identifier",username).param("password",password));
  }
@@ -31,9 +31,9 @@ class SecurityUpgradeIntegrationTest {
  void loginRejectsLongAsciiAndUnicodeSuffixes(boolean unicode)throws Exception {
   String password=unicode ? "\u20ac".repeat(24) : "A".repeat(72);
   String username="f15_"+UUID.randomUUID().toString().substring(0,8);
-  var csrf=mvc.perform(get("/auth/csrf")).andReturn();
+  var csrf=mvc.perform(get("/api/auth/csrf")).andReturn();
   var data=json.readTree(csrf.getResponse().getContentAsString()).path("data");
-  mvc.perform(post("/auth/register").session((MockHttpSession)csrf.getRequest().getSession())
+  mvc.perform(post("/api/auth/register").session((MockHttpSession)csrf.getRequest().getSession())
     .header(data.path("headerName").asText(),data.path("token").asText()).contentType("application/json")
     .content(json.writeValueAsString(Map.of("hoTen","F15 security fixture","soDienThoai","0997150028","tenDangNhap",username,"matKhau",password))))
     .andExpect(status().isOk());
@@ -44,8 +44,8 @@ class SecurityUpgradeIntegrationTest {
   String response=result.getResponse().getContentAsString();
   assertFalse(response.contains(password));assertFalse(response.contains(stored));
   var session=(MockHttpSession)result.getRequest().getSession();
-  mvc.perform(get("/auth/me").session(session)).andExpect(status().isOk());
-  mvc.perform(get("/admin/options").session(session)).andExpect(status().isForbidden());
+  mvc.perform(get("/api/auth/me").session(session)).andExpect(status().isOk());
+  mvc.perform(get("/api/admin/options").session(session)).andExpect(status().isForbidden());
   assertEquals(stored,jdbc.queryForObject("SELECT MatKhau FROM TaiKhoan WHERE TenDangNhap=?",String.class,username));
  }
  @ParameterizedTest @CsvSource({"admin,VT04,/admin/options","nvsan,VT02,/pitches","ketoan,VT03,/finance/transactions","khachhang,VT01,/bookings"})
@@ -55,15 +55,15 @@ class SecurityUpgradeIntegrationTest {
   assertEquals(role,json.readTree(result.getResponse().getContentAsString()).path("data").path("maVaiTro").asText());
   var session=(MockHttpSession)result.getRequest().getSession();
   mvc.perform(get(endpoint).param("date",java.time.LocalDate.now().toString()).session(session)).andExpect(status().isOk());
-  mvc.perform(post("/auth/logout").session(session)).andExpect(status().isForbidden());
-  var csrf=mvc.perform(get("/auth/csrf").session(session)).andReturn();
+  mvc.perform(post("/api/auth/logout").session(session)).andExpect(status().isForbidden());
+  var csrf=mvc.perform(get("/api/auth/csrf").session(session)).andReturn();
   var data=json.readTree(csrf.getResponse().getContentAsString()).path("data");
-  mvc.perform(post("/auth/logout").session(session).header(data.path("headerName").asText(),data.path("token").asText())).andExpect(status().isOk());
-  mvc.perform(get("/auth/me")).andExpect(status().isUnauthorized());
+  mvc.perform(post("/api/auth/logout").session(session).header(data.path("headerName").asText(),data.path("token").asText())).andExpect(status().isOk());
+  mvc.perform(get("/api/auth/me")).andExpect(status().isUnauthorized());
   assertEquals(stored,jdbc.queryForObject("SELECT MatKhau FROM TaiKhoan WHERE TenDangNhap=?",String.class,username));
  }
  @Test void loginStillRequiresCsrfAndWrongPasswordFails()throws Exception {
-  mvc.perform(post("/auth/login").param("identifier","admin").param("password",UUID.randomUUID().toString())).andExpect(status().isForbidden());
+  mvc.perform(post("/api/auth/login").param("identifier","admin").param("password",UUID.randomUUID().toString())).andExpect(status().isForbidden());
   login("admin",UUID.randomUUID().toString()).andExpect(status().isUnauthorized());
  }
 }

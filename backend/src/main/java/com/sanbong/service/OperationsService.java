@@ -23,9 +23,11 @@ public class OperationsService {
     private final TaiKhoanRepository accounts;
     private final SecurityRepository security;
     private final FinanceService finance;
+    private final CancellationRequestRepository cancellationRequests;
     @PersistenceContext private EntityManager em;
     public OperationsService(OperationsRepository operations,DatSanRepository bookings,SanRepository pitches,
-            TaiKhoanRepository accounts,SecurityRepository security,FinanceService finance) {
+            TaiKhoanRepository accounts,SecurityRepository security,FinanceService finance,CancellationRequestRepository cancellationRequests) {
+        this.cancellationRequests=cancellationRequests;
         this.finance=finance;
         this.operations=operations;this.bookings=bookings;this.pitches=pitches;this.accounts=accounts;this.security=security;
     }
@@ -38,6 +40,7 @@ public class OperationsService {
     @Transactional(isolation=Isolation.READ_COMMITTED)
     public Map<String,Object> checkIn(String id,CheckInRequest request,AccountPrincipal actor) {
         var d=lock(id);var now=LocalDateTime.now(ZONE);
+        cancellationRequests.requireNoPending(id);
         if(!"Đã xác nhận".equals(d.getTrangThai())) throw new IllegalStateException("Chỉ nhận sân cho booking đã xác nhận, chưa hủy/chưa hoàn thành.");
         if(operations.visit(id).isPresent()) throw new IllegalStateException("Booking đã nhận sân; không nhận lần thứ hai.");
         if(!d.getNgayChoi().equals(now.toLocalDate()) || now.isBefore(d.getNgayChoi().atTime(d.getGioBatDau()).minusMinutes(30))

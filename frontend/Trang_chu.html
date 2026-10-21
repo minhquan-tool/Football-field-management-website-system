@@ -9,24 +9,28 @@
     <link rel="stylesheet" href="css/public-home.css">
     <link rel="stylesheet" href="css/fc-ute.css">
     <link rel="stylesheet" href="css/experience.css">
+    <link rel="stylesheet" href="css/public-header.css">
+    <link rel="stylesheet" href="css/public-layout.css">
     <script src="js/ui.js" defer></script>
 </head>
 <body data-public-page="true">
 <header class="site-header">
     <div class="container nav-wrap">
-        <a class="brand" href="Trang_chu.html" aria-label="FC-UTE trang chủ">
+        <a class="brand" href="trang-chu" aria-label="FC-UTE trang chủ">
             <img class="brand-mark" src="assets/hcmute-logo.png" width="38" height="42" alt="Logo HCMUTE">
-            <span>FC<span class="brand-accent">-UTE</span><small>SÂN BÓNG ĐH SPKT TP.HCM</small></span>
+            <span>FC<span class="brand-accent">-UTE</span><small>Sân bóng ĐH SPKT TP.HCM</small></span>
         </a>
         <button id="navToggle" class="nav-toggle" type="button" aria-controls="mainNav" aria-expanded="false" aria-label="Mở menu">
             <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <span>Menu</span>
         </button>
         <nav id="mainNav" aria-label="Điều hướng chính">
             <a href="#tim-san">Tìm sân</a>
+            <a href="#loai-san">Loại sân</a>
+            <a href="#chuong-trinh-uu-dai">Chương trình ưu đãi</a>
             <a href="#ban-do">Bản đồ</a>
-            <a href="#loai-san">Loại sân bóng</a>
-            <a class="guest-auth-button guest-login" href="Dang_nhap.html">Đăng nhập</a>
-            <a class="guest-auth-button guest-register" href="Dang_ky.html">Đăng ký</a>
+            <a class="guest-auth-button guest-login" href="dang-nhap">Đăng nhập</a>
+            <a class="guest-auth-button guest-register" href="dang-ky">Đăng ký</a>
         </nav>
     </div>
 </header>
@@ -78,12 +82,12 @@
         <div class="search-panel">
             <div class="search-panel-head">
                 <div class="search-title-group">
-                    <span class="search-kicker"><i class="fa-solid fa-bolt text-yellow-400" aria-hidden="true"></i> TRA CỨU TRỰC TUYẾN</span>
+                    <span class="search-kicker">Lên lịch cùng đồng đội</span>
                     <h2 id="searchTitle">Tìm sân bóng tại FC-UTE</h2>
                 </div>
                 <div class="search-live-badge">
                     <span class="live-dot" aria-hidden="true"></span>
-                    <span>Kiểm tra giờ trống thời gian thực</span>
+                    <span>Tra cứu theo ngày và giờ bạn chọn</span>
                 </div>
             </div>
             <form id="publicSearchForm">
@@ -101,11 +105,19 @@
                 </div>
                 <div class="search-field">
                     <label for="publicStart"><i class="fa-regular fa-clock" aria-hidden="true"></i> Giờ bắt đầu</label>
-                    <input id="publicStart" type="time" min="07:00" max="21:59" step="60" required>
+                    <div class="guest-time-control">
+                        <input id="publicStart" type="time" min="07:00" max="21:59" step="60" required>
+                        <span class="guest-time-display" aria-hidden="true">Chọn giờ</span>
+                        <i class="fa-regular fa-clock" aria-hidden="true"></i>
+                    </div>
                 </div>
                 <div class="search-field">
                     <label for="publicEnd"><i class="fa-regular fa-clock" aria-hidden="true"></i> Giờ kết thúc</label>
-                    <input id="publicEnd" type="time" min="07:01" max="22:00" step="60" required>
+                    <div class="guest-time-control">
+                        <input id="publicEnd" type="time" min="07:01" max="22:00" step="60" required>
+                        <span class="guest-time-display" aria-hidden="true">Chọn giờ</span>
+                        <i class="fa-regular fa-clock" aria-hidden="true"></i>
+                    </div>
                 </div>
                 <div class="search-field search-field-submit">
                     <button id="publicSearchButton" class="button" disabled>
@@ -120,7 +132,7 @@
     <section id="loai-san" class="container pitches-section">
         <div class="section-heading">
             <div>
-                <span class="section-kicker">SÂN BÓNG CỦA NHÓM</span>
+                <span class="section-kicker">Không gian cho mỗi trận đấu</span>
                 <h2 id="resultsTitle">Danh mục sân FC-UTE</h2>
             </div>
             <button id="showAllPitches" class="text-button" type="button">
@@ -130,12 +142,25 @@
         <p id="resultsNote" class="muted">Trạng thái hiện tại của sân khác với lịch trống theo ngày và giờ bạn chọn.</p>
         <div id="publicPitches" class="pitch-grid" aria-live="polite"></div>
     </section>
+    <section id="chuong-trinh-uu-dai" class="container guest-promotions" aria-labelledby="guestPromotionsTitle">
+        <div class="guest-promotions-heading">
+            <div>
+                <span class="section-kicker">Quyền lợi khách hàng FC-UTE</span>
+                <h2 id="guestPromotionsTitle">Chương trình ưu đãi</h2>
+                <p>Chọn mã phù hợp và xem điều kiện trước khi đặt sân. Ưu đãi được hệ thống kiểm tra khi áp dụng.</p>
+            </div>
+            <a class="button button-secondary" href="dang-nhap">Đăng nhập để đặt sân <span aria-hidden="true">↗</span></a>
+        </div>
+        <p id="publicPromotionsStatus" class="guest-promotion-status" role="status" aria-live="polite">Đang tải chương trình ưu đãi…</p>
+        <button id="publicPromotionsRetry" class="text-button" type="button" hidden>Thử tải lại ưu đãi</button>
+        <div id="publicPromotions" class="guest-promotion-grid" aria-busy="true"></div>
+    </section>
     <section id="ban-do" class="map-section">
         <div class="container map-grid">
             <div class="map-info">
-                <span class="section-kicker">HẸN NHAU TẠI SÂN</span>
+                <span class="section-kicker">Hẹn nhau tại sân</span>
                 <h2>Đường đến sân FC-UTE</h2>
-                <p>Sân bóng ĐH SPKT TP.HCM, trong khuôn viên trường. Điểm đến được đặt tại vị trí sân bóng theo liên kết của nhóm.</p>
+                <p>Sân bóng ĐH SPKT TP.HCM, trong khuôn viên trường. Chọn cách di chuyển thuận tiện để đến sân cùng đồng đội.</p>
                 <div class="map-links">
                     <a id="openMap" class="button" target="_blank" rel="noopener noreferrer">
                         <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i> Mở Google Maps ↗
@@ -190,8 +215,9 @@
     <div class="container footer-wrap">
         <span><strong>FC-UTE</strong> · Hệ thống quản lý sân bóng</span>
         <div>
-            <a href="Dang_nhap.html">Đăng nhập</a>
-            <a href="Dang_ky.html">Đăng ký</a>
+            <a href="dang-nhap">Đăng nhập</a>
+            <a href="dang-ky">Đăng ký</a>
+            <a href="#chuong-trinh-uu-dai">Chương trình ưu đãi</a>
             <a href="#ban-do">Bản đồ</a>
         </div>
     </div>
@@ -200,5 +226,6 @@
 <script src="js/auth.js" defer></script>
 <script src="js/venue-map.js" defer></script>
 <script src="js/public-home.js" defer></script>
+<script src="js/public-promotions.js" defer></script>
 </body>
 </html>

@@ -2,40 +2,42 @@
 window.SanBongNavigation = (() => {
     const routes = {
         VT01: [
-            ['Trang chủ', 'Man_hinh_chinh_KH.html'],
-            ['Đặt sân', 'Man_hinh_chinh_Dat_san_KH.html', 'CN02_XEM'],
-            ['Lịch đặt của tôi', 'Quan_ly_lich_dat_san.html', 'CN02_XEM'],
-            ['Lịch sử đặt sân', 'Man_hinh_LS&ĐG_KH.html', 'CN02_XEM'],
-            ['Khuyến mãi', 'Man_hinh_Khuyen_mai_KH.html'],
-            ['Thông tin tài khoản', 'Tai_khoan_KH.html']
+            ['Trang chủ', 'khach-hang'],
+            ['Đặt sân', 'dat-san', 'CN02_XEM'],
+            ['Lịch đặt của tôi', 'lich-dat-cua-toi', 'CN02_XEM'],
+            ['Lịch sử đặt sân', 'lich-su-dat-san', 'CN02_XEM'],
+            ['Khuyến mãi', 'khuyen-mai'],
+            ['Thông tin tài khoản', 'tai-khoan']
         ],
         VT02: [
-            ['Bảng điều khiển sân', 'Man_hinh_chinh_NVKH.html', 'CN02_XEM'],
-            ['Lịch đá bóng', 'Lich_da_bong.html', 'CN02_XEM'],
-            ['Quản lý lượt đặt', 'Quan_ly_lich_dat_san.html', 'CN02_XEM'],
-            ['Đặt sân tại quầy', 'Dat_san_tai_quay.html', 'CN02_THEM'],
-            ['Trạng thái sân', 'Quan_ly_san.html', 'CN02_XEM'],
-            ['Tiếp nhận phản hồi', 'Phan_hoi.html', 'CN05_XEM']
+            ['Bảng điều khiển sân', 'nhan-vien', 'CN02_XEM'],
+            ['Lịch đá bóng', 'lich-san', 'CN02_XEM'],
+            ['Quản lý sân', 'dieu-phoi-san', 'CN02_XEM'],
+            ['Đặt sân tại quầy', 'dat-san-tai-quay', 'CN02_THEM'],
+            ['Trạng thái sân', 'quan-ly-san', 'CN02_XEM'],
+            ['Tiếp nhận phản hồi', 'phan-hoi', 'CN05_XEM']
         ],
         VT03: [
-            ['Thu tiền & Hoàn tiền', 'Man_hinh_chinh_NVKT.html', 'CN04_XEM'],
-            ['Doanh thu', 'Doanh_thu.html', 'CN06_XEM'],
-            ['Đối soát & Báo cáo', 'Bao_cao.html', 'CN06_XEM']
+            ['Quản lý hóa đơn', 'hoa-don', 'CN04_XEM'],
+            ['Hoàn tiền', 'hoan-tien', 'CN04_XEM'],
+            ['Thanh toán VietQR', 'thanh-toan', 'CN04_XEM'],
+            ['Đối soát & Báo cáo', 'bao-cao', 'CN06_XEM']
         ],
         VT04: [
-            ['Tổng quan', 'Man_hinh_chinh.html', 'CN06_XEM'],
-            ['Lịch đá bóng', 'Lich_da_bong.html', 'CN02_XEM'],
-            ['Quản lý lượt đặt', 'Quan_ly_lich_dat_san.html', 'CN02_XEM'],
-            ['Đặt sân tại quầy', 'Dat_san_tai_quay.html', 'CN02_THEM'],
-            ['Quản lý sân', 'Quan_ly_san.html', 'CN02_XEM'],
-            ['Giao dịch / Hoàn tiền', 'Man_hinh_chinh_NVKT.html', 'CN04_XEM'],
-            ['Nhân sự & Phân quyền', 'Man_hinh_chinh_TK&PQ_HT.html', 'CN07_XEM'],
-            ['Cấu hình kinh doanh', 'Cau_hinh_san.html', 'CN02_XEM'],
-            ['Phản hồi', 'Phan_hoi.html', 'CN05_XEM'],
-            ['Báo cáo', 'Bao_cao.html', 'CN06_XEM'],
-            ['Doanh thu', 'Doanh_thu.html', 'CN06_XEM'],
-            ['Nhật ký', 'Man_hinh_chinh_TK&PQ_HT.html#logs', 'CN08_XEM'],
-            ['Sao lưu / Phục hồi', 'Sao_luu.html', 'CN08_XEM']
+            ['Tổng quan', 'quan-tri', 'CN06_XEM'],
+            ['Lịch đá bóng', 'lich-san', 'CN02_XEM'],
+            ['Quản lý lượt đặt', 'dieu-phoi-san', 'CN02_XEM'],
+            ['Đặt sân tại quầy', 'dat-san-tai-quay', 'CN02_THEM'],
+            ['Quản lý sân', 'quan-ly-san', 'CN02_XEM'],
+            ['Cấu hình kinh doanh', 'cau-hinh', 'CN02_XEM'],
+            ['Phản hồi', 'phan-hoi', 'CN05_XEM'],
+            ['Quản lý hóa đơn', 'hoa-don', 'CN04_XEM'],
+            ['Hoàn tiền', 'hoan-tien', 'CN04_XEM'],
+            ['Thanh toán VietQR', 'thanh-toan', 'CN04_XEM'],
+            ['Doanh thu', 'doanh-thu', 'CN06_XEM'],
+            ['Báo cáo', 'bao-cao', 'CN06_XEM'],
+            ['Nhân sự & Phân quyền', 'nhan-su-phan-quyen', 'CN07_XEM'],
+            ['Nhật ký', 'nhan-su-phan-quyen#logs', 'CN08_XEM']
         ]
     };
     function items(account) {
@@ -45,7 +47,7 @@ window.SanBongNavigation = (() => {
         const links=[...menu.querySelectorAll('a')],path=decodeURIComponent(location.pathname.split('/').pop());
         const matchesHash=links.some(a=>a.getAttribute('href')===path+location.hash&&location.hash);
         for(const link of links){
-            const href=link.getAttribute('href');if(href==='Dang_nhap.html')continue;
+            const href=link.getAttribute('href');if(href==='dang-nhap')continue;
             const selected=href.split('#')[0]===path&&(matchesHash?href===path+location.hash:!href.includes('#'));
             for(const cls of ['bg-brand-50','text-brand-700','font-bold'])link.classList.toggle(cls,selected);
             for(const cls of ['text-gray-600','hover:bg-gray-50'])link.classList.toggle(cls,!selected);
@@ -56,6 +58,9 @@ window.SanBongNavigation = (() => {
     function shell(account) {
         const customer=account.maVaiTro==='VT01',main=document.querySelector('main');
         if(!main)return null;
+        if(account.maVaiTro==='VT02'&&!document.querySelector('link[href="css/staff-dashboard.css"]')){const style=document.createElement('link');style.rel='stylesheet';style.href='css/staff-dashboard.css';document.head.append(style);}
+        if(account.maVaiTro==='VT04'&&!document.querySelector('link[href="css/admin-workspace.css"]')){const style=document.createElement('link');style.rel='stylesheet';style.href='css/admin-workspace.css';document.head.append(style);}
+        if(account.maVaiTro==='VT04'&&document.body.dataset.staffPage==='bookings'){const title=main.querySelector('.sw-heading h1');if(title)title.textContent='Quản lý lượt đặt';}
         const roleName=({VT01:'Khách hàng',VT02:'Nhân viên sân',VT03:'Kế toán',VT04:'Quản lý hệ thống'})[account.maVaiTro]||'';
         let oldRoot=main;while(oldRoot.parentElement!==document.body)oldRoot=oldRoot.parentElement;
         const actions=document.createElement('div');actions.className='fc-page-actions flex flex-wrap justify-end gap-2 mb-4';
@@ -73,7 +78,7 @@ window.SanBongNavigation = (() => {
         const frame=document.createElement('div');frame.className='fc-workspace';
         const header=document.createElement(customer?'nav':'header');header.className=customer?'fc-topbar':'fc-workspace-header';
         header.setAttribute('aria-label',customer?'Điều hướng khách hàng':'Thông tin trang');
-        const brand=document.createElement('a');brand.href=({VT01:'Man_hinh_chinh_KH.html',VT02:'Man_hinh_chinh_NVKH.html',VT03:'Man_hinh_chinh_NVKT.html',VT04:'Man_hinh_chinh.html'})[account.maVaiTro];brand.textContent='FC-UTE';brand.className='fc-brand';
+        const brand=document.createElement('a');brand.href=({VT01:'khach-hang',VT02:'nhan-vien',VT03:'hoa-don',VT04:'quan-tri'})[account.maVaiTro];brand.textContent='FC-UTE';brand.className='fc-brand';
         if(!customer){const logo=document.createElement('img');logo.src='assets/hcmute-logo.png';logo.alt='';logo.className='fc-brand-logo';brand.prepend(logo);}
         const name=document.createElement('span');name.dataset.accountName='';name.textContent=account.hoTen;name.className='fc-account-name';
         const trigger=document.createElement('button');trigger.type='button';trigger.dataset.mobileMenu='';trigger.className='md:hidden border rounded-lg px-3 py-2';trigger.textContent='☰ Menu';trigger.setAttribute('aria-label','Mở menu');trigger.setAttribute('aria-controls','fcPrimaryNavigation');trigger.setAttribute('aria-expanded','false');
@@ -85,7 +90,7 @@ window.SanBongNavigation = (() => {
             const identity=document.createElement('div');identity.className='fc-sidebar-identity';
             const role=document.createElement('p');role.textContent=roleName;identity.append(brand,role);
             const nav=document.createElement('nav');nav.setAttribute('aria-label','Chức năng '+roleName);nav.append(host);sidebar.append(identity,nav);document.body.prepend(sidebar);
-            const title=document.createElement('span');title.className='fc-page-title';title.textContent=main.querySelector('h1')?.textContent||document.title.split(' - ')[0];header.append(trigger,title,name);frame.append(header);
+            const title=document.createElement('span');title.className='fc-page-title';title.textContent=[...main.querySelectorAll('h1')].find(h=>['VT02','VT04'].includes(account.maVaiTro)?!h.closest('.cp-calendar-heading'):!h.closest('.sw-heading,.cp-calendar-heading'))?.textContent||document.title.split(' - ')[0];header.append(trigger,title,name);frame.append(header);
         }
         frame.append(main);document.body.append(frame);return {host,sidebar:!customer};
     }
@@ -95,10 +100,15 @@ window.SanBongNavigation = (() => {
         const menu = document.createElement('div');
         menu.dataset.roleMenu = account.maVaiTro;
         menu.className = sidebar ? 'space-y-2' : 'max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center gap-2';
+        let previousGroup='';
         for (const [label, href] of items(account)) {
+            if(account.maVaiTro==='VT04'){
+                const group=href==='quan-tri'?'Tổng quan':href.startsWith('nhan-su-phan-quyen')?'Quản trị':['hoa-don','hoan-tien','thanh-toan','doanh-thu','bao-cao'].includes(href)?'Tài chính':'Vận hành sân';
+                if(group!==previousGroup){const heading=document.createElement('p');heading.className='admin-menu-group';heading.textContent=group;menu.append(heading);previousGroup=group;}
+            }
             const link = document.createElement('a');
             link.href = href; link.textContent = label;
-            const icons={'Man_hinh_chinh_KH.html':'house','Man_hinh_chinh.html':'chart-pie','Man_hinh_chinh_NVKH.html':'table-columns','Man_hinh_chinh_NVKT.html':'receipt','Lich_da_bong.html':'calendar-days','Quan_ly_lich_dat_san.html':'calendar-check','Dat_san_tai_quay.html':'calendar-plus','Quan_ly_san.html':'futbol','Bao_cao.html':'chart-line','Doanh_thu.html':'chart-column','Phan_hoi.html':'comments','Man_hinh_chinh_TK&PQ_HT.html':'users-gear','Cau_hinh_san.html':'sliders','Sao_luu.html':'database'};
+            const icons={'khach-hang':'house','quan-tri':'chart-pie','nhan-vien':'table-columns','hoan-tien':'rotate-left','thanh-toan':'qrcode','hoa-don':'receipt','lich-san':'calendar-days','dieu-phoi-san':'calendar-check','dat-san-tai-quay':'calendar-plus','quan-ly-san':'futbol','bao-cao':'chart-line','doanh-thu':'chart-column','phan-hoi':'comments','nhan-su-phan-quyen':'users-gear','cau-hinh':'sliders','sao-luu':'database'};
             const icon=document.createElement('i');icon.className='fa-solid fa-'+(icons[href.split('#')[0]]||'circle-dot')+' fc-menu-icon';icon.setAttribute('aria-hidden','true');link.prepend(icon);
             const selected = decodeURIComponent(location.pathname.split('/').pop()) === href.split('#')[0];
             link.className = (sidebar ? 'block px-4 py-3 rounded-xl ' : 'inline-block px-3 py-2 rounded-lg ') +
@@ -107,7 +117,7 @@ window.SanBongNavigation = (() => {
             menu.append(link);
         }
         {
-            const logout = document.createElement('a'); logout.href = 'Dang_nhap.html'; logout.textContent = 'Đăng xuất';
+            const logout = document.createElement('a'); logout.href = 'dang-nhap'; logout.textContent = 'Đăng xuất';
             logout.className = 'px-3 py-2 text-red-600'; menu.append(logout);
         }
         host.replaceChildren(menu);
@@ -119,4 +129,17 @@ window.SanBongNavigation = (() => {
         }
     }
     return { items, render };
+})();
+
+/* Pending cancellation count is read from the server, never inferred from payments. */
+(() => {
+ let active=false,loading=false;
+ async function update(){if(!active||loading||document.visibilityState!=='visible')return;loading=true;
+  const links=[...document.querySelectorAll('[data-role-menu] a[href="hoan-tien"]')];
+  try{const data=await SanBong.request('finance/cancellation-requests?status=PENDING&page=1');for(const link of links){link.querySelector('.fc-cancellation-count')?.remove();if(data.enabled&&data.pending>0){const badge=document.createElement('span');badge.className='fc-cancellation-count';badge.textContent=String(data.pending);badge.setAttribute('aria-label',data.pending+' yêu cầu hủy chờ duyệt');link.append(badge);}link.title=data.enabled?data.pending+' yêu cầu hủy chờ duyệt':'Yêu cầu hủy chưa được kích hoạt';}}
+  catch{for(const link of links){link.querySelector('.fc-cancellation-count')?.remove();link.title='Chưa tải được số yêu cầu hủy; mở trang để tải lại.';}}
+  finally{loading=false;}
+ }
+ document.addEventListener('sanbong:authenticated',e=>{active=['VT03','VT04'].includes(e.detail.maVaiTro)&&e.detail.permissions.includes('CN04_XEM');update();});
+ document.addEventListener('sanbong:cancellation-updated',update);window.addEventListener('focus',update);setInterval(update,60000);
 })();

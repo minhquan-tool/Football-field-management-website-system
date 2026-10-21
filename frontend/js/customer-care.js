@@ -7,6 +7,18 @@ document.addEventListener('sanbong:authenticated', async event => {
     }
     const write=(path,method,body)=>SanBong.request(path,{method,headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
     function line(host,text,tag='p'){const node=document.createElement(tag);node.textContent=text;host.append(node);return node;}
+    let feedbackBookingPage=1,feedbackChoicesReady=false;
+    async function loadFeedbackBookings(){
+        const select=$('feedbackBooking');if(!select)return;feedbackChoicesReady=false;select.disabled=true;$('feedbackBookingStatus').textContent='Đang tải các lượt đặt sân của bạn…';
+        const submit=$('feedbackForm').querySelector('[type="submit"],button:not([type="button"])');submit.disabled=true;
+        $('feedbackBookingPrevious').disabled=$('feedbackBookingNext').disabled=true;
+        try{const data=await SanBong.request('customer/history?'+new URLSearchParams({page:feedbackBookingPage,size:50,order:'desc'}));select.replaceChildren(new Option('Phản hồi chung',''));
+            for(const booking of data.bookings)select.add(new Option(`${booking.tenSan} · ${booking.ngayChoi} ${booking.gioBatDau.slice(0,5)}–${booking.gioKetThuc.slice(0,5)} · ${booking.maDatSan}`,booking.maDatSan));
+            $('feedbackBookingPage').textContent=`Trang ${feedbackBookingPage} / ${Math.max(1,data.totalPages||1)}`;$('feedbackBookingPrevious').disabled=feedbackBookingPage<=1;$('feedbackBookingNext').disabled=feedbackBookingPage>=(data.totalPages||1);
+            $('feedbackBookingStatus').textContent=data.bookings.length?'Chọn sân theo lượt đặt; nhân viên và chủ sân sẽ nhận phản hồi kèm thông tin này.':'Bạn chưa có lượt đặt. Bạn vẫn có thể gửi phản hồi chung.';
+            feedbackChoicesReady=true;select.disabled=false;submit.disabled=!account.permissions.includes('CN05_THEM');
+        }catch(error){$('feedbackBookingStatus').textContent='Không tải được lượt đặt: '+error.message;}
+    }
     async function feedback(){const host=$('feedbackRows');if(!host)return;host.replaceChildren();const rows=await SanBong.request('feedback');
         for(const row of rows){const article=document.createElement('article');article.className='border rounded-xl p-4 my-3';host.append(article);
             line(article,`${row.maPhanHoi} · ${row.hoTen} · ${row.maDatSan||'Không kèm lượt đặt'} · ${row.trangThai}`,'h3');
@@ -70,7 +82,7 @@ document.addEventListener('sanbong:authenticated', async event => {
                 const li=line(progress,(index<=step?'✓ ':'○ ')+label,'li');if(index===step)li.setAttribute('aria-current','step');
             }
             line(card,'Tiến trình sử dụng sân độc lập với thanh toán. Xem chi tiết để biết tiền đã thu, còn thiếu hoặc khoản hoàn.');
-            const a=line(card,'Xem chi tiết và hóa đơn','a');a.className='history-detail-link';a.href='Quan_ly_lich_dat_san.html?'+new URLSearchParams({date:booking.ngayChoi,pitch:booking.maSan,booking:booking.maDatSan});
+            const a=line(card,'Xem chi tiết và hóa đơn','a');a.className='history-detail-link';a.href='lich-dat-cua-toi?'+new URLSearchParams({date:booking.ngayChoi,pitch:booking.maSan,booking:booking.maDatSan});
             const review=data.reviews.find(r=>r.maDatSan===booking.maDatSan);
             if(review){line(card,`Đã đánh giá ${review.diemTrungBinh}/5 · ${review.noiDung||''}`);continue;}
             if(booking.trangThai!=='Đã sử dụng'||!account.permissions.includes('CN05_THEM'))continue;
@@ -113,8 +125,9 @@ document.addEventListener('sanbong:authenticated', async event => {
                 SanBong.fieldErrors(form,err.fieldErrors,{matKhauHienTai:'password_current',matKhauMoi:'password_new',xacNhanMatKhau:'password_confirm'});button.disabled=false;
             }
         };
-        if($('feedbackForm'))$('feedbackForm').onsubmit=async e=>{e.preventDefault();const button=e.currentTarget.querySelector('button');button.disabled=true;try{await write('feedback','POST',{maDatSan:$('feedbackBooking').value.trim()||null,loaiPhanHoi:$('feedbackType').value,noiDung:$('feedbackContent').value});$('feedbackContent').value='';tell('Đã tiếp nhận phản hồi.');await feedback();}catch(err){tell(err.message,true);}finally{button.disabled=false;}};
-        for(const form of forms)if(form.onsubmit){form.dataset.careReady='true';form.querySelectorAll('button').forEach(button=>button.disabled=false);}
+        if($('feedbackForm')){await loadFeedbackBookings();$('feedbackBookingPrevious').onclick=()=>{feedbackBookingPage--;loadFeedbackBookings();};$('feedbackBookingNext').onclick=()=>{feedbackBookingPage++;loadFeedbackBookings();};}
+        if($('feedbackForm'))$('feedbackForm').onsubmit=async e=>{e.preventDefault();if(!feedbackChoicesReady||!account.permissions.includes('CN05_THEM')){tell('Chưa tải được lượt đặt hoặc tài khoản chưa có quyền gửi phản hồi.',true);return;}const button=e.currentTarget.querySelector('[type="submit"],button:not([type="button"])');button.disabled=true;try{await write('feedback','POST',{maDatSan:$('feedbackBooking').value.trim()||null,loaiPhanHoi:$('feedbackType').value,noiDung:$('feedbackContent').value});$('feedbackContent').value='';tell('Đã tiếp nhận phản hồi.');await feedback();}catch(err){tell(err.message,true);}finally{button.disabled=false;}};
+        for(const form of forms)if(form.onsubmit){form.dataset.careReady='true';if(form.id!=='feedbackForm')form.querySelectorAll('button').forEach(button=>button.disabled=false);}
         await Promise.all([history(),feedback()]);
     }catch(err){tell(err.message,true);}finally{document.body.dataset.careReady='true';}
 });

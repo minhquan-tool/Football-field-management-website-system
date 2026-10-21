@@ -41,15 +41,15 @@ class LoginRateLimitHttpTest {
         when(auth.credentialFingerprint(anyString())).thenReturn(AuthService.fingerprint(hash));when(auth.reload(anyString())).thenAnswer(call->principal());
     }
     AccountPrincipal principal(){var account=new TaiKhoan();account.setMaTK("MOCK");account.setTenDangNhap("valid");account.setMatKhau(hash);account.setTrangThai("Hoạt động");var role=new VaiTro();role.setMaVaiTro("VT01");account.setVaiTro(role);return new AccountPrincipal(account,List.of(new SimpleGrantedAuthority("ROLE_CUSTOMER")));}
-    Token token()throws Exception{var result=mvc.perform(get("/auth/csrf")).andReturn();var data=json.readTree(result.getResponse().getContentAsString()).path("data");return new Token((MockHttpSession)result.getRequest().getSession(),data.path("headerName").asText(),data.path("token").asText());}
+    Token token()throws Exception{var result=mvc.perform(get("/api/auth/csrf")).andReturn();var data=json.readTree(result.getResponse().getContentAsString()).path("data");return new Token((MockHttpSession)result.getRequest().getSession(),data.path("headerName").asText(),data.path("token").asText());}
     ResultActions login(String address,String id,String password,String... headers)throws Exception{
-        var t=token();var request=post("/auth/login").session(t.session()).header(t.header(),t.value()).param("identifier",id).param("password",password).with(r->{r.setRemoteAddr(address);return r;});
+        var t=token();var request=post("/api/auth/login").session(t.session()).header(t.header(),t.value()).param("identifier",id).param("password",password).with(r->{r.setRemoteAddr(address);return r;});
         for(int i=0;i<headers.length;i+=2)request.header(headers[i],headers[i+1]);return mvc.perform(request);
     }
     @Test void rejectsThirdWrongAttemptWithRetryAfterAndWithoutCallingAuthenticationAgain()throws Exception{
         login(peer,"missing","bad").andExpect(status().isUnauthorized());login(peer,"missing","bad").andExpect(status().isUnauthorized());
         login(peer,"missing","bad").andExpect(status().isTooManyRequests()).andExpect(header().exists("Retry-After")).andExpect(jsonPath("$.data.retryAfterSeconds").value(org.hamcrest.Matchers.greaterThan(0)));
-        verify(auth,times(2)).loadUserByUsername("missing");mvc.perform(get("/auth/csrf")).andExpect(status().isOk());
+        verify(auth,times(2)).loadUserByUsername("missing");mvc.perform(get("/api/auth/csrf")).andExpect(status().isOk());
     }
     @Test void forwardedHeadersCannotBypassPeerLimitAndOtherPeerCanStillTry()throws Exception{
         login(peer,"missing","bad").andExpect(status().isUnauthorized());login(peer,"missing","bad").andExpect(status().isUnauthorized());
@@ -61,7 +61,7 @@ class LoginRateLimitHttpTest {
         login(peer,"valid","RateLimitFixture2026!").andExpect(status().isTooManyRequests());
     }
     @Test void missingCsrfDoesNotConsumeLoginBudget()throws Exception{
-        for(int i=0;i<4;i++)mvc.perform(post("/auth/login").param("identifier","valid").param("password","bad").with(r->{r.setRemoteAddr(peer);return r;})).andExpect(status().isForbidden());
+        for(int i=0;i<4;i++)mvc.perform(post("/api/auth/login").param("identifier","valid").param("password","bad").with(r->{r.setRemoteAddr(peer);return r;})).andExpect(status().isForbidden());
         login(peer,"valid","RateLimitFixture2026!").andExpect(status().isOk());
     }
     @Test void successBeforeThresholdResetsPairAndDoesNotLeakPassword()throws Exception{
@@ -76,6 +76,6 @@ class LoginRateLimitHttpTest {
         login(peer,"valid","RateLimitFixture2026!").andExpect(status().isOk());
     }
     @Test void contextPathAndDecodedServletPathStillUseLimiter()throws Exception{
-        for(int i=0;i<3;i++){var t=token();mvc.perform(post("/api/auth/login").contextPath("/api").servletPath("/auth/login").session(t.session()).header(t.header(),t.value()).param("identifier","missing").param("password","bad").with(r->{r.setRemoteAddr(peer);return r;})).andExpect(status().is(i<2?401:429));}
+        for(int i=0;i<3;i++){var t=token();mvc.perform(post("/api/auth/login").contextPath("/api").servletPath("/api/auth/login").session(t.session()).header(t.header(),t.value()).param("identifier","missing").param("password","bad").with(r->{r.setRemoteAddr(peer);return r;})).andExpect(status().is(i<2?401:429));}
     }
 }

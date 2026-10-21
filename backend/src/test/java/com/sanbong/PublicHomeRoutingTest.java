@@ -11,13 +11,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class PublicHomeRoutingTest {
     @Test void rootShowsGuestLandingBeforeLogin() throws Exception {
         MockMvcBuilders.standaloneSetup(new HomeController()).build().perform(get("/"))
-                .andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/Trang_chu.html"));
+                .andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/trang-chu"));
     }
     @Test void guestControllerHasReadEndpointsOnly() throws Exception {
         var service=mock(PublicPitchService.class);
         when(service.catalog("", "")).thenReturn(List.of());
         var mvc=MockMvcBuilders.standaloneSetup(new PublicPitchController(service)).build();
-        mvc.perform(get("/public/pitches")).andExpect(status().isOk()).andExpect(jsonPath("$.success").value(true));
-        mvc.perform(post("/public/pitches")).andExpect(status().isMethodNotAllowed());
+        mvc.perform(get("/api/public/pitches")).andExpect(status().isOk()).andExpect(jsonPath("$.success").value(true));
+        mvc.perform(post("/api/public/pitches")).andExpect(status().isMethodNotAllowed());
     }
 }

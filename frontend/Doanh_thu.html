@@ -3,8 +3,8 @@
 <title>Doanh thu - FC-UTE</title>
 <link rel="stylesheet" href="vendor/montserrat/montserrat.css"><link rel="stylesheet" href="vendor/fontawesome/css/all.min.css">
 <link rel="stylesheet" href="css/tailwind.css"><link rel="stylesheet" href="css/fc-ute.css"><link rel="stylesheet" href="css/experience.css"><link rel="stylesheet" href="css/revenue.css">
-<script src="js/ui.js" defer></script></head><body class="revenue-page"><nav></nav><main>
-<div class="revenue-heading"><div><h1>Doanh thu</h1><p id="revenueRange"></p></div><button type="button" id="revenueRefresh" class="admin-refresh-button" aria-label="Tải lại doanh thu" title="Tải lại doanh thu"><i class="fa-solid fa-arrow-rotate-right" aria-hidden="true"></i></button></div>
+<script src="js/ui.js" defer></script><link rel="stylesheet" href="css/accounting-pages.css"></head><body data-accounting-page="revenue" class="revenue-page"><nav></nav><main>
+<div class="revenue-heading ac-heading"><div><p class="ac-eyebrow">Phân tích tài chính FC-UTE</p><h1>Doanh thu</h1><p id="revenueRange"></p></div><button type="button" id="revenueRefresh" class="admin-refresh-button" aria-label="Tải lại doanh thu" title="Tải lại doanh thu"><i class="fa-solid fa-arrow-rotate-right" aria-hidden="true"></i></button></div>
 <form id="revenueFilters" data-api-ready="true" class="revenue-filters">
 <label>Tổng hợp theo<select id="revenuePeriod"><option value="day">Ngày</option><option value="week">Tuần</option><option value="month" selected>Tháng</option><option value="year">Năm</option></select></label>
 <label>Năm<input id="revenueYear" type="number" min="1753" max="9998" step="1" required></label>

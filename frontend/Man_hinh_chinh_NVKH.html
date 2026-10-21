@@ -26,8 +26,8 @@
             transform: translateY(0);
         }
     </style>
-<link rel="stylesheet" href="css/fc-ute.css"><link rel="stylesheet" href="css/experience.css"><script src="js/ui.js" defer></script></head>
-<body class="text-gray-800 flex h-screen overflow-hidden">
+<link rel="stylesheet" href="css/fc-ute.css"><link rel="stylesheet" href="css/experience.css"><link rel="stylesheet" href="css/staff-dashboard.css"><script src="js/ui.js" defer></script></head>
+<body data-staff-page="dashboard" class="text-gray-800 flex h-screen overflow-hidden">
 
     <!-- Sidebar Nhân Viên -->
     <aside class="w-72 bg-white shadow-xl flex flex-col h-full hidden md:flex z-20 border-r border-gray-100">
@@ -43,7 +43,7 @@
         <nav class="flex-1 overflow-y-auto py-6 px-3 space-y-2"><div data-navigation-loading>Đang tải chức năng theo quyền…</div></nav>
 
         <div class="p-4 border-t border-gray-100 bg-gray-50">
-            <a href="Dang_nhap.html" class="flex items-center gap-3 text-gray-600 hover:text-red-600 hover:bg-red-50 px-4 py-2.5 rounded-xl font-bold transition-colors">
+            <a href="dang-nhap" class="flex items-center gap-3 text-gray-600 hover:text-red-600 hover:bg-red-50 px-4 py-2.5 rounded-xl font-bold transition-colors">
                 <i class="fa-solid fa-arrow-right-from-bracket w-5 text-center"></i> Đăng xuất
             </a>
         </div>
@@ -71,9 +71,9 @@
 
         <!-- Dashboard Content -->
         <main class="flex-1 overflow-y-auto p-6 lg:p-8">
-            
+            <section class="sd-heading" aria-labelledby="staffDashboardTitle"><div><p class="sd-eyebrow">FC-UTE · Nhân viên sân</p><h1 id="staffDashboardTitle">Bảng điều phối ca trực</h1><p>Theo dõi lượt đặt, trạng thái sân và phản hồi cần xử lý trong ngày.</p></div><a href="lich-san" class="sd-calendar-link"><i class="fa-solid fa-calendar-days" aria-hidden="true"></i> Xem lịch đá bóng</a></section>
             <!-- Quick Stats -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+            <div class="sd-stats grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
                 <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 flex items-center gap-4 border-l-4 border-l-blue-500">
                     <div class="h-12 w-12 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center text-xl">
                         <i class="fa-solid fa-calendar-check"></i>
@@ -89,7 +89,7 @@
                         <i class="fa-solid fa-futbol"></i>
                     </div>
                     <div>
-                        <p class="text-xs text-gray-500 font-bold uppercase mb-1">Sân đang hoạt động</p>
+                        <p class="text-xs text-gray-500 font-bold uppercase mb-1">Sân đang sử dụng</p>
                         <h3 id="staffOccupiedCount" class="text-2xl font-black text-gray-800">—</h3>
                     </div>
                 </div>
@@ -99,20 +99,20 @@
                         <i class="fa-solid fa-clock-rotate-left"></i>
                     </div>
                     <div>
-                        <p class="text-xs text-gray-500 font-bold uppercase mb-1">Booking đã xác nhận</p>
+                        <p class="text-xs text-gray-500 font-bold uppercase mb-1">Lượt đặt đã xác nhận</p>
                         <h3 id="staffConfirmedCount" class="text-2xl font-black text-gray-800">—</h3>
                     </div>
                 </div>
             </div>
 
             <!-- Tình trạng sân trực quan & Bảng lịch đặt -->
-            <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+            <div class="sd-detail-grid grid grid-cols-1 xl:grid-cols-3 gap-8">
                 
                 <!-- Cột trái: Sân và Trạng thái (2 Cột) -->
                 <div class="xl:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-lg font-bold text-gray-800"><i class="fa-solid fa-layer-group text-brand-600 mr-2"></i> Trạng Thái Sân Thực Tế</h3>
-                        <button onclick="location.href='Dat_san_tai_quay.html'" class="bg-brand-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-brand-700 transition-colors shadow-sm">
+                        <button onclick="location.href='dat-san-tai-quay'" class="bg-brand-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-brand-700 transition-colors shadow-sm">
                             <i class="fa-solid fa-plus mr-1"></i> Đặt sân tại quầy
                         </button>
                     </div>
@@ -128,7 +128,7 @@
 
                     <div id="staffFeedbackPreview" class="space-y-4 flex-1"></div>
 
-                    <button type="button" onclick="location.href='Phan_hoi.html'" class="w-full mt-6 py-2.5 bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-600 text-xs font-bold rounded-xl transition-colors">
+                    <button type="button" onclick="location.href='phan-hoi'" class="w-full mt-6 py-2.5 bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-600 text-xs font-bold rounded-xl transition-colors">
                         Xem tất cả lịch sử phản hồi
                     </button>
                 </div>

@@ -1,0 +1,92 @@
+body[data-accounting-workspace]{background:#f5f7fb;color:#172e50;font-family:Montserrat,Arial,sans-serif}
+body[data-accounting-workspace] main{min-width:0}
+body[data-accounting-workspace] .aw-toolbar{align-items:end}
+body[data-accounting-workspace="invoices"] #accountingSearch{display:grid;grid-template-columns:minmax(230px,1fr) auto auto;align-items:end;gap:14px 12px}
+body[data-accounting-workspace="invoices"] #accountingSearch .aw-search-label{max-width:none;min-width:0;width:100%}
+body[data-accounting-workspace="invoices"] #accountingTabs{grid-column:1/3;margin:0;display:flex;flex-wrap:wrap;gap:8px;min-width:0}
+body[data-accounting-workspace="invoices"] #accountingTabs button{white-space:normal;flex:0 0 auto;min-width:90px;max-width:100%;padding:10px 14px;line-height:1.5}
+body[data-accounting-workspace="invoices"] #accountingRefresh{grid-column:3;grid-row:2;justify-self:end;border:1px solid #c4d4ef;background:#fff;color:#1749bd;width:44px;min-width:44px;padding:8px}
+body[data-accounting-workspace="invoices"] #accountingLookupOpen{border:1px solid #c4d4ef;background:#f6f9ff;color:#1749bd;max-width:240px;white-space:normal}
+body[data-accounting-workspace] .aw-total{background:#ecfaf3;color:#07664b;border:1px solid #b8e6ce;border-radius:14px;padding:12px 16px;font-size:14px;font-weight:650;white-space:nowrap}
+body[data-accounting-workspace] .aw-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:12px;background:#fff;border:1px solid #dce5f0;border-radius:16px;padding:18px 20px}
+body[data-accounting-workspace] .aw-toolbar label{display:flex;flex:1;gap:8px;flex-direction:column;font-size:13px;font-weight:600;min-width:180px;max-width:410px}
+body[data-accounting-workspace] .aw-toolbar input{width:100%;background:#f8faff}
+body[data-accounting-workspace] #accountingTabs{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}
+body[data-accounting-workspace] #accountingTabs button{background:#f0f4fa;color:#415776;font-size:13px;font-weight:600;border:0}
+body[data-accounting-workspace] #accountingTabs button[aria-pressed="true"]{background:#2152df;color:#fff}
+body[data-accounting-workspace] .aw-card{background:#fff;border:1px solid #dce5f0;border-radius:18px;overflow:hidden;min-width:0}
+body[data-accounting-workspace] .aw-table-scroll{overflow:auto;max-width:100%}
+body[data-accounting-workspace] .aw-table{width:100%;min-width:1050px;font-size:14px;line-height:1.6;border-collapse:collapse}
+body[data-accounting-workspace] .aw-table th{background:#f6f8fc;color:#526581;text-align:left;font-size:12px;font-weight:700;padding:16px;border-bottom:1px solid #dce5f0}
+body[data-accounting-workspace] .aw-table td{padding:18px 16px;border-bottom:1px solid #e7edf6;vertical-align:middle}
+body[data-accounting-workspace] .aw-table small{display:block;color:#62728b;font-size:12px;margin-top:3px}
+body[data-accounting-workspace] .aw-code{padding:4px 0!important;background:transparent;color:#1749bd;font-weight:700;min-height:32px!important}
+body[data-accounting-workspace] .aw-paid{color:#087453}
+body[data-accounting-workspace] .aw-due{color:#bd1647}
+body[data-accounting-workspace] .aw-badge{display:inline-block;padding:6px 10px;border-radius:10px;background:#eaf0ff;color:#1949ad;font-size:12px;font-weight:700;line-height:1.4}
+body[data-accounting-workspace] .aw-badge[data-state="DA_THANH_TOAN"],body[data-accounting-workspace] .aw-badge[data-state="Đã hoàn"]{background:#e1f8ed;color:#07664b}
+body[data-accounting-workspace] .aw-badge[data-state="THANH_TOAN_MOT_PHAN"],body[data-accounting-workspace] .aw-badge[data-state="Chờ duyệt"]{background:#fff3d4;color:#80510b}
+body[data-accounting-workspace] .aw-badge[data-state="DA_HUY"],body[data-accounting-workspace] .aw-badge[data-state="refund"]{background:#ffedf2;color:#a41e40}
+body[data-accounting-workspace] .aw-actions{display:flex;flex-direction:column;gap:8px;min-width:95px}
+body[data-accounting-workspace="invoices"] .aw-table{table-layout:fixed;min-width:1080px;font-size:13px}
+body[data-accounting-workspace="invoices"] .aw-table :is(th,td){padding:14px 10px;white-space:normal;overflow-wrap:anywhere}
+body[data-accounting-workspace="invoices"] .aw-table th:nth-child(1){width:85px}
+body[data-accounting-workspace="invoices"] .aw-table th:nth-child(2){width:145px}
+body[data-accounting-workspace="invoices"] .aw-table th:nth-child(3){width:105px}
+body[data-accounting-workspace="invoices"] .aw-table th:nth-child(10){width:110px}
+body[data-accounting-workspace="invoices"] .aw-table th:nth-child(11){width:95px}
+body[data-accounting-workspace="invoices"] .aw-actions{min-width:0}
+body[data-accounting-workspace="invoices"] .aw-actions button{padding:8px;font-size:13px}
+body[data-accounting-workspace="invoices"] .aw-table{table-layout:auto;min-width:1280px}
+body[data-accounting-workspace="invoices"] .aw-table :is(th,td){overflow-wrap:normal;word-break:normal}
+body[data-accounting-workspace="invoices"] .aw-table :is(th:first-child,td:first-child){min-width:115px}
+body[data-accounting-workspace="invoices"] .aw-code{white-space:nowrap}
+body[data-accounting-workspace="invoices"] .aw-table :is(th:last-child,td:last-child){position:static;min-width:115px;background:#fff;border-left:1px solid #e7edf6}
+body[data-accounting-workspace="invoices"] .aw-table th:last-child{background:#f6f8fc}
+body[data-accounting-workspace="invoices"] .aw-table :is(th:nth-child(10),td:nth-child(10)){min-width:160px}
+body[data-accounting-workspace="invoices"] .aw-badge{white-space:nowrap}
+body[data-accounting-workspace="invoices"] .aw-actions button{white-space:nowrap}
+body[data-accounting-workspace="invoices"] #accountingSearch #accountingTabs{margin:0;justify-content:flex-start;justify-self:start}
+body[data-accounting-workspace] .aw-section-heading label{flex:0 0 auto;width:auto;max-width:220px;min-width:160px}
+body[data-accounting-workspace] .aw-action{border:1px solid #c4d4ef;background:#f6f9ff;color:#1749bd}
+body[data-accounting-workspace] .aw-collect{background:#087c58;color:#fff}
+body[data-accounting-workspace] .aw-refund{background:#b61e47;color:#fff}
+body[data-accounting-workspace] .aw-pagination{display:flex;gap:16px;justify-content:flex-end;align-items:center;flex-wrap:wrap;padding:16px;font-size:13px}
+body[data-accounting-workspace] .aw-pagination button{border:1px solid #c4d4ef;background:#fff;color:#1749bd}
+body[data-accounting-workspace] .aw-section-heading{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding:22px 24px;border-bottom:1px solid #e7edf6}
+body[data-accounting-workspace] .aw-section-heading h2{font-size:17px;font-weight:700}
+body[data-accounting-workspace] .aw-caption{font-size:13px;color:#526581;line-height:1.7}
+body[data-accounting-workspace] .aw-notice{padding:16px 20px;border:1px solid #c4d4ef;background:#eef5ff;border-radius:12px;font-size:13px;color:#415776;line-height:1.7}
+body[data-accounting-workspace] #accountingStatus:empty{display:none}
+body[data-accounting-workspace] #accountingStatus{font-size:14px;color:#a32639}
+body[data-accounting-workspace] .aw-empty{text-align:center!important;color:#62728b;padding:32px!important}
+body[data-accounting-workspace] .aw-qr-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px}
+body[data-accounting-workspace] .aw-qr-summary{padding:24px}
+body[data-accounting-workspace] #qrInvoice{width:100%;margin-top:10px;font-size:14px}
+body[data-accounting-workspace] #qrInvoiceSummary{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:18px;margin:24px 0;font-size:14px}
+body[data-accounting-workspace] #qrInvoiceSummary dt{color:#62728b}
+body[data-accounting-workspace] #qrInvoiceSummary dd{font-weight:600;text-align:right;overflow-wrap:anywhere}
+body[data-accounting-workspace] #qrInvoiceSummary dd:last-child{color:#bd1647;font-size:20px}
+body[data-accounting-workspace] .aw-bank{padding:20px;border:1px solid #dce5f0;background:#f6f8fc;border-radius:14px;font-size:14px;line-height:1.8;margin-bottom:20px;overflow-wrap:anywhere}
+body[data-accounting-workspace] .aw-bank h3{font-size:14px;font-weight:700;margin-bottom:10px}
+body[data-accounting-workspace] .aw-qr-display{padding:24px;text-align:center;align-self:start}
+body[data-accounting-workspace] .aw-qr-display .aw-section-heading{padding:0 0 18px;text-align:left}
+body[data-accounting-workspace] #accountingQr{width:270px;height:auto;max-width:100%;margin:20px auto;border:1px solid #dce5f0;border-radius:16px}
+body[data-accounting-workspace] #qrStatus{font-size:14px;line-height:1.7;padding:16px 0;color:#415776}
+body[data-accounting-workspace] #qrOpenFinance{background:#087c58;color:#fff;width:100%}
+body[data-accounting-workspace] #accountingDetail{width:min(680px,calc(100% - 24px));max-height:90dvh;border:1px solid #dce5f0;border-radius:18px;padding:0;color:#172e50;overflow:auto}
+body[data-accounting-workspace] #accountingDetail::backdrop{background:#172e5066}
+body[data-accounting-workspace] .aw-dialog-heading{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 22px;background:#fff;border-bottom:1px solid #dce5f0}
+body[data-accounting-workspace] .aw-dialog-heading h2{font-size:18px;font-weight:700}
+body[data-accounting-workspace] #financeHost{padding:20px;border:0;background:#fff}
+body[data-accounting-workspace] #financeHost>section{padding:18px!important}
+body[data-accounting-workspace] button:disabled{opacity:.5;cursor:default}
+body[data-accounting-workspace] .finance-refund-confirmation{display:flex;flex-direction:column;gap:14px;border:1px solid #dce5f0;border-radius:14px;background:#fff;padding:18px;margin:12px 0}
+body[data-accounting-workspace] .finance-refund-confirmation[hidden]{display:none}
+body[data-accounting-workspace] .finance-refund-confirmation>label{display:flex;flex:0 0 auto;flex-direction:column;gap:8px;align-self:stretch;font-size:14px}
+body[data-accounting-workspace] .finance-refund-confirmation textarea{border:1px solid #c8d5e5;border-radius:10px;padding:10px;font-size:16px;max-width:100%}
+body[data-accounting-workspace] .finance-refund-confirmation .finance-refund-receipt{flex-direction:row;align-items:center;min-height:44px}
+body[data-accounting-workspace] .finance-refund-confirmation>button[type=submit]{background:#087c58;color:#fff}
+@media(max-width:1000px){body[data-accounting-workspace] .aw-qr-grid{grid-template-columns:1fr}body[data-accounting-workspace] .aw-toolbar label{max-width:none}body[data-accounting-workspace] #accountingTabs{margin:0;width:100%}}
+@media(max-width:600px){body[data-accounting-workspace] .aw-toolbar{padding:16px}body[data-accounting-workspace] .aw-total{white-space:normal}body[data-accounting-workspace] .aw-qr-summary,body[data-accounting-workspace] .aw-qr-display{padding:18px}body[data-accounting-workspace] #qrInvoiceSummary{font-size:13px;gap:14px}body[data-accounting-workspace] #qrInvoice{font-size:16px}body[data-accounting-workspace] .aw-pagination{justify-content:center}}
+@media(max-width:700px){body[data-accounting-workspace="invoices"] #accountingSearch{grid-template-columns:minmax(0,1fr) auto}body[data-accounting-workspace="invoices"] #accountingSearch .aw-search-label{grid-column:1/-1}body[data-accounting-workspace="invoices"] #accountingLookupOpen{max-width:none}body[data-accounting-workspace="invoices"] #accountingTabs{grid-column:1/-1}body[data-accounting-workspace="invoices"] #accountingRefresh{grid-column:2;grid-row:auto}body[data-accounting-workspace="invoices"] #accountingTabs button{flex:1 1 110px}}

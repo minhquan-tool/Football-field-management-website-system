@@ -24,16 +24,16 @@ class FreeTimeBookingTest {
     @BeforeEach void fixture() throws Exception {
         pitch="FA"+UUID.randomUUID().toString().replace("-","").substring(0,8);
         jdbc.update("INSERT INTO San(MaSan,TenSan,MaLoaiSan,TrangThai,MoTa) VALUES(?,?,?,?,?)",pitch,"Free time rollback","LS01","Trống","Phase5.1A test");
-        var c=mvc.perform(get("/auth/csrf")).andReturn();session=(MockHttpSession)c.getRequest().getSession(false);
+        var c=mvc.perform(get("/api/auth/csrf")).andReturn();session=(MockHttpSession)c.getRequest().getSession(false);
         var token=data(c).path("token").asText();var header=data(c).path("headerName").asText();
-        var login=mvc.perform(post("/auth/login").session(session).header(header,token).param("identifier","admin")
+        var login=mvc.perform(post("/api/auth/login").session(session).header(header,token).param("identifier","admin")
             .param("password",System.getenv().getOrDefault("AUTH_TEST_PASSWORD","123456"))).andExpect(status().isOk()).andReturn();
         session=(MockHttpSession)login.getRequest().getSession(false);
     }
     JsonNode data(MvcResult result) throws Exception { return json.readTree(result.getResponse().getContentAsString(java.nio.charset.StandardCharsets.UTF_8)).path("data"); }
     ResultActions create(String start,String end) throws Exception {
-        var c=data(mvc.perform(get("/auth/csrf").session(session)).andReturn());
-        return mvc.perform(post("/bookings").session(session).header(c.path("headerName").asText(),c.path("token").asText())
+        var c=data(mvc.perform(get("/api/auth/csrf").session(session)).andReturn());
+        return mvc.perform(post("/api/bookings").session(session).header(c.path("headerName").asText(),c.path("token").asText())
             .contentType("application/json").content(json.writeValueAsString(Map.of("maSan",pitch,"ngayChoi",day.toString(),
                 "gioBatDau",start,"gioKetThuc",end,"maKH","KH01","ghiChu","Phase5.1A test"))));
     }
@@ -43,7 +43,7 @@ class FreeTimeBookingTest {
         String id=row.path("maDatSan").asText();
         assertNull(jdbc.queryForObject("SELECT MaKhungGio FROM DatSan WHERE MaDatSan=?",String.class,id));
         assertEquals("GIA_GIO",jdbc.queryForObject("SELECT CheDoGia FROM DatSan WHERE MaDatSan=?",String.class,id));
-        mvc.perform(get("/bookings").session(session).param("date",day.toString()).param("pitch",pitch))
+        mvc.perform(get("/api/bookings").session(session).param("date",day.toString()).param("pitch",pitch))
             .andExpect(status().isOk()).andExpect(jsonPath("$.data[0].maDatSan").value(id));
     }
     @ParameterizedTest @CsvSource({"07:30,08:30,409","09:30,10:30,409","08:30,09:30,409","07:30,10:30,409","07:00,08:00,200","10:00,11:30,200"})
@@ -56,7 +56,7 @@ class FreeTimeBookingTest {
     @Test void minutesNotRoundedHoursAndSnapshotSurvivesPriceChange() throws Exception {
         var row=data(create("07:00","08:01").andExpect(status().isOk()).andExpect(jsonPath("$.data.tienSan").value(91500)).andReturn());
         jdbc.update("UPDATE GiaTheoCa SET DonGia=100000 WHERE MaCa='SANG'");
-        mvc.perform(get("/bookings/"+row.path("maDatSan").asText()).session(session)).andExpect(status().isOk())
+        mvc.perform(get("/api/bookings/"+row.path("maDatSan").asText()).session(session)).andExpect(status().isOk())
             .andExpect(jsonPath("$.data.tienSan").value(91500)).andExpect(jsonPath("$.data.donGia").value(90000));
     }
     @Test void legacySnapshotAndSlotEditsDoNotMoveExistingBooking() throws Exception {

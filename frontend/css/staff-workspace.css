@@ -1,0 +1,74 @@
+.sw-heading,.staff-schedule-tools,.sw-search{display:none}
+body[data-staff-page="bookings"]:is([data-workspace="VT02"],[data-workspace="VT04"]) .booking-list-caption{display:none}
+body[data-staff-page="bookings"]:is([data-workspace="VT02"],[data-workspace="VT04"]) .sw-search>label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+body[data-staff-page="bookings"]:is([data-workspace="VT02"],[data-workspace="VT04"]) .sw-search input{max-width:360px;min-width:180px}
+body[data-staff-page="bookings"]:is([data-workspace="VT02"],[data-workspace="VT04"]) #staffDispatchTabs{display:flex;flex-wrap:wrap;gap:8px;margin-left:auto}
+body[data-staff-page="bookings"]:is([data-workspace="VT02"],[data-workspace="VT04"]) #staffDispatchTabs button{background:#f0f4fa;color:#415776;border:1px solid transparent;border-radius:10px;padding:10px 12px;min-height:44px;font-size:13px;font-weight:600}
+body[data-staff-page="bookings"]:is([data-workspace="VT02"],[data-workspace="VT04"]) #staffDispatchTabs button[aria-pressed="true"]{background:#2152df;color:#fff}
+body[data-staff-page="bookings"]:is([data-workspace="VT02"],[data-workspace="VT04"]) .staff-dispatch-table{min-width:1020px}
+body[data-staff-page="bookings"]:is([data-workspace="VT02"],[data-workspace="VT04"]) .staff-dispatch-table :is(th,td){padding:18px 14px}
+body[data-staff-page="bookings"]:is([data-workspace="VT02"],[data-workspace="VT04"]) .staff-dispatch-table th:nth-child(5){width:26%}
+body[data-staff-page="bookings"]:is([data-workspace="VT02"],[data-workspace="VT04"]) .staff-dispatch-table td:last-child{min-width:190px;width:190px}
+body[data-staff-page="bookings"]:is([data-workspace="VT02"],[data-workspace="VT04"]) .dispatch-code{color:#1749bd;font-weight:700;background:transparent;padding:0;min-height:44px}
+body[data-staff-page="bookings"]:is([data-workspace="VT02"],[data-workspace="VT04"]) .dispatch-time{display:block;color:#1749bd;margin-top:4px;font-size:13px;white-space:nowrap}
+body[data-staff-page="bookings"]:is([data-workspace="VT02"],[data-workspace="VT04"]) .dispatch-muted{color:#62728b;font-size:13px}
+body[data-staff-page="bookings"]:is([data-workspace="VT02"],[data-workspace="VT04"]) .dispatch-error{color:#a32639;font-size:13px}
+body[data-staff-page="bookings"]:is([data-workspace="VT02"],[data-workspace="VT04"]) .staff-dispatch-table ul{padding-left:16px;list-style:disc;font-size:13px;line-height:1.8;color:#415776;min-width:180px}
+body[data-staff-page="bookings"]:is([data-workspace="VT02"],[data-workspace="VT04"]) .dispatch-state{display:inline-block;padding:6px 9px;border-radius:10px;background:#fff5d6;color:#81520a;font-size:12px;font-weight:700}
+body[data-staff-page="bookings"]:is([data-workspace="VT02"],[data-workspace="VT04"]) .dispatch-state[data-phase="playing"]{background:#e8f0ff;color:#1949ad}
+body[data-staff-page="bookings"]:is([data-workspace="VT02"],[data-workspace="VT04"]) .dispatch-state[data-phase="returned"]{background:#e8f6ef;color:#176344}
+body[data-staff-page="bookings"]:is([data-workspace="VT02"],[data-workspace="VT04"]) .dispatch-state[data-phase="cancelled"]{background:#fff0f0;color:#a32639}
+body[data-staff-page="bookings"]:is([data-workspace="VT02"],[data-workspace="VT04"]) .dispatch-actions{display:flex;align-items:stretch;flex-direction:column;gap:8px}
+body[data-staff-page="bookings"]:is([data-workspace="VT02"],[data-workspace="VT04"]) .dispatch-actions button{margin:0;padding:10px 12px;border-radius:9px;font-size:13px;white-space:normal;min-height:44px}
+body[data-staff-page="bookings"]:is([data-workspace="VT02"],[data-workspace="VT04"]) .dispatch-service{background:#fff3d6;color:#855000}
+body[data-staff-page="bookings"]:is([data-workspace="VT02"],[data-workspace="VT04"]) .dispatch-return{background:#087c53;color:#fff}
+body[data-staff-page="bookings"]:is([data-workspace="VT02"],[data-workspace="VT04"]) .dispatch-checkin{background:#2152df;color:#fff}
+body[data-staff-page="bookings"]:is([data-workspace="VT02"],[data-workspace="VT04"]) .dispatch-secondary{background:#eff3fa;color:#415776}
+body[data-staff-page="bookings"]:is([data-workspace="VT02"],[data-workspace="VT04"]) .dispatch-actions summary{cursor:pointer;color:#526581;padding:10px 6px;min-height:44px;font-size:12px}
+body[data-staff-page="bookings"]:is([data-workspace="VT02"],[data-workspace="VT04"]) .dispatch-actions details[open]{display:flex;flex-direction:column}
+body[data-staff-page="bookings"]:is([data-workspace="VT02"],[data-workspace="VT04"]) .dispatch-actions details button{display:block;width:100%;margin-top:6px}
+body[data-staff-page="bookings"]:is([data-workspace="VT02"],[data-workspace="VT04"]) .dispatch-advanced{background:#fff;border:1px solid #dce5f0;border-radius:14px}
+body[data-staff-page="bookings"]:is([data-workspace="VT02"],[data-workspace="VT04"]) .dispatch-advanced>summary{padding:14px 20px;cursor:pointer;font-size:14px;font-weight:600;color:#415776;min-height:44px}
+body[data-staff-page="bookings"]:is([data-workspace="VT02"],[data-workspace="VT04"]) .dispatch-advanced .booking-search-panel{border:0}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .sw-search{display:flex;align-items:center;gap:16px;padding:16px 22px;background:#fff;border:1px solid #dce5f0;border-radius:14px;flex-wrap:wrap}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .sw-search input{flex:1;min-width:180px}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) #calendarFeedback:empty{display:none}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .booking-search-button{padding:10px 18px;white-space:nowrap}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .staff-schedule-tools label{align-items:flex-start!important;text-align:left!important;flex-direction:column!important;flex:1;min-width:180px}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .staff-schedule-tools select{width:100%}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .sw-heading{display:block;background:#fff;padding:26px;border:1px solid #dce5f0;border-radius:18px}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .sw-heading p:last-child{font-size:14px;color:#526581;line-height:1.7}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) main> *{flex-shrink:0}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) main.space-y-6>*+*{margin-top:0}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .booking-search-panel{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) auto;padding:22px;gap:16px;border:1px solid #dce5f0;border-radius:16px;box-shadow:none}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) main :is(input,select){min-height:44px;max-width:100%;font-size:14px;border:1px solid #d6e1ee;border-radius:10px;background:#fff;color:#172e50;padding:10px;min-width:0}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) main label{font-size:14px;color:#415776;text-transform:none}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) main table{border-collapse:collapse;width:100%;background:#fff;font-size:14px;line-height:1.6}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) main th{background:#f6f8fc;color:#526581;font-size:12px;text-align:left;letter-spacing:.02em;padding:16px;border-bottom:1px solid #dce5f0}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) main td{padding:16px;vertical-align:top;border-bottom:1px solid #e8edf5}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) #bookingRows td:last-child{min-width:245px}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .booking-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;max-width:320px;margin-left:auto}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .booking-actions button{margin:0;padding:8px 10px;min-height:44px;font-size:13px;border-radius:9px;white-space:normal}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .booking-actions button:nth-child(2){grid-column:1/-1;background:#e8f6ee;color:#146343}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .schedule-title{padding:26px;border:1px solid #dce5f0;border-radius:18px;background:#fff;margin:0;gap:18px}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .schedule-controls,body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .schedule-content{padding:22px;border-radius:18px;border:1px solid #dce5f0;background:#fff;margin:0;box-shadow:none;min-width:0}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .schedule-controls form{display:flex;gap:16px;flex-wrap:wrap}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .schedule-controls label{flex:1;min-width:160px}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .schedule-controls button{min-height:44px}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .staff-schedule-tools{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:16px 0}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .staff-schedule-tools label{display:flex;align-items:center;gap:8px}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .pitch-time-board{display:table!important;min-width:1100px;border-collapse:separate;border-spacing:0}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .pitch-time-board th{position:sticky;top:0;z-index:2;background:#f6f8fc;text-align:center;min-width:115px}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .pitch-time-board th:first-child{left:0;z-index:3;min-width:190px;text-align:left}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .pitch-time-board td{border-right:1px solid #e8edf5;padding:8px;text-align:center;vertical-align:middle}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .pitch-time-board td:first-child{position:sticky;left:0;z-index:1;background:#fff;text-align:left;min-width:190px;max-width:220px}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .pitch-time-board small{display:block;font-size:12px;color:#526581;margin-top:4px}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .pitch-time-board a,.pitch-time-board .sw-free,.pitch-time-board .sw-maintenance{display:block;padding:12px 8px;border-radius:12px;min-height:56px;font-size:13px;line-height:1.5}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .pitch-time-board a{background:#e8f0ff;color:#1949ad;border:1px solid #bed1ff}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .pitch-time-board a[data-state="Chờ xác nhận"]{background:#fff5d6;color:#81520a;border-color:#efd184}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .pitch-time-board a[data-state="Đã hủy"]{background:#fff0f0;color:#a32639;border-color:#ebbac3}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .pitch-time-board a[data-state="Đã sử dụng"]{background:#e8f6ef;color:#176344;border-color:#acd9c0}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .sw-free{background:#effbf5;color:#116345;border:1px solid #a7e5c8}
+body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .sw-maintenance{background:#f0f3f8;color:#526581}
+@media(max-width:1000px){body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .booking-search-panel{grid-template-columns:repeat(2,minmax(0,1fr))}body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .booking-search-panel>div:last-child{grid-column:1/-1}}
+@media(max-width:600px){body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .booking-search-panel{grid-template-columns:1fr}body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .schedule-title{padding:22px 18px}body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) .schedule-controls form{flex-direction:column}body[data-staff-page]:is([data-workspace="VT02"],[data-workspace="VT04"]) main :is(input,select){font-size:16px}}

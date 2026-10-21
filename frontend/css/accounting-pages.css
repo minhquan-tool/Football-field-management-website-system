@@ -1,0 +1,78 @@
+/* Accounting presentation only. Shared screens keep other roles unchanged. */
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]){--ac-ink:#172e50;--ac-muted:#526581;--ac-line:#dce5f0;--ac-blue:#2152df;background:#f4f7fb;color:var(--ac-ink);font-family:'Montserrat',sans-serif}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) .fc-sidebar{width:256px;background:#fff;border-right:1px solid var(--ac-line)}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) .fc-sidebar-identity{padding:26px 22px;border-bottom:1px solid var(--ac-line)}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) .fc-sidebar .fc-brand{color:#1749bd;letter-spacing:-.03em}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) .fc-sidebar-identity p{color:var(--ac-muted);font-size:14px}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) .fc-sidebar [data-role-menu] a{color:#415776;font-size:14px;min-height:48px;align-items:center;font-weight:600}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) .fc-sidebar [data-role-menu] a:hover{background:#f0f5ff;color:#1749bd}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) .fc-sidebar [data-role-menu] a[aria-current="page"]{background:#eaf0ff;color:#1749bd;box-shadow:inset 3px 0 var(--ac-blue)}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) .fc-sidebar [data-role-menu] a[href="dang-nhap"]{color:#b42336;border-top:1px solid var(--ac-line)}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) .fc-workspace-header{min-height:76px;border-bottom:1px solid var(--ac-line)}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) .fc-workspace>main{padding:28px!important;display:flex;flex-direction:column;gap:24px}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) main>*{min-width:0;flex-shrink:0;margin-top:0;margin-bottom:0}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) .ac-heading{display:flex;align-items:center;justify-content:space-between;gap:20px;border:1px solid var(--ac-line);border-radius:20px;background:#fff;padding:28px}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) .ac-eyebrow{color:#087453;font-size:13px;font-weight:700;margin-bottom:8px}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) h1{font-size:28px;line-height:1.3;font-weight:750;letter-spacing:-.035em;margin-bottom:10px}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) .ac-heading p:last-child{font-size:14px;line-height:1.7;color:var(--ac-muted)}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) .ac-link{display:inline-flex;align-items:center;justify-content:center;min-height:44px;border:1px solid #bdceef;border-radius:12px;padding:12px 16px;font-size:14px;color:#1749bd;font-weight:650;white-space:nowrap}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) main :is(button,input:not([type=checkbox]),select){min-height:44px;font-size:14px;border-radius:10px}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) main :is(input:not([type=checkbox]),select){border:1px solid #c8d5e5;padding:10px 12px;color:#172e50;background:#fff;max-width:100%;min-width:0}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) main button{padding:10px 16px;line-height:1.5}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) main :is(h2,h3){color:var(--ac-ink);line-height:1.5}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) main label{font-size:14px;color:#415776;line-height:1.6}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) main :is(input,select,button,a,summary):focus-visible{outline:3px solid #2152df;outline-offset:3px}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) main input[type=checkbox]{width:20px;height:20px;accent-color:#2152df;flex-shrink:0}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) main :is(.bg-white,.revenue-filters,.revenue-chart-card){border:1px solid var(--ac-line);box-shadow:none;border-radius:18px}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) #financeHost{padding:24px;order:0}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) .ac-heading{order:-3}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) .ac-stats{order:-2;gap:16px}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) .ac-stats>div{padding:22px;border:1px solid var(--ac-line);border-radius:16px;min-width:0}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) .ac-stats p{font-size:13px;text-transform:none;font-weight:600;color:var(--ac-muted)}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) .ac-stats h3{font-size:clamp(20px,2vw,28px);overflow-wrap:anywhere}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) #financeLookup{display:flex;align-items:end;gap:14px;margin:18px 0}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) #financeLookup label{display:flex;flex-direction:column;gap:8px;flex:1;max-width:420px}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) #financeHost>section{padding:22px;background:#f8faff;border-color:var(--ac-line)}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) #financeHost>section:has(#financeSummary:empty):has(#financeStatus:empty):has(#financeHistory:empty){display:none}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) :is(#financePaymentForm,#financeInvoiceForm,#financeCouponForm){align-items:end;gap:16px;padding:18px;border:1px solid var(--ac-line);background:#fff;border-radius:14px}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) #financePaymentForm label:not(#financeReceiptLabel){display:flex;flex-direction:column;gap:8px;flex:1;min-width:160px}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) #financePaymentForm :is(input:not([type=checkbox]),select){width:100%}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) #financeReceiptLabel{display:flex;align-items:center;gap:10px;min-height:44px}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) :is(#financeRefundQueue,#financeHistory)>p{padding:16px;border:1px solid var(--ac-line);border-radius:12px;background:#fff;margin:10px 0;line-height:1.8;overflow-wrap:anywhere}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) :is(#financeRefundQueue,#financeHistory) button{border:1px solid #bdceef;background:#f5f8ff;margin:8px 6px 0 0;font-size:13px}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) .finance-transaction-controls{flex-wrap:wrap;align-items:center}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) main table{width:100%;border-collapse:collapse;font-size:14px;line-height:1.6}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) main :is(th,td){padding:14px 16px;border-bottom:1px solid #e6edf6;text-align:left;vertical-align:top}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) main th{background:#f6f8fc;color:#526581;font-size:12px;font-weight:700}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) #financeTransactions{white-space:nowrap}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) #financeTransactions button{border:1px solid #bdceef;background:#f5f8ff;font-size:13px}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) :is(#reportFilter,.revenue-filters){display:flex;gap:16px;align-items:end;flex-wrap:wrap;padding:24px;background:#fff;border:1px solid var(--ac-line);border-radius:18px}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) #reportFilter label{display:flex;flex:1;min-width:160px;flex-direction:column;gap:8px}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) #reportTotals>div{padding:20px;border:1px solid var(--ac-line);border-radius:16px;background:#fff;overflow-wrap:anywhere}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) #reportTotals{grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) #reportRows td:only-child{white-space:nowrap}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) #reportHead th{white-space:nowrap}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) #methodSection{overflow-x:auto}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) #methodSection table{min-width:760px}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) #refundFilters{display:flex;flex-wrap:wrap}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) :is(#reportStatus,#financeLedgerStatus,#reportDefinition):empty{display:none}
+@media(max-width:1199px){
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) .fc-sidebar{display:none;position:fixed;inset:0 auto 0 0;width:min(280px,85vw);z-index:70!important;box-shadow:12px 0 40px #172e5020!important}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) .fc-sidebar:not(.hidden){display:flex}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) [data-mobile-menu]{display:block;min-height:44px;font-size:14px}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) .ac-heading{align-items:flex-start;flex-direction:column}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) .ac-stats{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) .fc-workspace>main{padding:20px 16px!important;gap:20px}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) .ac-heading{padding:22px 18px}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) h1{font-size:24px}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) main :is(input:not([type=checkbox]),select){font-size:16px}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) :is(#financeHost,#financeHost>section,#reportFilter){padding:20px 16px}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) :is(#financeLookup,#financePaymentForm,#financeInvoiceForm,#financeCouponForm){flex-direction:column;align-items:stretch}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) :is(#reportFilter label,#financeLookup label){max-width:none;width:100%;min-width:0}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) #reportFilter button{width:100%}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) #reportTotals{grid-template-columns:1fr}
+body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) .ac-link{white-space:normal;width:100%}
+}
+@media print{body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) .ac-heading{border:0;padding:0}body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) .fc-workspace>main{display:block;padding:0!important}body[data-accounting-page]:is([data-workspace="VT03"],[data-workspace="VT04"]) main table{font-size:9pt}}

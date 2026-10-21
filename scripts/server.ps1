@@ -44,9 +44,8 @@ if(-not $env:APP_LOG_FILE){$env:APP_LOG_FILE=Join-Path $logs 'application.log'}
 $stamp=Get-Date -Format 'yyyyMMdd-HHmmss-fff'
 $process=Start-Process -FilePath $java -ArgumentList @('-jar',('"'+$jar+'"')) -WorkingDirectory $root -WindowStyle Hidden -RedirectStandardOutput (Join-Path $logs "startup-$stamp.log") -RedirectStandardError (Join-Path $logs "startup-$stamp-error.log") -PassThru
 @{id=$process.Id;jar=$jar;started=$process.StartTime.ToUniversalTime().ToString('o')}|ConvertTo-Json|Set-Content -LiteralPath $pidFile -Encoding UTF8
-$context=if($env:APP_CONTEXT_PATH){$env:APP_CONTEXT_PATH}else{'/api'}
 $scheme=if($env:SERVER_SSL_ENABLED -eq 'true'){'https'}else{'http'}
-$health="$($scheme)://127.0.0.1:$port$context/health"
+$health="$($scheme)://127.0.0.1:$port/api/health"
 if($env:APP_HEALTH_URL){$health=$env:APP_HEALTH_URL}
 $ready=$false
 for($attempt=0;$attempt -lt 45;$attempt++){

@@ -12,7 +12,7 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 class RescheduleTest {
     SanRepository pitches=mock(SanRepository.class);DatSanRepository bookings=mock(DatSanRepository.class);BookingWorkflowRepository workflow=mock(BookingWorkflowRepository.class);TimePriceRepository prices=mock(TimePriceRepository.class);SecurityRepository audit=mock(SecurityRepository.class);
-    BookingService service=new BookingService(pitches,mock(LoaiSanRepository.class),mock(KhungGioRepository.class),mock(BangGiaRepository.class),bookings,mock(KhachHangRepository.class),mock(TaiKhoanRepository.class),workflow,audit,"",prices,mock(OperationsService.class),mock(FinanceService.class));
+    BookingService service=new BookingService(pitches,mock(LoaiSanRepository.class),mock(KhungGioRepository.class),mock(BangGiaRepository.class),bookings,mock(KhachHangRepository.class),mock(TaiKhoanRepository.class),workflow,audit,"",prices,mock(OperationsService.class),mock(FinanceService.class),mock(CancellationRequestRepository.class));
     AccountPrincipal actor=mock(AccountPrincipal.class);DatSan d=new DatSan();San san=new San();
     LocalDate day=LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh")).plusDays(7);
     RescheduleRequest request=new RescheduleRequest(day,LocalTime.of(8,0),LocalTime.of(9,30),"Khách xin đổi giờ");

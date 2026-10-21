@@ -1,7 +1,7 @@
 document.addEventListener('sanbong:authenticated', async () => {
     const $=id=>document.getElementById(id), money=n=>Number(n).toLocaleString('vi-VN')+'đ';
     let busy=false;
-    const targets={dashBooking:['Quan_ly_lich_dat_san.html','Xem lượt đặt hôm nay'],dashUsing:['Quan_ly_san.html?status='+encodeURIComponent('Đang sử dụng'),'Xem sân đang sử dụng'],dashMaintenance:['Quan_ly_san.html?status='+encodeURIComponent('Bảo trì'),'Xem sân bảo trì'],dashNet:['Bao_cao.html?type=finance','Xem tiền thu và thực nhận'],dashRevenue:['Bao_cao.html?type=finance','Xem doanh thu khi trả sân'],dashRefund:['Bao_cao.html?type=refunds','Xem báo cáo hoàn tiền'],dashOccupancy:['Bao_cao.html?type=usage','Xem báo cáo sử dụng sân']};
+    const targets={dashBooking:['dieu-phoi-san','Xem lượt đặt hôm nay'],dashUsing:['quan-ly-san?status='+encodeURIComponent('Đang sử dụng'),'Xem sân đang sử dụng'],dashMaintenance:['quan-ly-san?status='+encodeURIComponent('Bảo trì'),'Xem sân bảo trì'],dashNet:['bao-cao?type=finance','Xem tiền thu và thực nhận'],dashRevenue:['bao-cao?type=finance','Xem doanh thu khi trả sân'],dashRefund:['bao-cao?type=refunds','Xem báo cáo hoàn tiền'],dashOccupancy:['bao-cao?type=usage','Xem báo cáo sử dụng sân']};
     for(const [id,[href,label]] of Object.entries(targets)){
         const card=$(id).closest('.bg-white');if(!card)continue;
         const link=document.createElement('a');link.href=href;link.className=card.className+' dashboard-stat-link';link.setAttribute('aria-label',label);
@@ -16,7 +16,7 @@ document.addEventListener('sanbong:authenticated', async () => {
             const r=await SanBong.request('reports/dashboard');$('dashboardStatus').textContent=r.today;$('dashboardStatus').className='text-sm text-gray-500';
             for(const [id,value]of [['dashBooking',r.usage.totals.soBooking],['dashUsing',r.pitches.sanDangSuDung],['dashMaintenance',r.pitches.sanBaoTri],['dashNet',money(r.finance.totals.thucNhan)],['dashRevenue',money(r.finance.totals.doanhThu)],['dashRefund',money(r.finance.totals.tienHoan)],['dashOccupancy',r.usage.totals.tyLeLapDay+'%']])$(id).textContent=value;
             $('dashBookings').replaceChildren();
-            for(const b of r.bookings){const a=document.createElement('a');a.className='dashboard-booking-link';a.textContent=`${b.gioBatDau.slice(0,5)}–${b.gioKetThuc.slice(0,5)} · ${b.tenSan} · ${b.khachHang} · ${b.trangThai}`;a.href='Quan_ly_lich_dat_san.html?'+new URLSearchParams({date:b.ngayChoi||r.today,pitch:b.maSan,booking:b.maDatSan});$('dashBookings').append(a);}
+            for(const b of r.bookings){const a=document.createElement('a');a.className='dashboard-booking-link';a.textContent=`${b.gioBatDau.slice(0,5)}–${b.gioKetThuc.slice(0,5)} · ${b.tenSan} · ${b.khachHang} · ${b.trangThai}`;a.href='dieu-phoi-san?'+new URLSearchParams({date:b.ngayChoi||r.today,pitch:b.maSan,booking:b.maDatSan});$('dashBookings').append(a);}
             if(!r.bookings.length)$('dashBookings').textContent='Chưa có lượt đặt hôm nay.';
             $('dashServices').replaceChildren();
             for(const item of r.topServices){const p=document.createElement('p');p.className='p-3 border rounded-xl';p.textContent=`${item.tenDV} · ${item.soDonVi} đơn vị · ${money(item.tienDichVu)}`;$('dashServices').append(p);}

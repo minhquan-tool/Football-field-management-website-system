@@ -31,8 +31,8 @@
     </style>
     <style>[hidden] { display: none !important; }</style>
 <style>@media print{body{display:block!important;height:auto!important;overflow:visible!important;background:white!important}body>aside,body>div>header,form,#reportPages,#reportActions,[data-mobile-menu],body>button{display:none!important}body>div,main,main>div{height:auto!important;max-height:none!important;overflow:visible!important;width:100%!important}table{font-size:9pt!important}thead{display:table-header-group}tr{break-inside:avoid}main{padding:0!important}#reportTotals{break-inside:avoid}}</style>
-<link rel="stylesheet" href="css/fc-ute.css"><link rel="stylesheet" href="css/experience.css"><script src="js/ui.js" defer></script></head>
-<body class="flex h-screen overflow-hidden text-gray-800">
+<link rel="stylesheet" href="css/fc-ute.css"><link rel="stylesheet" href="css/experience.css"><script src="js/ui.js" defer></script><link rel="stylesheet" href="css/accounting-pages.css"></head>
+<body data-accounting-page="reports" class="flex h-screen overflow-hidden text-gray-800">
 
     <!-- Sidebar (Thanh điều hướng phân quyền) -->
     <aside class="w-72 bg-white shadow-2xl flex flex-col h-full hidden md:flex z-20 border-r border-gray-100">
@@ -51,7 +51,7 @@
 
         <!-- Logout -->
         <div class="p-4 border-t border-gray-100 bg-gray-50">
-            <a href="Dang_nhap.html" class="flex items-center gap-3 text-gray-600 hover:text-red-600 hover:bg-red-50 px-4 py-2.5 rounded-xl font-bold transition-colors">
+            <a href="dang-nhap" class="flex items-center gap-3 text-gray-600 hover:text-red-600 hover:bg-red-50 px-4 py-2.5 rounded-xl font-bold transition-colors">
                 <i class="fa-solid fa-arrow-right-from-bracket w-5 text-center"></i> Đăng xuất
             </a>
         </div>
@@ -70,7 +70,7 @@
 
             <!-- User Profile & Utils -->
             <div class="flex items-center gap-5 ml-auto">
-                <a href="Man_hinh_chinh_TK&amp;PQ_HT.html#logs" class="text-gray-400 hover:text-brand-600 transition-colors" title="Nhật ký hoạt động">
+                <a href="nhan-su-phan-quyen#logs" class="text-gray-400 hover:text-brand-600 transition-colors" title="Nhật ký hoạt động">
                     <i class="fa-solid fa-clock-rotate-left text-lg"></i>
                 </a>
                 <div class="h-8 w-px bg-gray-200"></div>
@@ -87,7 +87,7 @@
         </header>
 
         <!-- Dashboard Content -->
-<main class="flex-1 overflow-y-auto p-6 lg:p-8"><h2 class="font-bold text-xl mb-3">Đối soát &amp; Báo cáo</h2><p id="reportStatus" role="status" class="text-sm mb-3"></p>
+<main class="flex-1 overflow-y-auto p-6 lg:p-8"><header class="ac-heading"><div><p class="ac-eyebrow">Đối soát tài chính FC-UTE</p><h1>Đối soát &amp; Báo cáo</h1><p>Xem số liệu theo kỳ, sân và loại báo cáo; phân biệt khoản phát sinh với tiền thực nhận.</p></div></header><p id="reportStatus" role="status" class="text-sm mb-3"></p>
 <form id="reportFilter" data-api-ready="true" class="bg-white rounded-2xl border p-5 flex flex-wrap gap-3 mb-6"><label>Từ ngày<input id="reportFrom" type="date" required class="border rounded-lg p-2"></label><label>Đến ngày<input id="reportTo" type="date" required class="border rounded-lg p-2"></label><label>Sân<select id="reportPitch" class="border rounded-lg p-2"><option value="">Tất cả</option></select></label><label>Báo cáo<select id="reportType" class="border rounded-lg p-2"></select></label><button class="bg-brand-600 text-white rounded-lg p-2">Tìm kiếm</button></form>
 <div id="refundFilters" hidden class="flex flex-wrap gap-3 mb-4"><select id="refundStatus" class="border rounded-lg p-2"><option value="">Tất cả trạng thái</option><option>Chờ duyệt</option><option>Đã hoàn</option><option>Từ chối</option></select><input id="refundBooking" placeholder="Mã đặt sân" maxlength="10" class="border rounded-lg p-2"><select id="refundMethod" class="border rounded-lg p-2"><option value="">Mọi phương thức</option><option>Tiền mặt</option><option>Chuyển khoản</option></select></div>
 <p id="reportDefinition" class="text-xs mb-3"></p><div id="reportTotals" class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-5"></div>

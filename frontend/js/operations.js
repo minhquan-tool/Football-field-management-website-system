@@ -37,7 +37,7 @@
         }
         if (!current.services.length) { const tr = document.createElement('tr'), td = document.createElement('td'); td.colSpan = 5; td.className = 'p-2 text-gray-500'; td.textContent = 'Chưa có dịch vụ.'; tr.append(td); body.append(tr); }
     }
-    async function open(bookingId) {
+    async function open(bookingId, focusId) {
         const requestVersion = ++version; id = bookingId; current = null;
         $('operationsModal').classList.remove('hidden'); $('operationsModal').classList.add('flex');
         $('serviceLines').replaceChildren(); set('operationsAmounts', ''); set('operationsSummary', '');
@@ -48,7 +48,7 @@
                 allowed('CN03_XEM') ? SanBong.request('services') : Promise.resolve([])]);
             if (requestVersion !== version) return; current = details; catalog = services;
             $('serviceCatalog').replaceChildren(); for (const service of catalog) $('serviceCatalog').add(new Option(`${service.tenDV} · ${money(service.donGia)}`, service.maDV));
-            preview(); feedback(''); render();
+            preview(); feedback(''); render();if(focusId){const control=$(focusId);control?.scrollIntoView({block:'nearest'});control?.focus();}
         } catch (error) { if (requestVersion === version) feedback(error.message, true); }
     }
     async function mutate(path, method, body, success) {
@@ -58,6 +58,7 @@
                 headers: { 'Content-Type': 'application/json' }, body: body === undefined ? undefined : JSON.stringify(body) });
             current = await SanBong.request(`operations/bookings/${encodeURIComponent(target)}`); feedback(success);
             await window.applyFilters();
+            if(path==='/check-in'||path==='/check-out')document.dispatchEvent(new Event(path==='/check-in'?'sanbong:check-in':'sanbong:check-out'));
         } catch (error) { feedback(error.message, true); }
         finally { busy = false; render(); }
     }
@@ -81,7 +82,7 @@
         finally { busy = false; render(); }
     });
     $('checkOutButton').addEventListener('click', () => { if (confirm('Trả sân và kết thúc chỉnh dịch vụ? Thao tác này không tự ghi nhận thanh toán mới.')) mutate('/check-out', 'POST', {}, 'Đã trả sân; xem hóa đơn để kiểm tra số còn thiếu.'); });
-    $('serviceLineForm').addEventListener('submit', event => { event.preventDefault(); mutate(`/services/${encodeURIComponent($('serviceCatalog').value)}`, 'POST', { soLuong: Number($('serviceQuantity').value), quyCach: $('servicePack').value }, 'Đã ghi dịch vụ theo giá SQL Server.'); });
+    $('serviceLineForm').addEventListener('submit', event => { event.preventDefault(); mutate(`/services/${encodeURIComponent($('serviceCatalog').value)}`, 'POST', { soLuong: Number($('serviceQuantity').value), quyCach: $('servicePack').value }, 'Đã thêm dịch vụ.'); });
     document.addEventListener('sanbong:authenticated', event => { account = event.detail; });
-    window.SanBongOperations = { open: bookingId => { if (!busy) open(bookingId); } };
+    window.SanBongOperations = { open: (bookingId,focusId) => { if (!busy) open(bookingId,focusId); } };
 })();

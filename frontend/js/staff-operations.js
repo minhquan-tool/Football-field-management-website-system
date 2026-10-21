@@ -11,7 +11,7 @@ document.addEventListener('sanbong:authenticated', async () => {
         for(const [state,label]of [['Chờ xác nhận','Chờ xác nhận'],['Đã xác nhận','Đã xác nhận']]){
             const heading=document.createElement('h4');const tasks=bookings.filter(b=>b.trangThai===state).sort((a,b)=>a.gioBatDau.localeCompare(b.gioBatDau));heading.textContent=label+' ('+tasks.length+')';heading.className='font-bold mt-3';queue.append(heading);
             if(!tasks.length){const empty=document.createElement('p');empty.textContent='Không có lượt đặt trong nhóm này.';queue.append(empty);}
-            for(const b of tasks){const link=document.createElement('a');link.className='block border-b py-3 text-brand-700 underline';link.textContent=`${b.gioBatDau.slice(0,5)}–${b.gioKetThuc.slice(0,5)} · ${b.tenSan} · ${b.hoTen} · ${b.maDatSan}`;link.href='Quan_ly_lich_dat_san.html?'+new URLSearchParams({date:b.ngayChoi,pitch:b.maSan,booking:b.maDatSan});queue.append(link);}
+            for(const b of tasks){const link=document.createElement('a');link.className='block border-b py-3 text-brand-700 underline';link.textContent=`${b.gioBatDau.slice(0,5)}–${b.gioKetThuc.slice(0,5)} · ${b.tenSan} · ${b.hoTen} · ${b.maDatSan}`;link.href='dieu-phoi-san?'+new URLSearchParams({date:b.ngayChoi,pitch:b.maSan,booking:b.maDatSan});queue.append(link);}
         }
         document.getElementById('staffBookingCount').textContent = bookings.length;
         document.getElementById('staffOccupiedCount').textContent = options.pitches.filter(p => p.trangThai === 'Đang sử dụng').length;
@@ -22,7 +22,7 @@ document.addEventListener('sanbong:authenticated', async () => {
             const name = document.createElement('h4'); name.textContent = `${pitch.tenSan} (${pitch.tenLoaiSan})`; name.className = 'font-bold text-gray-800';
             const status = document.createElement('p'); status.textContent = pitch.trangThai; status.className = 'fc-status mt-2';status.dataset.state=pitch.trangThai;
             const link = document.createElement('a'); link.textContent = 'Quản lý lượt đặt'; link.className = 'block mt-4 bg-brand-600 text-white text-xs py-2 text-center rounded-lg font-bold';
-            link.href = 'Quan_ly_lich_dat_san.html?' + new URLSearchParams({ date: options.today, pitch: pitch.maSan }); card.append(name, status, link); grid.append(card);
+            link.href = 'dieu-phoi-san?' + new URLSearchParams({ date: options.today, pitch: pitch.maSan }); card.append(name, status, link); grid.append(card);
         }
     } catch (error) { document.getElementById('staffOperationsFeedback').textContent = error.message; }
     const host=document.getElementById('staffFeedbackPreview');

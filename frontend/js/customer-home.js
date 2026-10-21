@@ -24,7 +24,7 @@
                 event.preventDefault();
                 if ($('homeEnd').value <= $('homeStart').value) { $('homeEnd').setCustomValidity('Giờ kết thúc phải sau giờ bắt đầu.'); $('homeEnd').reportValidity(); return; }
                 const query = new URLSearchParams({date:$('homeDate').value, start:$('homeStart').value, end:$('homeEnd').value, type:$('homeType').value});
-                location.href = 'Man_hinh_chinh_Dat_san_KH.html?' + query;
+                location.href = 'dat-san?' + query;
             });
             $('homeEnd').addEventListener('input', () => $('homeEnd').setCustomValidity(''));
             $('homeStart').addEventListener('input', () => $('homeEnd').setCustomValidity(''));
@@ -33,13 +33,13 @@
                     const card=item(host,'','div'); card.className='border-b border-gray-100 pb-3 mb-3';
                     item(card, `${row.tenSan} · ${row.gioBatDau}–${row.gioKetThuc}`);
                     item(card, `${row.maDatSan} · ${row.trangThai}`);
-                    link(card,'Xem chi tiết lượt đặt','Quan_ly_lich_dat_san.html?' + new URLSearchParams({date:row.ngayChoi,pitch:row.maSan,booking:row.maDatSan}));
+                    link(card,'Xem chi tiết lượt đặt','lich-dat-cua-toi?' + new URLSearchParams({date:row.ngayChoi,pitch:row.maSan,booking:row.maDatSan}));
                 }, 'Hôm nay chưa có booking của bạn.'),
                 populate($('homePitches'), async () => options.pitches, (host,row) => {
                     const card=item(host,'','div'); card.className='bg-white border border-gray-100 rounded-2xl p-5 shadow-sm';
                     item(card, `${row.tenSan} (${row.maSan})`, 'h3');
                     item(card,row.tenLoaiSan||'Sân bóng FC-UTE');
-                    link(card,'Chọn ngày và giờ →','Man_hinh_chinh_Dat_san_KH.html?'+new URLSearchParams({pitch:row.maSan}));
+                    link(card,'Chọn ngày và giờ →','dat-san?'+new URLSearchParams({pitch:row.maSan}));
                 }, 'Chưa có sân khả dụng.'),
                 populate($('homeServices'), () => SanBong.request('booking-services'), (host,row) => {
                     const li=item(host,`${row.tenDV}: ${money(row.donGia)}`, 'li'); li.className='text-sm border-b border-gray-50 pb-2';

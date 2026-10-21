@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /** Anonymous CSS/fonts must load before login; no fixture/business writes. */
 class LocalAssetsHttpTest extends RoleAuditSupport {
     @Test void loginReferencesOnlyLocalStyles() throws Exception {
-        String html=mvc.perform(get("/Dang_nhap.html")).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        String html=mvc.perform(get("/dang-nhap")).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
         assertTrue(html.contains("css/tailwind.css"));assertTrue(html.contains("vendor/montserrat/montserrat.css"));
         assertFalse(html.contains("cdn.tailwindcss.com"));assertFalse(html.contains("fonts.googleapis.com"));
     }

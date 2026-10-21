@@ -117,9 +117,9 @@
             feedback(`Đã tạo ${booking.maDatSan}: ${booking.trangThai}, ${money(booking.tongTien)}. Chưa thanh toán.`);
             for (const input of document.querySelectorAll('#prebookServices input')) input.value = '0';
             const box = $('createdBooking'); box.replaceChildren();
-            box.append(element('p', `Phiếu ${booking.maDatSan} đã lưu trong SQL Server.`));
+            box.append(element('p', `Phiếu ${booking.maDatSan} đã được lưu.`));
             const link = element('a', 'Xem lịch đặt sân', 'underline font-bold');
-            link.href = 'Quan_ly_lich_dat_san.html?' + new URLSearchParams({ date: booking.ngayChoi, pitch: booking.maSan, booking:booking.maDatSan }); box.append(link);
+            link.href = (account.maVaiTro==='VT01'?'lich-dat-cua-toi?':'dieu-phoi-san?') + new URLSearchParams({ date: booking.ngayChoi, pitch: booking.maSan, booking:booking.maDatSan }); box.append(link);
             if (account.maVaiTro === 'VT01') { window.location.assign(link.href + '&payment=1'); return; }
             if(account.maVaiTro==='VT01'){const pay=element('a','Thanh toán ngay','bg-brand-600 text-white rounded-lg px-3 py-2 inline-block ml-3');pay.href=link.href+'&payment=1';box.append(pay);}
             selectedSlot = ''; await search();
@@ -135,33 +135,94 @@
         const button = element('button', label, `${css} text-xs px-2 py-1 rounded-lg font-bold mr-1`);
         button.type = 'button'; button.disabled = saving; button.addEventListener('click', callback); return button;
     }
+    let staffDetails=new Map(),staffTab='all';
     function renderCalendar() {
-        const body = $('bookingRows'); body.replaceChildren(); text('bookingCount', rows.length);
-        if (!rows.length) { const tr = document.createElement('tr'); const td = element('td', 'Không có booking theo bộ lọc.', 'p-4 text-gray-500'); td.colSpan = 7; tr.append(td); body.append(tr); }
-        for (const row of rows) {
+        if(['VT02','VT04'].includes(account.maVaiTro)){renderStaffCalendar();return;}
+        const body = $('bookingRows'); body.replaceChildren(); const staff=['VT02','VT04'].includes(account.maVaiTro);const query=staff?($('staffBookingSearch')?.value||'').trim().toLocaleLowerCase('vi-VN'):'';const visibleRows=rows.filter(r=>!query||[r.maDatSan,r.hoTen,r.tenSan].some(v=>String(v||'').toLocaleLowerCase('vi-VN').includes(query)));text('bookingCount', visibleRows.length);if(staff&&!document.getElementById('staffServiceHeading')){const head=body.closest('table').querySelector('thead tr');const th=element('th','Dịch vụ','p-4');th.id='staffServiceHeading';head.insertBefore(th,head.children[5]);}
+        if (!visibleRows.length) { const tr = document.createElement('tr'); const td = element('td', 'Không có lượt đặt phù hợp.', 'p-4 text-gray-500'); td.colSpan = staff?8:7; tr.append(td); body.append(tr); }
+        for (const row of visibleRows) {
             const tr = document.createElement('tr');
             for (const value of [row.maDatSan, row.hoTen, `${row.tenSan} (${row.tenLoaiSan})`,
                 `${row.ngayChoi} ${range(row)}`, money(row.tongTien)]) tr.append(element('td', value, 'p-4'));
+            if(staff)tr.append(element('td',Number(row.tienDichVu)>0?money(row.tienDichVu):'Không phát sinh','p-4'));
             const stateCell=element('td','','p-4'),state=element('span',row.trangThai,'fc-status');state.dataset.state=row.trangThai;stateCell.append(state);tr.append(stateCell);
             const td = document.createElement('td'); td.className = 'p-4 text-center';
             const actions=document.createElement('div');actions.className='booking-actions';td.append(actions);
             actions.append(action('Chi tiết', () => window.openDetailModal(row.maDatSan)));
             if (account.maVaiTro !== 'VT01' && window.SanBongOperations)
-                actions.append(action('Nhận sân / Dịch vụ', () => SanBongOperations.open(row.maDatSan), 'bg-green-50 text-green-700'));
+                actions.append(action(staff?'Nhận / Trả sân · Dịch vụ':'Nhận sân / Dịch vụ', () => SanBongOperations.open(row.maDatSan), 'bg-green-50 text-green-700'));
             if (account.maVaiTro !== 'VT01' && allowed('SUA') && row.trangThai === 'Chờ xác nhận')
                 actions.append(action('Xác nhận', () => window.confirmBooking(row.maDatSan), 'bg-brand-600 text-white'));
             if (allowed('SUA') && ['Chờ xác nhận', 'Đã xác nhận'].includes(row.trangThai))
-                actions.append(action('Hủy', () => window.openCancelModal(row.maDatSan), 'bg-red-50 text-red-600'));
+                actions.append(action(window.SanBongCancellation?.pending(row.maDatSan)?'Chờ duyệt hủy':'Yêu cầu hủy', () => {if(!window.SanBongCancellation?.pending(row.maDatSan))window.openCancelModal(row.maDatSan);}, 'bg-red-50 text-red-600'));
             if (account.maVaiTro !== 'VT01' && allowed('SUA') && ['Chờ xác nhận', 'Đã xác nhận'].includes(row.trangThai))
                 actions.append(action('Đổi lịch cùng sân', () => reschedule(row), 'bg-yellow-50 text-yellow-800'));
             tr.append(td); body.append(tr);
         }
     }
+
+    function staffState(row){
+        if(row.trangThai==='Đã hủy')return 'cancelled';
+        const d=staffDetails.get(row.maDatSan);if(!d||d.error)return 'unknown';
+        if(d.visit?.thoiGianKetThuc||row.trangThai==='Đã sử dụng')return 'returned';
+        if(d.visit)return 'playing';
+        return 'waiting';
+    }
+    function renderStaffCalendar(){
+        const body=$('bookingRows'),table=body.closest('table');table.classList.add('staff-dispatch-table');const filters=document.querySelector('.booking-search-panel');if(filters&&!filters.closest('details')){const advanced=document.createElement('details');advanced.className='dispatch-advanced';advanced.append(element('summary','Lọc theo ngày, sân và trạng thái'));filters.before(advanced);advanced.append(filters);}
+        const head=table.querySelector('thead tr');head.replaceChildren();for(const title of ['Mã đơn','Khách hàng','Sân bóng','Ngày & giờ','Dịch vụ đính kèm','Trạng thái','Hành động điều phối'])head.append(element('th',title));
+        const toolbar=$('staffDispatchTabs');if(toolbar&&!toolbar.childElementCount){toolbar.setAttribute('aria-label','Lọc trạng thái điều phối');for(const [value,label]of [['all','Tất cả'],['waiting','Chờ nhận sân'],['playing','Đang đá trên sân'],['returned','Đã trả sân'],['cancelled','Đã hủy']]){const button=element('button',label);button.type='button';button.dataset.dispatchTab=value;button.onclick=()=>{staffTab=value;renderCalendar();};toolbar.append(button);}}
+        toolbar?.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.dispatchTab===staffTab)));
+        const query=($('staffBookingSearch')?.value||'').trim().toLocaleLowerCase('vi-VN');
+        const visible=rows.filter(r=>(staffTab==='all'||staffState(r)===staffTab)&&(!query||[r.maDatSan,r.hoTen,r.tenSan].some(v=>String(v||'').toLocaleLowerCase('vi-VN').includes(query))));
+        text('bookingCount',visible.length);body.replaceChildren();
+        for(const row of visible){
+            const tr=document.createElement('tr'),code=element('td',''),link=element('button',row.maDatSan,'dispatch-code');link.type='button';link.onclick=()=>window.openDetailModal(row.maDatSan);code.append(link);tr.append(code);
+            const customer=element('td','');customer.append(element('strong',row.hoTen));tr.append(customer,element('td',row.tenSan));
+            const when=element('td','');when.append(element('span',row.ngayChoi),element('small',range(row),'dispatch-time'));tr.append(when);
+            const details=staffDetails.get(row.maDatSan),services=element('td','');
+            if(!details)services.append(element('span','Đang tải…','dispatch-muted'));
+            else if(details.error)services.append(element('span','Không tải được dịch vụ','dispatch-error'));
+            else if(!details.services.length)services.append(element('em','Không có','dispatch-muted'));
+            else{const list=document.createElement('ul');for(const line of details.services)list.append(element('li',`${line.tenDV} · ${line.quyCach==='LOC_6'?'lốc 6':'đơn vị'} × ${line.soLuong} (${money(line.thanhTien)})`));services.append(list);}tr.append(services);
+            const phase=staffState(row),state=element('td',''),badge=element('span',({playing:'Đang sử dụng',returned:'Đã trả sân',cancelled:'Đã hủy'})[phase]||row.trangThai,'dispatch-state');badge.dataset.phase=phase;state.append(badge);tr.append(state);
+            const cell=element('td',''),actions=element('div','','dispatch-actions');
+            const op=(label,focus,css)=>{const b=action(label,()=>SanBongOperations.open(row.maDatSan,focus),css);actions.append(b);};
+            if(phase==='playing'){
+                if(account.permissions.includes('CN03_THEM'))op('Dịch vụ','serviceCatalog','dispatch-service');
+                if(allowed('SUA'))op('Trả sân','checkOutButton','dispatch-return');
+            }else if(phase==='waiting'&&row.trangThai==='Đã xác nhận'&&allowed('SUA'))actions.append(action('Nhận sân',()=>window.receivePitch(row.maDatSan),'dispatch-checkin'));
+            if(phase==='unknown')op('Xem vận hành','operationsClose','dispatch-secondary');
+            if(row.trangThai==='Chờ xác nhận'&&allowed('SUA'))actions.append(action('Xác nhận',()=>window.confirmBooking(row.maDatSan),'dispatch-checkin'));
+            // Preserve less frequent actions without competing with handover controls.
+            const more=document.createElement('details'),summary=element('summary','Thao tác khác');more.append(summary,action('Chi tiết',()=>window.openDetailModal(row.maDatSan)));
+            if(allowed('SUA')&&['Chờ xác nhận','Đã xác nhận'].includes(row.trangThai)){more.append(action('Hủy',()=>window.openCancelModal(row.maDatSan),'text-red-700'),action('Đổi lịch cùng sân',()=>reschedule(row)));}
+            actions.append(more);cell.append(actions);tr.append(cell);body.append(tr);
+        }
+        if(!visible.length){const tr=document.createElement('tr'),td=element('td',loading?'Đang tải lượt đặt…':'Không có lượt đặt phù hợp.');td.colSpan=7;tr.append(td);body.append(tr);}
+    }
+    document.addEventListener('sanbong:check-in',()=>{staffTab='playing';renderCalendar();});
+    document.addEventListener('sanbong:check-out',()=>{staffTab='returned';renderCalendar();});
+    window.receivePitch=async id=>{
+        if(saving||!allowed('SUA')||!confirm(`Xác nhận khách đã đến và nhận sân cho ${id}?`))return;
+        saving=true;renderCalendar();
+        try{
+            await write(`operations/bookings/${encodeURIComponent(id)}/check-in`,{});
+            staffTab='playing';await window.applyFilters();
+            feedback(`Đã nhận sân ${id}. Khách đang đá trên sân; chọn Dịch vụ để thêm phát sinh.`);
+        }catch(error){feedback(error.message,true);}
+        finally{saving=false;renderCalendar();}
+    };
+    async function loadStaffDetails(version){
+        let index=0;const targets=[...rows];
+        await Promise.all(Array.from({length:Math.min(4,targets.length)},async()=>{while(index<targets.length){if(version!==sequence)return;const row=targets[index++];try{const d=await SanBong.request('operations/bookings/'+encodeURIComponent(row.maDatSan));if(version!==sequence)return;staffDetails.set(row.maDatSan,d);}catch(error){if(version!==sequence)return;staffDetails.set(row.maDatSan,{error:error.message});}renderCalendar();}}));
+    }
+    $('staffBookingSearch')?.addEventListener('input',()=>{if(['VT02','VT04'].includes(account?.maVaiTro))renderCalendar();});
     function reschedule(row) {
         const dialog=document.createElement('dialog');dialog.className='rounded-xl p-6 max-w-lg w-full';
         const form=document.createElement('form');form.className='space-y-3';
         const title=element('h3','Đổi lịch '+row.maDatSan,'font-bold');
-        const note=element('p','Chỉ đổi lịch trên cùng sân, booking giờ tự do chưa có hóa đơn/giao dịch. Giá được tính lại và cần xác nhận lại.','text-sm');form.append(title,note);
+        const note=element('p','Chỉ đổi lịch trên cùng sân, lượt đặt giờ tự do chưa có hóa đơn hoặc giao dịch. Giá được tính lại và cần xác nhận lại.','text-sm');form.append(title,note);
         for(const [name,label,type,value] of [['ngayChoi','Ngày mới','date',row.ngayChoi],['gioBatDau','Bắt đầu','time',time(row.gioBatDau)],['gioKetThuc','Kết thúc','time',time(row.gioKetThuc)],['lyDo','Lý do','text','']]){
             const wrap=element('label',label,'block'),input=document.createElement('input');input.name=name;input.type=type;input.value=value;input.required=true;input.className='border p-2 block w-full';if(name==='lyDo')input.maxLength=255;wrap.append(input);form.append(wrap);
         }
@@ -172,10 +233,10 @@
         const version = ++sequence;
         const query = new URLSearchParams({ date: $('filterDate').value, pitch: $('filterPitch').value,
             slot: $('filterSlot').value, status: $('filterStatus').value });
-        rows = []; renderCalendar(); text('bookingCount', '—');
+        rows = []; loading=true;staffDetails=new Map();renderCalendar(); text('bookingCount', '—');
         try { const result = await SanBong.request('bookings?' + query); if (version !== sequence) return;
-            rows = result; renderCalendar();
-        } catch (error) { if (version === sequence) feedback(error.message, true); }
+            rows = result;loading=false;renderCalendar();if(['VT02','VT04'].includes(account.maVaiTro))await loadStaffDetails(version);
+        } catch (error) { if (version === sequence){loading=false;renderCalendar();feedback(error.message, true);} }
     };
     window.confirmBooking = async id => {
         if (saving || !confirm(`Xác nhận booking ${id}?`)) return; saving = true; renderCalendar();
@@ -198,14 +259,16 @@
     window.closeDetailModal = () => $('detailModal').classList.add('hidden');
     window.openCancelModal = id => {
         $('cancelBookingId').value = id; text('cancelBookingCode', id); $('cancelReason').value = '';
+        const customer=account.maVaiTro==='VT01';$('cancelForm').querySelector('p').firstChild.textContent=customer?'Gửi yêu cầu hủy lượt đặt ':'Hủy lượt đặt ';$('cancelModal').querySelector('h3').textContent=customer?'Gửi yêu cầu hủy':'Hủy đặt sân';$('cancelForm').querySelector('[type=submit]').textContent=customer?'Gửi yêu cầu':'Xác nhận hủy';$('cancelRefundRate').closest('.grid').children[1].hidden=customer;
         $('cancelRequester').value = account.maVaiTro === 'VT01' ? 'Khách hàng' : 'Nhân viên'; $('cancelModal').classList.remove('hidden');
     };
     window.closeCancelModal = () => $('cancelModal').classList.add('hidden');
     async function cancel(event) {
         event.preventDefault(); if (saving) return; saving = true; const button = event.currentTarget.querySelector('[type="submit"]'); button.disabled = true;
         const id = $('cancelBookingId').value;
-        try { await write(`bookings/${encodeURIComponent(id)}/cancel`, { lyDo: $('cancelReason').value });
-            window.closeCancelModal(); feedback(`Đã hủy ${id}; xem chi tiết hóa đơn để kiểm tra khoản hoàn đang chờ xác nhận.`); await window.applyFilters();
+        const customer=account.maVaiTro==='VT01';
+        try { await write(`bookings/${encodeURIComponent(id)}/${customer?'cancellation-requests':'cancel'}`, { lyDo: $('cancelReason').value });
+            window.closeCancelModal(); feedback(customer?`Đã gửi yêu cầu hủy ${id}; sân vẫn được giữ trong lúc chờ duyệt.`:`Đã hủy ${id}; xem chi tiết hóa đơn để kiểm tra khoản hoàn đang chờ xác nhận.`); document.dispatchEvent(new Event('sanbong:cancellation-updated')); await window.applyFilters();
         } catch (error) { feedback(error.message, true); alert(error.message); }
         finally { saving = false; button.disabled = false; renderCalendar(); }
     }
@@ -215,7 +278,7 @@
         try {
             options = await SanBong.request('booking-options');
             if (calendar) {
-                if (account.maVaiTro === 'VT02') document.body.classList.add('staff-booking-calendar');
+                if (['VT02','VT04'].includes(account.maVaiTro)) document.body.classList.add('staff-booking-calendar');
                 fillSelect('filterPitch', options.pitches, 'maSan', p => `${p.tenSan} (${p.maSan})`, 'Tất cả sân');
                 fillSelect('filterSlot', options.slots, 'maKhungGio', range, 'Tất cả khung giờ');
                 fillSelect('filterStatus', options.states.map(s => ({ id: s })), 'id', s => s.id, 'Tất cả trạng thái');
@@ -224,12 +287,12 @@
                 if (account.maVaiTro === 'VT01') {
                     document.body.classList.add('customer-booking-calendar');
                     document.title = 'Lịch đặt của tôi - FC-UTE';
-                    const heading = document.querySelector('h2');
+                    const heading = document.querySelector('body > div > header h2');
                     if (heading) { heading.textContent = 'Lịch đặt của tôi'; if (heading.nextElementSibling) heading.nextElementSibling.textContent = 'Xem lượt đặt, trạng thái và chi tiết hóa đơn của bạn.'; }
-                    document.querySelectorAll('a[href="Dat_san_tai_quay.html"]').forEach(a => { a.href = 'Man_hinh_chinh_Dat_san_KH.html'; a.textContent = 'Đặt sân mới'; });
+                    document.querySelectorAll('a[href="dat-san-tai-quay"]').forEach(a => { a.href = 'dat-san'; a.textContent = 'Đặt sân mới'; });
                     const listHeading = document.querySelector('main h3'); if (listHeading) listHeading.textContent = 'Các lượt đặt của bạn';
                 }
-                $('cancelForm').addEventListener('submit', cancel); await window.applyFilters();
+                document.addEventListener('sanbong:cancellation-loaded',()=>window.applyFilters()); $('cancelForm').addEventListener('submit', cancel); await window.applyFilters();
                 if (params.get('booking')) await window.openDetailModal(params.get('booking'));
             } else {
                 fillSelect('bookingType', options.types, 'maLoaiSan', t => t.tenLoaiSan, 'Tất cả loại sân');

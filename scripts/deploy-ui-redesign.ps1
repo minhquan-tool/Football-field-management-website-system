@@ -42,8 +42,8 @@ try{
   Start-Sleep -Seconds 1
  }
  if(-not $qaHealthy){throw 'New web startup timed out'}
- $qaHtml=(Invoke-WebRequest 'http://127.0.0.1:8082/api/Trang_chu.html' -TimeoutSec 5).Content
- $qaCss=(Invoke-WebRequest 'http://127.0.0.1:8082/api/css/experience.css' -TimeoutSec 5).Content
+ $qaHtml=(Invoke-WebRequest 'http://127.0.0.1:8082/trang-chu' -TimeoutSec 5).Content
+ $qaCss=(Invoke-WebRequest 'http://127.0.0.1:8082/css/experience.css' -TimeoutSec 5).Content
  if($qaHtml -notmatch 'css/experience.css' -or $qaCss -notmatch 'FC-UTE UI/UX Pro Max'){throw 'New assets were not served'}
  [ordered]@{status='DEPLOYED_HEALTHY';deployedAt=[DateTimeOffset]::Now.ToString('o');runtimePid=$qaNew.Id;port=8082;jarSha256=(Get-FileHash -LiteralPath $qaJar).Hash;previousJarSha256=$qaOldHash;rollbackJar=$qaBackup;databaseMigrations=0;htmlPages=20;candidateMenuRoutes=27;candidateForms='PASS';candidatePages='PASS'}|ConvertTo-Json|Set-Content (Join-Path $qaRoot 'exports/ui-redesign-deployment.json') -Encoding utf8
  'UI REDESIGN DEPLOYED; health and new assets verified on 8082'

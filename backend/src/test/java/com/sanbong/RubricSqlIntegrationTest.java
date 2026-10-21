@@ -69,10 +69,10 @@ class RubricSqlIntegrationTest extends RoleAuditSupport {
  @Test void reportRoutesKeepWebRoleBoundaries()throws Exception{
   String day=LocalDate.now().toString();
   var customer=login("khachhang");var staff=login("nvsan");var accountant=login("ketoan");var manager=login("admin");
-  mvc.perform(get("/reports/usage").param("from",day).param("to",day).session(customer)).andExpect(status().isForbidden());
-  mvc.perform(get("/reports/finance").param("from",day).param("to",day).session(staff)).andExpect(status().isForbidden());
-  mvc.perform(get("/reports/finance").param("from",day).param("to",day).session(accountant)).andExpect(status().isOk());
-  mvc.perform(get("/reports/dashboard").session(manager)).andExpect(status().isOk());
-  mvc.perform(get("/reports/reconciliation").param("from",day).param("to",day).session(accountant)).andExpect(status().isOk());
+  mvc.perform(get("/api/reports/usage").param("from",day).param("to",day).session(customer)).andExpect(status().isForbidden());
+  mvc.perform(get("/api/reports/finance").param("from",day).param("to",day).session(staff)).andExpect(status().isForbidden());
+  mvc.perform(get("/api/reports/finance").param("from",day).param("to",day).session(accountant)).andExpect(status().isOk());
+  mvc.perform(get("/api/reports/dashboard").session(manager)).andExpect(status().isOk());
+  mvc.perform(get("/api/reports/reconciliation").param("from",day).param("to",day).session(accountant)).andExpect(status().isOk());
  }
 }

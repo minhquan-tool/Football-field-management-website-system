@@ -23,6 +23,17 @@ public class FinanceService {
   this.finance=finance;this.bookings=bookings;this.pitches=pitches;this.accounts=accounts;this.security=security;this.clock=clock;
  }
  private LocalDateTime now() { return LocalDateTime.ofInstant(clock.instant(),ZoneId.of("Asia/Ho_Chi_Minh")).truncatedTo(java.time.temporal.ChronoUnit.MICROS); }
+ @Transactional(readOnly=true)
+ public Map<String,Object> invoicePage(String search,String state,int page,int size){
+  validatePage(search,page,size);if(!Set.of("","CHUA_THANH_TOAN","THANH_TOAN_MOT_PHAN","DA_THANH_TOAN","DA_HUY","DUE").contains(state))throw new IllegalArgumentException("Trạng thái hóa đơn không hợp lệ.");
+  return finance.invoicePage(search.trim(),state,page,size);
+ }
+ @Transactional(readOnly=true)
+ public Map<String,Object> refundPage(String search,String state,int page,int size){
+  validatePage(search,page,size);if(!Set.of("","Chờ duyệt","Đã hoàn","Từ chối").contains(state))throw new IllegalArgumentException("Trạng thái hoàn tiền không hợp lệ.");
+  return finance.refundPage(search.trim(),state,page,size);
+ }
+ private void validatePage(String search,int page,int size){if(search==null||search.length()>100||page<1||page>100000||size<1||size>100)throw new IllegalArgumentException("Bộ lọc hoặc phân trang không hợp lệ.");}
  private DatSan find(String id) { return bookings.findById(id).orElseThrow(() -> new BookingNotFoundException("Booking không tồn tại.")); }
  private void owner(DatSan d,AccountPrincipal actor) {
   if("VT01".equals(actor.roleId())) {
@@ -79,6 +90,8 @@ public class FinanceService {
   result.put("payments",finance.payments(id));result.put("refunds",finance.refunds(id));result.put("cancellation",finance.cancellation(id).orElse(null));
   result.put("thucThu",finance.paid(id).subtract(finance.refunded(id)));
   result.put("promotionCode",d.getMaKM()==null?"":d.getMaKM());
+  var invoice=finance.invoice(id);var paymentTotal=invoice.map(r->(BigDecimal)r.get("tongTien")).orElse(d.getTongTien());
+  result.put("paymentOptions",ReservationPaymentAmounts.options(paymentTotal,finance.paid(id)));
   result.put("canApplyPromotion","GIA_GIO".equals(d.getCheDoGia())&&!"Đã hủy".equals(d.getTrangThai())&&!sealed(id)&&finance.paid(id).signum()==0&&finance.payments(id).stream().noneMatch(p->"Chờ xử lý".equals(p.get("trangThai"))));return result;
  }
  @Transactional(readOnly=true) public List<Map<String,Object>> promotions() { return finance.promotions(); }
@@ -140,6 +153,7 @@ public class FinanceService {
    if(received && !"Thành công".equals(row.get("trangThai"))) throw new IllegalStateException("Giao dịch đã có; dùng thao tác xác nhận giao dịch đang chờ.");return view(d);
   }
   ensure(d,actor);
+  if("VT01".equals(actor.roleId()))ReservationPaymentAmounts.validate((BigDecimal)finance.invoice(id).orElseThrow().get("tongTien"),finance.paid(id),request.paymentPlan(),request.soTien());
   if(request.soTien().compareTo(remaining(id))>0 || remaining(id).signum()==0) throw new IllegalStateException("Số tiền vượt số còn thiếu hoặc hóa đơn đã đủ tiền.");
   if(!received && finance.payments(id).stream().anyMatch(p -> "Chờ xử lý".equals(p.get("trangThai")))) throw new IllegalStateException("Đã có yêu cầu thanh toán chờ xác minh.");
   finance.paymentCreate(id,request.soTien(),request.phuongThuc(),request.idempotencyKey(),employee,received,now());sync(d);
@@ -170,12 +184,22 @@ public class FinanceService {
  }
  /** BookingService has already locked and validated ownership/state/visit/time. */
  public void cancelLocked(DatSan d,String reason,AccountPrincipal actor) {
+  cancelAtRateLocked(d,reason,null,false,actor);
+ }
+ /** Caller holds San -> DatSan locks and validates the approved request. */
+ @Transactional(propagation=Propagation.MANDATORY)
+ public void cancelRequestedLocked(DatSan d,String reason,BigDecimal rate,AccountPrincipal actor) {
+  if(!Set.of("VT03","VT04").contains(actor.roleId()))throw new AccessDeniedException("Chỉ kế toán/chủ sân duyệt hủy.");
+  if(rate==null||rate.signum()<0||rate.compareTo(BigDecimal.valueOf(100))>0)throw new IllegalArgumentException("Tỷ lệ hoàn đã lưu không hợp lệ.");
+  cancelAtRateLocked(d,reason,rate,true,actor);
+ }
+ private void cancelAtRateLocked(DatSan d,String reason,BigDecimal savedRate,boolean customerRequest,AccountPrincipal actor) {
   String id=d.getMaDatSan();
   if(!invoiceExists(id) && !finance.payments(id).isEmpty()) throw new IllegalStateException("Thanh toán legacy chưa đối soát; không tự chuyển đổi/hủy.");
-  ensure(d,actor);var now=now();var rate=finance.rate(d.getNgayChoi().atTime(d.getGioBatDau()),now);
+  ensure(d,actor);var now=now();var rate=savedRate==null?finance.rate(d.getNgayChoi().atTime(d.getGioBatDau()),now):savedRate;
   var net=finance.paid(id).subtract(finance.refunded(id));if(net.signum()<0) throw new IllegalStateException("Thực thu không hợp lệ; cần đối soát.");
   var target=net.multiply(rate).divide(BigDecimal.valueOf(100),2,RoundingMode.HALF_UP);
-  String cancellation=finance.cancel(id,reason,"VT01".equals(actor.roleId()),rate,net,target,now);
+  String cancellation=finance.cancel(id,reason,customerRequest||"VT01".equals(actor.roleId()),rate,net,target,now);
   var payments=finance.payments(id).stream().filter(p -> "Thành công".equals(p.get("trangThai"))).toList();var budget=target;
   for(int i=0;i<payments.size();i++) {
    var row=payments.get(i);String payment=(String)row.get("maTT");var available=((BigDecimal)row.get("soTien")).subtract(finance.refundedPayment(payment));

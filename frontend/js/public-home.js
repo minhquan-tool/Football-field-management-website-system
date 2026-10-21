@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 content.append(node('p', `${money(pitch.donGia)}/giờ · Chưa gồm dịch vụ`, 'pitch-meta'));
             } else if (pitch.moTa) content.append(node('p', pitch.moTa, 'pitch-description'));
             const link = node('a', searching ? 'Đăng nhập để đặt sân' : 'Tra cứu giờ trống', 'button');
-            link.href = searching ? 'Dang_nhap.html?' + new URLSearchParams({date:pitch.ngayChoi,start:pitch.gioBatDau.slice(0,5),end:pitch.gioKetThuc.slice(0,5),pitch:pitch.maSan,type:$('publicType').value}) : '#tim-san'; content.append(link); card.append(content); host.append(card);
+            link.href = searching ? 'dang-nhap?' + new URLSearchParams({date:pitch.ngayChoi,start:pitch.gioBatDau.slice(0,5),end:pitch.gioKetThuc.slice(0,5),pitch:pitch.maSan,type:$('publicType').value}) : '#tim-san'; content.append(link); card.append(content); host.append(card);
         }
     }
     async function catalog() {
@@ -64,7 +64,60 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) { if (requestVersion === version) { status(error.message, true); $('publicPitches').append(node('p', 'Chưa có kết quả. Kiểm tra ngày, giờ hoặc thử lại.', 'empty-state')); } }
         finally { if (requestVersion === version) $('publicSearchButton').disabled = false; }
     });
-    for (const id of ['publicStart','publicEnd']) $(id).addEventListener('input', () => $('publicEnd').setCustomValidity(''));
+    function showTimePeriod(input) {
+        const wrapper = input.parentElement;
+        const [hour, minute] = input.value.split(':');
+        wrapper.querySelector('.guest-time-hour').value = hour || '';
+        wrapper.querySelector('.guest-time-minute').value = minute || '';
+        const maxHour = Number(input.max.slice(0, 2));
+        const minHour = Number(input.min.slice(0, 2));
+        const minMinute = Number(input.min.slice(3, 5));
+        const maxMinute = Number(input.max.slice(3, 5));
+        for (const option of wrapper.querySelector('.guest-time-minute').options) {
+            option.disabled = option.value !== '' && ((Number(hour) === maxHour && Number(option.value) > maxMinute) ||
+                (Number(hour) === minHour && Number(option.value) < minMinute));
+        }
+    }
+    for (const id of ['publicStart', 'publicEnd']) {
+        const input = $(id);
+        const wrapper = input.parentElement;
+        wrapper.classList.add('guest-time-enhanced');
+        input.tabIndex = -1;
+        const hour = document.createElement('select');
+        const minute = document.createElement('select');
+        hour.className = 'guest-time-hour'; minute.className = 'guest-time-minute';
+        const label = id === 'publicStart' ? 'bắt đầu' : 'kết thúc';
+        hour.setAttribute('aria-label', `Giờ ${label}, buổi trong ngày`);
+        minute.setAttribute('aria-label', `Phút ${label}`);
+        hour.add(new Option('Giờ', '')); minute.add(new Option('Phút', ''));
+        for (let value = Number(input.min.slice(0, 2)); value <= Number(input.max.slice(0, 2)); value++) {
+            const period = value < 12 ? 'Sáng' : value < 18 ? 'Chiều' : 'Tối';
+            hour.add(new Option(`${String(value % 12 || 12).padStart(2, '0')} ${period}`, String(value).padStart(2, '0')));
+        }
+        for (let value = 0; value < 60; value++) {
+            const text = String(value).padStart(2, '0');
+            minute.add(new Option(text, text));
+        }
+        wrapper.append(hour, minute);
+        function update() {
+            if (hour.value && minute.value) {
+                const minimum = Number(hour.value) === Number(input.min.slice(0, 2)) ? Number(input.min.slice(3, 5)) : 0;
+                const maximum = Number(hour.value) === Number(input.max.slice(0, 2)) ? Number(input.max.slice(3, 5)) : 59;
+                minute.value = String(Math.max(minimum, Math.min(maximum, Number(minute.value)))).padStart(2, '0');
+            }
+            input.value = hour.value && minute.value ? `${hour.value}:${minute.value}` : '';
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+        hour.addEventListener('change', update); minute.addEventListener('change', update);
+        input.addEventListener('input', () => { $('publicEnd').setCustomValidity(''); showTimePeriod(input); });
+        input.addEventListener('change', () => showTimePeriod(input));
+        input.addEventListener('invalid', event => {
+            event.preventDefault();
+            hour.focus();
+            status(input.validationMessage, true);
+        });
+        document.querySelector(`label[for="${id}"]`).addEventListener('click', event => { event.preventDefault(); hour.focus(); });
+    }
     $('showAllPitches').addEventListener('click', () => {
         $('publicQuery').value = ''; $('publicType').value = ''; $('publicSearchButton').disabled = !options; catalog();
     });
@@ -75,6 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
             for (const type of options.types) $('publicType').add(new Option(type.tenLoaiSan, type.maLoaiSan));
             $('publicDate').value = options.defaultDate; $('publicDate').min = options.today;
             $('publicStart').value = options.defaultStart.slice(0,5); $('publicEnd').value = options.defaultEnd.slice(0,5);
+            showTimePeriod($('publicStart')); showTimePeriod($('publicEnd'));
             $('publicSearchButton').disabled = false; await catalog();
         } catch (error) { status(error.message, true); }
     }

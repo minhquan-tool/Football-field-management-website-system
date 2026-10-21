@@ -13,7 +13,7 @@ server:
     include-stacktrace: never
     include-exception: false
   servlet:
-    context-path: ${APP_CONTEXT_PATH:/api}
+    context-path: /
     session:
       timeout: 30m
       cookie:

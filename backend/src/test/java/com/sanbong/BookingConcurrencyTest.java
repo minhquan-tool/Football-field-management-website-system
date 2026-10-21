@@ -52,12 +52,12 @@ class BookingConcurrencyTest {
         });
     }
     private Csrf csrf(MockHttpSession session) throws Exception {
-        var req=get("/auth/csrf");if(session!=null)req.session(session);
+        var req=get("/api/auth/csrf");if(session!=null)req.session(session);
         var result=mvc.perform(req).andExpect(status().isOk()).andReturn();var data=json.readTree(result.getResponse().getContentAsString(java.nio.charset.StandardCharsets.UTF_8)).path("data");
         return new Csrf((MockHttpSession)result.getRequest().getSession(false),data.path("headerName").asText(),data.path("token").asText());
     }
     private Csrf session() throws Exception {
-        var c=csrf(null);var result=mvc.perform(post("/auth/login").session(c.session()).header(c.header(),c.token())
+        var c=csrf(null);var result=mvc.perform(post("/api/auth/login").session(c.session()).header(c.header(),c.token())
                 .param("identifier","admin").param("password",System.getenv().getOrDefault("AUTH_TEST_PASSWORD","123456")))
                 .andExpect(status().isOk()).andReturn();return csrf((MockHttpSession)result.getRequest().getSession(false));
     }
@@ -65,7 +65,7 @@ class BookingConcurrencyTest {
         return json.writeValueAsString(Map.of("maSan",pitch,"maKhungGio","KG03","ngayChoi",date.toString(),"maKH","KH01","ghiChu","Phase4 automated concurrent test"));
     }
     private int create(Csrf c,String body) throws Exception {
-        return mvc.perform(post("/bookings").session(c.session()).header(c.header(),c.token()).contentType("application/json").content(body)).andReturn().getResponse().getStatus();
+        return mvc.perform(post("/api/bookings").session(c.session()).header(c.header(),c.token()).contentType("application/json").content(body)).andReturn().getResponse().getStatus();
     }
     @Test void concurrentRequestsProduceExactlyOneValidBooking() throws Exception {
         var a=session();var b=session();String body=request();var ready=new CountDownLatch(2);var start=new CountDownLatch(1);
@@ -104,7 +104,7 @@ class BookingConcurrencyTest {
         String id=jdbc.queryForObject("SELECT MaDatSan FROM DatSan WHERE MaSan=?",String.class,pitch);
         doThrow(new RuntimeException("Phase4 injected cancellation audit failure"))
                 .when(security).audit(anyString(),eq("Sửa"),eq("Đặt sân"),eq(id),anyString());
-        mvc.perform(post("/bookings/"+id+"/cancel").session(c.session()).header(c.header(),c.token())
+        mvc.perform(post("/api/bookings/"+id+"/cancel").session(c.session()).header(c.header(),c.token())
                 .contentType("application/json").content("{\"lyDo\":\"Phase4 rollback cancellation test\"}"))
                 .andExpect(status().isInternalServerError()).andExpect(jsonPath("$.success").value(false));
         assertEquals("Chờ xác nhận",jdbc.queryForObject("SELECT TrangThai FROM DatSan WHERE MaDatSan=?",String.class,id));
@@ -115,8 +115,8 @@ class BookingConcurrencyTest {
         String id=jdbc.queryForObject("SELECT MaDatSan FROM DatSan WHERE MaSan=?",String.class,pitch);
         var start=new CountDownLatch(1);var pool=Executors.newFixedThreadPool(2);
         try {
-            var confirm=pool.submit(() -> {start.await();return mvc.perform(post("/bookings/"+id+"/confirm").session(a.session()).header(a.header(),a.token())).andReturn().getResponse().getStatus();});
-            var cancel=pool.submit(() -> {start.await();return mvc.perform(post("/bookings/"+id+"/cancel").session(b.session()).header(b.header(),b.token()).contentType("application/json").content("{\"lyDo\":\"Phase4 race test\"}")).andReturn().getResponse().getStatus();});
+            var confirm=pool.submit(() -> {start.await();return mvc.perform(post("/api/bookings/"+id+"/confirm").session(a.session()).header(a.header(),a.token())).andReturn().getResponse().getStatus();});
+            var cancel=pool.submit(() -> {start.await();return mvc.perform(post("/api/bookings/"+id+"/cancel").session(b.session()).header(b.header(),b.token()).contentType("application/json").content("{\"lyDo\":\"Phase4 race test\"}")).andReturn().getResponse().getStatus();});
             start.countDown();assertTrue(List.of(200,409).contains(confirm.get(30,TimeUnit.SECONDS)));assertEquals(200,cancel.get(30,TimeUnit.SECONDS));
             assertEquals("Đã hủy",jdbc.queryForObject("SELECT TrangThai FROM DatSan WHERE MaDatSan=?",String.class,id));
             assertEquals(1,jdbc.queryForObject("SELECT COUNT(*) FROM HuyDatSan WHERE MaDatSan=?",Integer.class,id));

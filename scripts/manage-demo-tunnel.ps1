@@ -32,7 +32,7 @@ if($Action -eq 'stop'){
 }
 if($Action -eq 'status'){
     $process=Find-Process $state
-    if($process){Write-Output "Tunnel process running: $($process.Id)";Write-Output "Demo URL: $($state.url)/api/";Write-Output 'External email-PIN/client verification is still required.'}
+    if($process){Write-Output "Tunnel process running: $($process.Id)";Write-Output "Demo URL: $($state.url)/trang-chu";Write-Output 'External email-PIN/client verification is still required.'}
     else{Write-Output 'Demo tunnel is not running.'}
     exit
 }
@@ -72,7 +72,7 @@ try{
     if(-not $state.url){throw 'No demo URL was assigned within 40 seconds.'}
     $state.status='URL_ASSIGNED_NOT_CLIENT_VERIFIED'
     $state|ConvertTo-Json|Set-Content -LiteralPath $stateFile -Encoding utf8
-    Write-Output "Demo URL: $($state.url)/api/"
+    Write-Output "Demo URL: $($state.url)/trang-chu"
     Write-Output 'Only allowed emails can pass the email-PIN gate. Then sign in with a web account.'
     Write-Output 'URL changes on restart. Keep this computer, backend and tunnel running.'
 }catch{

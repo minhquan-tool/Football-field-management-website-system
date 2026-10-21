@@ -54,7 +54,11 @@ document.addEventListener('DOMContentLoaded',()=>{
                 control.placeholder=hints[control.id]||('Nhập '+(caption.toLocaleLowerCase('vi')||'thông tin').replace(/\s*\*\s*$/,'')+'...');
             }
             const parent=label.parentElement;
-            if(parent&&getComputedStyle(parent).display==='flex')parent.classList.add('fc-field-row');
+            if(parent){const style=getComputedStyle(parent);const row=style.display==='flex'&&['row','row-reverse'].includes(style.flexDirection);parent.classList.toggle('fc-field-row',row);}
+        });
+        document.querySelectorAll('#accountRows tr').forEach(row=>{
+            const cell=row.lastElementChild;if(!cell||cell.querySelector('.fc-action-menu')||cell.querySelectorAll('button').length<3)return;
+            const menu=document.createElement('details');menu.className='fc-action-menu';const summary=document.createElement('summary');summary.textContent='Thao tác';const controls=document.createElement('div');controls.className='fc-action-menu-content';while(cell.firstChild)controls.append(cell.firstChild);menu.append(summary,controls);cell.append(menu);
         });
         for(const id of ['accountForm','employeeForm','profileForm','passwordForm','feedbackForm'])document.getElementById(id)?.classList.add('fc-entry-form');
         document.querySelectorAll('form').forEach(form=>{
@@ -66,5 +70,6 @@ document.addEventListener('DOMContentLoaded',()=>{
         });
     }
     enhanceFields();
+    window.addEventListener('resize',()=>{if(!queued){queued=true;requestAnimationFrame(enhanceFields);}});
     new MutationObserver(()=>{if(!queued){queued=true;queueMicrotask(enhanceFields);}}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden']});
 });

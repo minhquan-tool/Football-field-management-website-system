@@ -209,7 +209,7 @@ APP_ENV=test
 SAN_BONG_TEST_MODE=test
 APP_HOST=127.0.0.1
 APP_PORT=8082
-APP_CONTEXT_PATH=/api
+# Giao diện chạy ở /; API dữ liệu ở /api
 APP_DB_URL=jdbc:sqlserver://localhost:1433;databaseName=QuanLySanBong;encrypt=true;trustServerCertificate=false
 APP_DB_USER=SanBongApp
 APP_DB_PASSWORD=fill_privately
@@ -231,7 +231,7 @@ Trong dotenv không thêm `export`, `$env:` hoặc dấu ngoặc kép quanh giá
 | `APP_DB_USER` / `APP_DB_PASSWORD` | SQL runtime credential, khác tài khoản khách web |
 | `APP_HOST` | 127.0.0.1 cho local; 0.0.0.0 khi triển khai nhiều giao diện đã review |
 | `APP_PORT` | Mẫu 8082; application.yml mặc định 8080 nếu không đặt |
-| `APP_CONTEXT_PATH` | Tiền tố URL, mẫu /api |
+| Đường dẫn | Giao diện tại /; API dữ liệu tại /api; không đặt servlet context riêng |
 | `APP_ENV` | dev, test hoặc internal |
 | `SAN_BONG_TEST_MODE` | Opt-in, vẫn cần marker/identity đúng; không tự biến DB thành test |
 | `AUTH_TEST_PASSWORD` | Credential web cho test, khác SQL password; không cần để chỉ package/start |
@@ -283,9 +283,9 @@ Start-Process "http://127.0.0.1:8082/api/"
 | Màn hình | URL mẫu |
 |---|---|
 | Trang công khai mặc định | `http://127.0.0.1:8082/api/` |
-| Trang chủ trực tiếp | `http://127.0.0.1:8082/api/Trang_chu.html` |
-| Đăng nhập | `http://127.0.0.1:8082/api/Dang_nhap.html` |
-| Đăng ký khách hàng | `http://127.0.0.1:8082/api/Dang_ky.html` |
+| Trang chủ trực tiếp | `http://127.0.0.1:8082/trang-chu` |
+| Đăng nhập | `http://127.0.0.1:8082/dang-nhap` |
+| Đăng ký khách hàng | `http://127.0.0.1:8082/dang-ky` |
 | Health ứng dụng/database | `http://127.0.0.1:8082/api/health` |
 
 Dùng đúng http/https, host/cổng/context đã cấu hình. Không mở HTML bằng file:// hoặc Live Server để thay Spring Boot: API/cookie/CSRF phải đi qua server đúng cấu hình.
@@ -515,7 +515,7 @@ Tài liệu phase/ngày cũ là lịch sử, có thể còn cổng/schema trư�
 |---|---|
 | 127.0.0.1 từ chối kết nối | Backend chưa listen, đã dừng hoặc sai cổng; chạy lại, chờ startup thành công, kiểm Test-NetConnection và /health |
 | Tắt máy rồi mở link không được | URL không tự chạy server; kiểm SQL service và khởi động backend |
-| Mở trang đăng nhập thay trang chủ | Dùng /api/ hoặc /api/Trang_chu.html; /Dang_nhap.html là trang đăng nhập |
+| Mở trang đăng nhập thay trang chủ | Dùng /trang-chu; /dang-nhap là trang đăng nhập |
 | Java executable does not exist / Test-Path=False | Sửa JAVA_HOME đến JDK thật, kiểm bin/java.exe |
 | release version 24 not supported | Maven dùng JDK khác; sửa JAVA_HOME/PATH và kiểm mvn -version |
 | mvn không nhận diện | Thêm Maven/bin vào PATH hoặc dùng đường dẫn mvn.cmd thật, kiểm MAVEN_HOME |

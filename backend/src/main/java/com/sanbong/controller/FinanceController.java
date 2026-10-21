@@ -11,9 +11,13 @@ public class FinanceController {
  private final FinanceService service;
  private final com.sanbong.service.BankTransferService transfers;
  public FinanceController(FinanceService service,com.sanbong.service.BankTransferService transfers) { this.service=service;this.transfers=transfers; }
- @GetMapping("/finance/bookings/{id}/transfer-instructions") @PreAuthorize("hasRole('CUSTOMER') and hasAuthority('CN04_XEM')")
+ @GetMapping("/finance/invoices") @PreAuthorize("hasAnyRole('ACCOUNTANT','ADMIN') and hasAuthority('CN04_XEM')")
+ public ApiResponse<?> invoices(@RequestParam(defaultValue="") String search,@RequestParam(defaultValue="") String status,@RequestParam(defaultValue="1") int page,@RequestParam(defaultValue="20") int size){return ApiResponse.ok("Hóa đơn snapshot",service.invoicePage(search,status,page,size));}
+ @GetMapping("/finance/refund-items") @PreAuthorize("hasAnyRole('ACCOUNTANT','ADMIN') and hasAuthority('CN04_XEM')")
+ public ApiResponse<?> refundItems(@RequestParam(defaultValue="") String search,@RequestParam(defaultValue="") String status,@RequestParam(defaultValue="1") int page,@RequestParam(defaultValue="20") int size){return ApiResponse.ok("Khoản hoàn thực tế",service.refundPage(search,status,page,size));}
+ @GetMapping("/finance/bookings/{id}/transfer-instructions") @PreAuthorize("hasAnyRole('CUSTOMER','ACCOUNTANT','ADMIN') and hasAuthority('CN04_XEM')")
  public ApiResponse<?> transfer(@PathVariable String id,@RequestParam java.math.BigDecimal amount,@AuthenticationPrincipal AccountPrincipal actor){return ApiResponse.ok("Thông tin chuyển khoản; chưa xác nhận nhận tiền.",transfers.instructions(id,amount,actor));}
- @GetMapping("/finance/bookings/{id}/bank-qr") @PreAuthorize("hasRole('CUSTOMER') and hasAuthority('CN04_XEM')")
+ @GetMapping("/finance/bookings/{id}/bank-qr") @PreAuthorize("hasAnyRole('CUSTOMER','ACCOUNTANT','ADMIN') and hasAuthority('CN04_XEM')")
  public org.springframework.http.ResponseEntity<byte[]> bankQr(@PathVariable String id,@RequestParam java.math.BigDecimal amount,@AuthenticationPrincipal AccountPrincipal actor){return transfers.image(id,amount,actor);}
  @PostMapping("/finance/payments/{id}/confirm-cash") @PreAuthorize("hasRole('PITCH_STAFF') and hasAuthority('CN04_THEM')")
  public ApiResponse<?> cash(@PathVariable String id,@Valid @RequestBody ReceiptConfirmation request,@AuthenticationPrincipal AccountPrincipal actor){return ApiResponse.ok("Nhân viên đã xác nhận thực nhận tiền mặt.",service.confirmCashPayment(id,actor));}

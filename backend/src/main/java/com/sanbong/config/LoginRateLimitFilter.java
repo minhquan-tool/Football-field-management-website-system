@@ -19,7 +19,7 @@ public final class LoginRateLimitFilter extends OncePerRequestFilter {
     @Override protected boolean shouldNotFilter(HttpServletRequest request){
         String path=request.getServletPath();
         if(path.isEmpty())path=request.getRequestURI().substring(request.getContextPath().length());
-        return !"POST".equals(request.getMethod())||!"/auth/login".equals(path);
+        return !"POST".equals(request.getMethod())||!"/api/auth/login".equals(path);
     }
     @Override protected void doFilterInternal(HttpServletRequest request,HttpServletResponse response,FilterChain chain)throws ServletException,IOException {
         // Do not trust user-supplied X-Forwarded-For/CF-Connecting-IP headers.

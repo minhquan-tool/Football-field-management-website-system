@@ -51,7 +51,7 @@ class NormalizationIntegrationTest extends RoleAuditSupport {
  }
  @Test void invoiceStillAcceptsComponentFactsAndReturnsComputedTotal()throws Exception{
   var staff=login("nvsan");String id=book(staff);
-  var invoice=data(write(staff,"POST","/finance/bookings/"+id+"/invoice",Map.of()).andExpect(status().isOk()).andReturn());
+  var invoice=data(write(staff,"POST","/api/finance/bookings/"+id+"/invoice",Map.of()).andExpect(status().isOk()).andReturn());
   assertEquals(0,bookingsTotal(id).compareTo(invoice.path("invoice").path("tongTien").decimalValue()));
  }
 }

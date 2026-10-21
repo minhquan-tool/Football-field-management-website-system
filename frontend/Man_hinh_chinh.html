@@ -30,7 +30,7 @@
         }
     </style>
 <link rel="stylesheet" href="css/fc-ute.css"><link rel="stylesheet" href="css/experience.css"><script src="js/ui.js" defer></script></head>
-<body class="flex h-screen overflow-hidden text-gray-800">
+<body data-admin-page="dashboard" class="flex h-screen overflow-hidden text-gray-800">
 
     <!-- Sidebar (Thanh điều hướng phân quyền) -->
     <aside class="w-72 bg-white shadow-2xl flex flex-col h-full hidden md:flex z-20 border-r border-gray-100">
@@ -49,7 +49,7 @@
 
         <!-- Logout -->
         <div class="p-4 border-t border-gray-100 bg-gray-50">
-            <a href="Dang_nhap.html" class="flex items-center gap-3 text-gray-600 hover:text-red-600 hover:bg-red-50 px-4 py-2.5 rounded-xl font-bold transition-colors">
+            <a href="dang-nhap" class="flex items-center gap-3 text-gray-600 hover:text-red-600 hover:bg-red-50 px-4 py-2.5 rounded-xl font-bold transition-colors">
                 <i class="fa-solid fa-arrow-right-from-bracket w-5 text-center"></i> Đăng xuất
             </a>
         </div>
@@ -68,7 +68,7 @@
 
             <!-- User Profile & Utils -->
             <div class="flex items-center gap-5 ml-auto">
-                <a href="Man_hinh_chinh_TK&amp;PQ_HT.html#logs" class="text-gray-400 hover:text-brand-600 transition-colors" title="Nhật ký hoạt động">
+                <a href="nhan-su-phan-quyen#logs" class="text-gray-400 hover:text-brand-600 transition-colors" title="Nhật ký hoạt động">
                     <i class="fa-solid fa-clock-rotate-left text-lg"></i>
                 </a>
                 <div class="h-8 w-px bg-gray-200"></div>
@@ -85,10 +85,10 @@
         </header>
 
         <!-- Dashboard Content -->
-        <main class="flex-1 overflow-y-auto p-6 lg:p-8">
+        <main class="flex-1 overflow-y-auto p-6 lg:p-8"><header class="ad-heading"><div><p class="ad-eyebrow">FC-UTE · Quản lý hệ thống</p><h1>Trung tâm điều hành sân bóng</h1><p>Theo dõi hoạt động trong ngày, tình trạng sân và số liệu tài chính.</p></div><a class="ad-primary" href="dat-san-tai-quay">Đặt sân tại quầy</a></header>
             
             <!-- Cards Thống Kê (Bám sát Báo cáo tổng hợp doanh thu) -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="ad-primary-stats grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 flex items-center gap-4 border-l-4 border-l-blue-500">
                     <div class="h-12 w-12 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center text-xl">
                         <i class="fa-solid fa-calendar-check"></i>
@@ -131,8 +131,8 @@
             </div>
 
 <p id="dashboardStatus" role="status" class="text-sm mb-3"></p>
-<div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8"><div class="bg-white rounded-2xl p-5 border"><p>Doanh thu khi trả sân</p><strong id="dashRevenue">—</strong></div><div class="bg-white rounded-2xl p-5 border"><p>Đã hoàn trong ngày</p><strong id="dashRefund">—</strong></div><div class="bg-white rounded-2xl p-5 border"><p>Tỷ lệ sử dụng sân</p><strong id="dashOccupancy">—</strong></div></div>
-<div class="grid grid-cols-1 xl:grid-cols-3 gap-8"><section class="xl:col-span-2 bg-white rounded-2xl border p-6"><h3 class="text-lg font-bold mb-3">Lịch đặt hôm nay</h3><div id="dashBookings" class="space-y-3"></div><a class="text-brand-600 font-bold" href="Quan_ly_lich_dat_san.html">Quản lý lượt đặt</a></section><section class="bg-white rounded-2xl border p-6"><h3 class="text-lg font-bold mb-3">Dịch vụ bán nhiều hôm nay</h3><div id="dashServices" class="space-y-3"></div><a href="Bao_cao.html" class="text-brand-600 font-bold">Báo cáo theo thời gian</a></section></div>
+<div class="ad-secondary-stats grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8"><div class="bg-white rounded-2xl p-5 border"><p>Doanh thu khi trả sân</p><strong id="dashRevenue">—</strong></div><div class="bg-white rounded-2xl p-5 border"><p>Đã hoàn trong ngày</p><strong id="dashRefund">—</strong></div><div class="bg-white rounded-2xl p-5 border"><p>Tỷ lệ sử dụng sân</p><strong id="dashOccupancy">—</strong></div></div>
+<div class="ad-detail-grid grid grid-cols-1 xl:grid-cols-3 gap-8"><section class="xl:col-span-2 bg-white rounded-2xl border p-6"><h3 class="text-lg font-bold mb-3">Lịch đặt hôm nay</h3><div id="dashBookings" class="space-y-3"></div><a class="text-brand-600 font-bold" href="dieu-phoi-san">Quản lý lượt đặt</a></section><section class="bg-white rounded-2xl border p-6"><h3 class="text-lg font-bold mb-3">Dịch vụ bán nhiều hôm nay</h3><div id="dashServices" class="space-y-3"></div><a href="bao-cao" class="text-brand-600 font-bold">Báo cáo theo thời gian</a></section></div>
         </main>
     </div>
 

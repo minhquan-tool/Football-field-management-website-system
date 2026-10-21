@@ -1,6 +1,6 @@
 /* Same-origin API: no fixed host, port, database credentials or client-side role trust. */
 window.SanBong = (() => {
-    const base = new URL('./', window.location.href);
+    const base = new URL('/api/', window.location.origin);
     async function request(path, options = {}) {
         const method = (options.method || 'GET').toUpperCase();
         const headers = new Headers(options.headers || {});
@@ -49,8 +49,8 @@ window.SanBong = (() => {
         return `${hex.slice(0,8)}-${hex.slice(8,12)}-${hex.slice(12,16)}-${hex.slice(16,20)}-${hex.slice(20)}`;
     }
     function home(role) {
-        return ({ VT01: 'Man_hinh_chinh_KH.html', VT02: 'Man_hinh_chinh_NVKH.html',
-            VT03: 'Man_hinh_chinh_NVKT.html', VT04: 'Man_hinh_chinh.html' })[role] || 'Dang_nhap.html';
+        return ({ VT01: 'khach-hang', VT02: 'nhan-vien',
+            VT03: 'hoa-don', VT04: 'quan-tri' })[role] || 'dang-nhap';
     }
     // Only carry booking filters, never accept a redirect URL supplied by the browser.
     function bookingIntent(params = new URLSearchParams(location.search)) {
@@ -62,20 +62,20 @@ window.SanBong = (() => {
     function loginDestination(role) {
         const intent=bookingIntent();
         return role==='VT01' && intent.has('date') && intent.has('start') && intent.has('end')
-            ? 'Man_hinh_chinh_Dat_san_KH.html?'+intent : home(role);
+            ? 'dat-san?'+intent : home(role);
     }
     async function logout(event) {
         event.preventDefault();
-        try { await request('auth/logout', { method: 'POST' }); window.location.href = 'Dang_nhap.html'; }
+        try { await request('auth/logout', { method: 'POST' }); window.location.href = 'dang-nhap'; }
         catch (error) { alert(error.message); }
     }
     document.addEventListener('DOMContentLoaded', async () => {
         const style = document.createElement('style');
         style.textContent = '[hidden]{display:none!important} @media(max-width:767px){body>aside{position:fixed;inset:0 auto 0 0;width:min(18rem,85vw);z-index:70!important;display:flex}body>nav .md\\:flex{position:absolute;top:5rem;left:0;right:0;background:white;max-height:70vh;overflow-y:auto;z-index:70}main{min-width:0}header{gap:.5rem}header h2{font-size:1rem}header>div{min-width:0}}';
         document.head.append(style);
-        if (/\/(Dang_nhap|Dang_ky)\.html$/.test(location.pathname)) {
+        if (/\/(dang-nhap|dang-ky)$/.test(location.pathname)) {
             const intent=bookingIntent();
-            if(intent.toString())document.querySelectorAll('a[href="Dang_nhap.html"],a[href="Dang_ky.html"]').forEach(a=>a.search=intent.toString());
+            if(intent.toString())document.querySelectorAll('a[href="dang-nhap"],a[href="dang-ky"]').forEach(a=>a.search=intent.toString());
             return;
         }
         if (document.body.dataset.publicPage === 'true') return;
@@ -125,7 +125,7 @@ window.SanBong = (() => {
             });
             document.dispatchEvent(new CustomEvent('sanbong:authenticated', { detail: account }));
         } catch (error) {
-            if (error.status === 401) location.href = 'Dang_nhap.html?' + bookingIntent();
+            if (error.status === 401) location.href = 'dang-nhap?' + bookingIntent();
             else alert(error.message);
         }
     });

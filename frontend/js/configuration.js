@@ -6,7 +6,7 @@ document.addEventListener('sanbong:authenticated', async event=>{
     async function load(){
         data=await SanBong.request('configuration');const host=$('configurationRows');host.replaceChildren();
         const labels={id:'Mã',ten:'Tên',soNguoi:'Số người',moTa:'Mô tả / Điều kiện',batDau:'Bắt đầu',ketThuc:'Kết thúc',thoiLuong:'Số giờ',donGia:'Đơn giá / Mức giảm',loaiSan:'Loại sân',khungGio:'Khung giờ',loaiNgay:'Loại ngày',tuNgay:'Từ ngày',denNgay:'Đến ngày',hoatDong:'Đang áp dụng',loaiGiam:'Loại giảm'};
-        for(const [kind,title]of [['types','Loại sân'],['hourly','Giá theo giờ cho lượt đặt mới'],['slots','Khung giờ của dữ liệu cũ'],['prices','Bảng giá của dữ liệu cũ'],['promotions','Khuyến mãi']]){
+        for(const [kind,title]of [['types','Loại sân'],['hourly','Giá theo giờ cho lượt đặt mới'],['slots','Khung giờ đã lưu'],['prices','Bảng giá đã lưu'],['promotions','Khuyến mãi']]){
             const section=document.createElement('section');section.className='bg-white border rounded-xl p-4 my-4';section.dataset.configurationKind=kind;section.hidden=kind!==$('configurationKind').value;host.append(section);const h=document.createElement('h2');h.textContent=title;h.className='font-bold';section.append(h);
             for(const source of data[kind]){
                 const row=kind==='hourly'?{id:source.MaCa,batDau:source.GioBatDau,ketThuc:source.GioKetThuc,donGia:source.DonGia}:source;

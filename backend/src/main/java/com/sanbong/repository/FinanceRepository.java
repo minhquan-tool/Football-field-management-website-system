@@ -73,5 +73,23 @@ public class FinanceRepository {
  public List<Map<String,Object>> transactions() { return jdbc.queryForList("SELECT t.MaTT maTT,t.MaDatSan maDatSan,k.HoTen hoTen,t.PhuongThuc phuongThuc,t.SoTien soTien,t.TrangThai trangThai,CONVERT(varchar(19),t.NgayThanhToan,126) ngayThanhToan FROM ThanhToan t JOIN DatSan d ON d.MaDatSan=t.MaDatSan JOIN KhachHang k ON k.MaKH=d.MaKH ORDER BY t.NgayThanhToan DESC,t.MaTT"); }
  public List<Map<String,Object>> refundQueue() { return jdbc.queryForList("SELECT h.MaHT maHT,t.MaDatSan maDatSan,h.SoTienHoan soTienHoan,h.TrangThai trangThai,h.PhuongThuc phuongThuc FROM HoanTien h JOIN ThanhToan t ON t.MaTT=h.MaTT ORDER BY h.NgayHoan DESC,h.MaHT"); }
  public BigDecimal net() { return jdbc.queryForObject("SELECT ISNULL(SUM(SoTienThucNhan),0) FROM V_ThuChiThucNhan",BigDecimal.class); }
+ public Map<String,Object> invoicePage(String search,String state,int page,int size){
+  String from=" FROM HoaDon h JOIN DatSan d ON d.MaDatSan=h.MaDatSan JOIN KhachHang k ON k.MaKH=d.MaKH JOIN San s ON s.MaSan=d.MaSan";
+  String where=" WHERE (?='' OR h.MaHoaDon LIKE ? ESCAPE '\\' OR d.MaDatSan LIKE ? ESCAPE '\\' OR k.HoTen LIKE ? ESCAPE '\\' OR k.SoDienThoai LIKE ? ESCAPE '\\') AND (?='' OR h.TrangThai=? OR (?='DUE' AND h.ConLai>0 AND h.TrangThai<>N'DA_HUY'))";
+  String term=like(search);var args=new ArrayList<Object>(Arrays.asList(search,term,term,term,term,state,state,state));
+  Long total=jdbc.queryForObject("SELECT COUNT_BIG(*)"+from+where,Long.class,args.toArray());args.add((page-1)*size);args.add(size);
+  var rows=jdbc.queryForList("SELECT h.MaHoaDon maHoaDon,d.MaDatSan maDatSan,k.HoTen hoTen,k.SoDienThoai soDienThoai,s.TenSan tenSan,CONVERT(varchar(10),d.NgayChoi,23) ngayChoi,CONVERT(varchar(8),d.GioBatDau,108) gioBatDau,CONVERT(varchar(8),d.GioKetThuc,108) gioKetThuc,h.TienSan tienSan,h.TienDichVu tienDichVu,h.TienGiam tienGiam,h.TongTien tongTien,h.DaThanhToan daThanhToan,h.ConLai conLai,h.TrangThai trangThai,h.DaChot daChot"+from+where+" ORDER BY h.NgayLap DESC,h.MaHoaDon OFFSET ? ROWS FETCH NEXT ? ROWS ONLY",args.toArray());
+  return Map.of("rows",rows,"total",total,"page",page,"size",size);
+ }
+ public Map<String,Object> refundPage(String search,String state,int page,int size){
+  String from=" FROM HoanTien h JOIN ThanhToan t ON t.MaTT=h.MaTT JOIN DatSan d ON d.MaDatSan=t.MaDatSan JOIN KhachHang k ON k.MaKH=d.MaKH JOIN San s ON s.MaSan=d.MaSan LEFT JOIN HuyDatSan c ON c.MaHuy=h.MaHuy";
+  String where=" WHERE (?='' OR h.MaHT LIKE ? ESCAPE '\\' OR d.MaDatSan LIKE ? ESCAPE '\\' OR k.HoTen LIKE ? ESCAPE '\\') AND (?='' OR h.TrangThai=?)";
+  String term=like(search);var args=new ArrayList<Object>(Arrays.asList(search,term,term,term,state,state));
+  Long total=jdbc.queryForObject("SELECT COUNT_BIG(*)"+from+where,Long.class,args.toArray());args.add((page-1)*size);args.add(size);
+  var rows=jdbc.queryForList("SELECT h.MaHT maHT,t.MaDatSan maDatSan,k.HoTen hoTen,k.SoDienThoai soDienThoai,s.TenSan tenSan,CONVERT(varchar(10),d.NgayChoi,23) ngayChoi,CONVERT(varchar(8),d.GioBatDau,108) gioBatDau,CONVERT(varchar(8),d.GioKetThuc,108) gioKetThuc,c.TiLeHoan tiLeHoan,c.SoTienThucThuSnapshot thucThuTaiHuy,h.SoTienHoan soTienHoan,h.TrangThai trangThai,h.PhuongThuc phuongThuc,COALESCE(c.LyDo,h.LyDo) lyDo,CONVERT(varchar(19),h.NgayHoan,126) ngayYeuCau,CONVERT(varchar(19),h.NgayXacNhan,126) ngayXacNhan"+from+where+" ORDER BY h.NgayHoan DESC,h.MaHT OFFSET ? ROWS FETCH NEXT ? ROWS ONLY",args.toArray());
+  Long pending=jdbc.queryForObject("SELECT COUNT_BIG(*) FROM HoanTien WHERE TrangThai=N'Chờ duyệt'",Long.class);
+  return Map.of("rows",rows,"total",total,"page",page,"size",size,"pending",pending);
+ }
+ private String like(String value){return "%"+value.replace("\\","\\\\").replace("%","\\%").replace("_","\\_").replace("[","\\[")+"%";}
  public static String code(String prefix) { return prefix+UUID.randomUUID().toString().replace("-","").substring(0,8); }
 }

@@ -32,32 +32,24 @@ public class SecurityConfig {
             @org.springframework.beans.factory.annotation.Value("${app.security.remember-seconds:604800}") int rememberSeconds,
             @org.springframework.beans.factory.annotation.Value("${server.servlet.session.cookie.secure:false}") boolean secureCookie) throws Exception {
         http.authorizeHttpRequests(a -> a
-                .requestMatchers(org.springframework.http.HttpMethod.GET,"/Trang_chu.html","/css/**","/assets/**","/vendor/**",
-                        "/public/options","/public/pitches","/public/availability").permitAll()
-                .requestMatchers("/","/Dang_nhap.html","/Dang_ky.html","/js/**","/auth/csrf","/auth/register","/health","/error").permitAll()
-                .requestMatchers("/Man_hinh_chinh_TK&PQ_HT.html").hasRole("ADMIN")
-                .requestMatchers("/Tai_khoan_KH.html","/customer/**").hasRole("CUSTOMER")
-                .requestMatchers("/Phan_hoi.html","/feedback","/feedback/**").hasAnyRole("CUSTOMER","PITCH_STAFF","ADMIN")
-                .requestMatchers("/Cau_hinh_san.html","/Sao_luu.html","/configuration/**").hasRole("ADMIN")
-                .requestMatchers("/Man_hinh_chinh.html").hasRole("ADMIN")
-                .requestMatchers("/Man_hinh_chinh_NVKT.html","/Doanh_thu.html").hasAnyRole("ACCOUNTANT","ADMIN")
-                .requestMatchers("/Man_hinh_chinh_NVKH.html","/Dat_san_tai_quay.html","/Quan_ly_san.html")
-                    .hasAnyRole("PITCH_STAFF","ADMIN")
-                .requestMatchers("/Lich_da_bong.html","/staff/weekly-schedule").hasAnyRole("PITCH_STAFF","ADMIN")
-                .requestMatchers("/Quan_ly_lich_dat_san.html","/availability","/booking-options","/booking-customers","/bookings","/bookings/**")
-                    .hasAnyRole("CUSTOMER","PITCH_STAFF","ADMIN")
-                .requestMatchers("/Man_hinh_chinh_KH.html","/Man_hinh_chinh_Dat_san_KH.html",
-                        "/Man_hinh_Khuyen_mai_KH.html","/Man_hinh_LS&ĐG_KH.html").hasRole("CUSTOMER")
-                .requestMatchers("/pitches","/pitches/**","/pitch-types","/pitch-prices").hasAnyRole("PITCH_STAFF","ADMIN")
-                .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/reports/**","/Bao_cao.html").hasAnyRole("ADMIN","ACCOUNTANT","PITCH_STAFF")
-                .requestMatchers("/finance/**").hasAnyRole("CUSTOMER","PITCH_STAFF","ACCOUNTANT","ADMIN")
-                .requestMatchers("/booking-services").hasAnyRole("CUSTOMER","PITCH_STAFF","ADMIN")
-                .requestMatchers("/service-catalog","/service-catalog/**").hasRole("ADMIN")
-                .requestMatchers("/services","/operations/**").hasAnyRole("PITCH_STAFF","ADMIN")
-                .requestMatchers("/auth/me","/auth/permissions","/security/**").authenticated()
+                .requestMatchers(org.springframework.http.HttpMethod.GET,com.sanbong.controller.PageController.legacyPaths()).permitAll()
+                .requestMatchers(org.springframework.http.HttpMethod.GET,"/trang-chu","/css/**","/assets/**","/vendor/**","/api/public/options","/api/public/pitches","/api/public/availability","/api/public/promotions").permitAll()
+                .requestMatchers("/","/api","/api/","/dang-nhap","/dang-ky","/js/**","/api/auth/csrf","/api/auth/register","/api/health","/error").permitAll()
+                .requestMatchers("/nhan-su-phan-quyen","/cau-hinh","/sao-luu","/quan-tri","/doanh-thu","/api/configuration/**","/api/admin/**").hasRole("ADMIN")
+                .requestMatchers("/tai-khoan","/khach-hang","/dat-san","/lich-dat-cua-toi","/lich-su-dat-san","/khuyen-mai","/api/customer/**").hasRole("CUSTOMER")
+                .requestMatchers("/phan-hoi","/api/feedback","/api/feedback/**").hasAnyRole("CUSTOMER","PITCH_STAFF","ADMIN")
+                .requestMatchers("/hoa-don","/hoan-tien","/thanh-toan").hasAnyRole("ACCOUNTANT","ADMIN")
+                .requestMatchers("/nhan-vien","/dat-san-tai-quay","/quan-ly-san","/lich-san","/dieu-phoi-san","/api/staff/weekly-schedule").hasAnyRole("PITCH_STAFF","ADMIN")
+                .requestMatchers("/api/availability","/api/booking-options","/api/booking-customers","/api/bookings","/api/bookings/**").hasAnyRole("CUSTOMER","PITCH_STAFF","ADMIN")
+                .requestMatchers("/api/pitches","/api/pitches/**","/api/pitch-types","/api/pitch-prices").hasAnyRole("PITCH_STAFF","ADMIN")
+                .requestMatchers("/api/reports/**","/bao-cao").hasAnyRole("ADMIN","ACCOUNTANT","PITCH_STAFF")
+                .requestMatchers("/api/finance/**").hasAnyRole("CUSTOMER","PITCH_STAFF","ACCOUNTANT","ADMIN")
+                .requestMatchers("/api/booking-services").hasAnyRole("CUSTOMER","PITCH_STAFF","ADMIN")
+                .requestMatchers("/api/service-catalog","/api/service-catalog/**").hasRole("ADMIN")
+                .requestMatchers("/api/services","/api/operations/**").hasAnyRole("PITCH_STAFF","ADMIN")
+                .requestMatchers("/api/auth/me","/api/auth/permissions","/api/security/**").authenticated()
                 .anyRequest().denyAll())
-            .formLogin(f -> f.loginPage("/Dang_nhap.html").loginProcessingUrl("/auth/login")
+            .formLogin(f -> f.loginPage("/dang-nhap").loginProcessingUrl("/api/auth/login")
                 .usernameParameter("identifier").passwordParameter("password").permitAll()
                 .successHandler((req,res,auth) -> {
                     var principal=(AccountPrincipal)auth.getPrincipal();
@@ -80,7 +72,7 @@ public class SecurityConfig {
                     log.warn("Login rejected type={}",e.getClass().getSimpleName());
                     write(json,res,401,ApiResponse.error("Thông tin đăng nhập không đúng hoặc tài khoản đã bị khóa."));
                 }))
-            .logout(l -> l.logoutUrl("/auth/logout")
+            .logout(l -> l.logoutUrl("/api/auth/logout")
                 .deleteCookies("JSESSIONID")
                 .addLogoutHandler((req,res,auth) -> {
                     if(auth!=null && auth.getPrincipal() instanceof AccountPrincipal p)
@@ -89,20 +81,15 @@ public class SecurityConfig {
                 .logoutSuccessHandler((req,res,auth) -> write(json,res,200,ApiResponse.ok("Đã đăng xuất.",null))))
             .exceptionHandling(e -> e
                 .authenticationEntryPoint((req,res,err) -> {
-                    if(req.getServletPath().endsWith(".html") || "/".equals(req.getServletPath()))
-                        res.sendRedirect(req.getContextPath()+"/Dang_nhap.html");
+                    if(com.sanbong.controller.PageController.isPage(req.getServletPath()) || "/".equals(req.getServletPath()))
+                        res.sendRedirect(req.getContextPath()+"/dang-nhap");
                     else write(json,res,401,ApiResponse.error("Bạn cần đăng nhập."));
                 })
                 .accessDeniedHandler((req,res,err) -> {
-                    if ("GET".equals(req.getMethod()) && req.getServletPath().endsWith(".html")
+                    if ("GET".equals(req.getMethod()) && com.sanbong.controller.PageController.isPage(req.getServletPath())
                             && req.getUserPrincipal() instanceof org.springframework.security.core.Authentication authentication
                             && authentication.getPrincipal() instanceof AccountPrincipal account) {
-                        String page=switch(account.roleId()) {
-                            case "VT01" -> "Man_hinh_chinh_KH.html";
-                            case "VT02" -> "Man_hinh_chinh_NVKH.html";
-                            case "VT03" -> "Man_hinh_chinh_NVKT.html";
-                            default -> "Man_hinh_chinh.html";
-                        };
+                        String page=com.sanbong.controller.PageController.home(account.roleId());
                         res.sendRedirect(req.getContextPath()+"/"+page+"?accessDenied=1");
                     } else write(json,res,403,ApiResponse.error("Bạn không có quyền hoặc CSRF token không hợp lệ."));
                 }))

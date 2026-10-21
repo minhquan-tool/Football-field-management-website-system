@@ -33,11 +33,13 @@ public class BookingService {
     private final TimePriceRepository timePrices;
     private final OperationsService operations;
     private final FinanceService finance;
+    private final CancellationRequestRepository cancellationRequests;
     public BookingService(SanRepository pitches,LoaiSanRepository types,KhungGioRepository slots,
             BangGiaRepository prices,DatSanRepository bookings,KhachHangRepository customers,
             TaiKhoanRepository accounts,BookingWorkflowRepository workflow,SecurityRepository security,
             @org.springframework.beans.factory.annotation.Value("${app.booking.holidays:}") String holidayDates,
-            TimePriceRepository timePrices,OperationsService operations,FinanceService finance) {
+            TimePriceRepository timePrices,OperationsService operations,FinanceService finance,CancellationRequestRepository cancellationRequests) {
+        this.cancellationRequests=cancellationRequests;
         this.finance=finance;
         this.operations=operations;
         this.timePrices=timePrices;
@@ -139,13 +141,15 @@ public class BookingService {
     public BookingView confirm(String id,AccountPrincipal actor) {
         if(isCustomer(actor)) throw new AccessDeniedException("Khách hàng không được xác nhận booking.");
         var d=locked(id,actor);if(!WAITING.equals(d.getTrangThai())) throw new IllegalStateException("Chỉ xác nhận booking đang chờ xác nhận.");
-        activePitch(d.getSan());if(!d.getNgayChoi().atTime(d.getGioBatDau()).isAfter(LocalDateTime.now(ZONE))) throw new IllegalStateException("Booking đã đến giờ chơi; không thể xác nhận muộn.");
+        activePitch(d.getSan());if(!d.getNgayChoi().atTime(d.getGioKetThuc()).isAfter(LocalDateTime.now(ZONE))) throw new IllegalStateException("Booking đã hết giờ đặt; không thể xác nhận.");
         d.setTrangThai(CONFIRMED);bookings.flush();audit(actor,"Sửa",d,"Xác nhận booking");return BookingView.from(d);
     }
     @Transactional(isolation=Isolation.READ_COMMITTED)
     public BookingView cancel(String id,String reason,AccountPrincipal actor) {
+        if(isCustomer(actor))throw new AccessDeniedException("Vui lòng gửi yêu cầu hủy để kế toán/chủ sân duyệt; không hủy trực tiếp.");
         if(reason==null || reason.isBlank() || reason.length()>255) throw new IllegalArgumentException("Lý do hủy bắt buộc, tối đa 255 ký tự.");
         var d=locked(id,actor);
+        cancellationRequests.requireNoPending(id);
         if(workflow.hasCheckIn(id)) throw new IllegalStateException("Booking đã nhận sân; không được hủy theo luồng đặt sân chưa sử dụng.");
         if(!List.of(WAITING,CONFIRMED).contains(d.getTrangThai())) throw new IllegalStateException("Chỉ hủy booking chờ/đã xác nhận.");
         if(!d.getNgayChoi().atTime(d.getGioBatDau()).isAfter(LocalDateTime.now(ZONE))) throw new IllegalStateException("Booking đã đến giờ chơi; cần nhân viên xử lý theo quy trình vận hành.");
@@ -156,6 +160,7 @@ public class BookingService {
     public BookingView reschedule(String id,RescheduleRequest r,AccountPrincipal actor) {
         if(!Set.of("VT02","VT04").contains(actor.roleId())) throw new AccessDeniedException("Chỉ nhân viên sân/quản trị xử lý đổi lịch.");
         var d=locked(id,actor);
+        cancellationRequests.requireNoPending(id);
         if(!List.of(WAITING,CONFIRMED).contains(d.getTrangThai()) || workflow.hasCheckIn(id)) throw new IllegalStateException("Chỉ đổi lịch lượt đặt chưa nhận sân.");
         if(!"GIA_GIO".equals(d.getCheDoGia())) throw new IllegalStateException("Giữ nguyên booking legacy; không chuyển sang giá theo giờ.");
         if(workflow.hasFinancialHistory(id)) throw new IllegalStateException("Đã có hóa đơn/giao dịch: cần xử lý hủy/hoàn theo chính sách và tạo lượt đặt mới; không sửa snapshot.");
