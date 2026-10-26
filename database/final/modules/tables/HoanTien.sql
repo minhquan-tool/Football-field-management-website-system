@@ -39,8 +39,10 @@ BEGIN
     ALTER TABLE dbo.[HoanTien] ADD CONSTRAINT [CK_HoanTien_TrangThai] CHECK ([TrangThai]=N'Từ chối' OR [TrangThai]=N'Đã hoàn' OR [TrangThai]=N'Chờ duyệt');
 END
 GO
-IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UX_HoanTien_CancellationPayment' AND object_id = OBJECT_ID('dbo.[HoanTien]'))
+IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UX_HoanTien_CancellationPayment' AND object_id = OBJECT_ID(N'dbo.[HoanTien]'))
 BEGIN
-    CREATE UNIQUE NONCLUSTERED INDEX [UX_HoanTien_CancellationPayment] ON dbo.[HoanTien] ([MaHuy] ASC, [MaTT] ASC);
+    DROP INDEX [UX_HoanTien_CancellationPayment] ON dbo.[HoanTien];
 END
+GO
+CREATE UNIQUE NONCLUSTERED INDEX [UX_HoanTien_CancellationPayment] ON dbo.[HoanTien] ([MaHuy] ASC, [MaTT] ASC);
 GO

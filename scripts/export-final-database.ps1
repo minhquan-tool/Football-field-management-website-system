@@ -307,7 +307,7 @@ foreach ($tbl in $tableOrder) {
         $incClause = if ($incCols) { " INCLUDE ($incCols)" } else { "" }
         $filterClause = if (-not ($filter -is [System.DBNull]) -and [string]$filter -ne '') { " WHERE $filter" } else { "" }
         
-        $idxSql = "IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = '$idxName' AND object_id = OBJECT_ID('dbo.[$tbl]'))`nBEGIN`n    CREATE ${uStr}NONCLUSTERED INDEX [$idxName] ON dbo.[$tbl] ($keyCols)$incClause$filterClause;`nEND`nGO"
+        $idxSql = "IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = '$idxName' AND object_id = OBJECT_ID(N'dbo.[$tbl]'))`nBEGIN`n    DROP INDEX [$idxName] ON dbo.[$tbl];`nEND`nGO`nCREATE ${uStr}NONCLUSTERED INDEX [$idxName] ON dbo.[$tbl] ($keyCols)$incClause$filterClause;`nGO"
         $null = $sbTables.AppendLine($idxSql)
         $null = $sbTableSingle.AppendLine($idxSql)
     }

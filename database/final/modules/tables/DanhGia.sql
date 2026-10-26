@@ -26,8 +26,10 @@ BEGIN
     ALTER TABLE dbo.[DanhGia] ADD CONSTRAINT [CK_DanhGia_Diem] CHECK ([DiemTrungBinh] IS NULL OR [DiemTrungBinh]>=(1) AND [DiemTrungBinh]<=(5));
 END
 GO
-IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UQ_DanhGia_DatSan' AND object_id = OBJECT_ID('dbo.[DanhGia]'))
+IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UQ_DanhGia_DatSan' AND object_id = OBJECT_ID(N'dbo.[DanhGia]'))
 BEGIN
-    CREATE UNIQUE NONCLUSTERED INDEX [UQ_DanhGia_DatSan] ON dbo.[DanhGia] ([MaDatSan] ASC);
+    DROP INDEX [UQ_DanhGia_DatSan] ON dbo.[DanhGia];
 END
+GO
+CREATE UNIQUE NONCLUSTERED INDEX [UQ_DanhGia_DatSan] ON dbo.[DanhGia] ([MaDatSan] ASC);
 GO

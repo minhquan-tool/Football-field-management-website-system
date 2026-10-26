@@ -115,10 +115,12 @@ BEGIN
 END
 GO
 
-IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UQ_KhachHang_SDT' AND object_id = OBJECT_ID('dbo.[KhachHang]'))
+IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UQ_KhachHang_SDT' AND object_id = OBJECT_ID(N'dbo.[KhachHang]'))
 BEGIN
-    CREATE UNIQUE NONCLUSTERED INDEX [UQ_KhachHang_SDT] ON dbo.[KhachHang] ([SoDienThoai] ASC);
+    DROP INDEX [UQ_KhachHang_SDT] ON dbo.[KhachHang];
 END
+GO
+CREATE UNIQUE NONCLUSTERED INDEX [UQ_KhachHang_SDT] ON dbo.[KhachHang] ([SoDienThoai] ASC);
 GO
 -- ============================================================
 -- BẢNG: NhanVien
@@ -331,10 +333,12 @@ BEGIN
     ALTER TABLE dbo.[TaiKhoan] ADD CONSTRAINT [CK_TaiKhoan_TrangThai] CHECK ([TrangThai]=N'Khóa' OR [TrangThai]=N'Hoạt động');
 END
 GO
-IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UQ_TaiKhoan_TenDangNhap' AND object_id = OBJECT_ID('dbo.[TaiKhoan]'))
+IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UQ_TaiKhoan_TenDangNhap' AND object_id = OBJECT_ID(N'dbo.[TaiKhoan]'))
 BEGIN
-    CREATE UNIQUE NONCLUSTERED INDEX [UQ_TaiKhoan_TenDangNhap] ON dbo.[TaiKhoan] ([TenDangNhap] ASC);
+    DROP INDEX [UQ_TaiKhoan_TenDangNhap] ON dbo.[TaiKhoan];
 END
+GO
+CREATE UNIQUE NONCLUSTERED INDEX [UQ_TaiKhoan_TenDangNhap] ON dbo.[TaiKhoan] ([TenDangNhap] ASC);
 GO
 -- ============================================================
 -- BẢNG: San
@@ -463,15 +467,19 @@ BEGIN
     ALTER TABLE dbo.[DatSan] ADD CONSTRAINT [CK_DatSan_TrangThai] CHECK ([TrangThai]=N'Đã hủy' OR [TrangThai]=N'Đã sử dụng' OR [TrangThai]=N'Đã xác nhận' OR [TrangThai]=N'Chờ xác nhận');
 END
 GO
-IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'IX_DatSan_SanNgayBatDau' AND object_id = OBJECT_ID('dbo.[DatSan]'))
+IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'IX_DatSan_SanNgayBatDau' AND object_id = OBJECT_ID(N'dbo.[DatSan]'))
 BEGIN
-    CREATE NONCLUSTERED INDEX [IX_DatSan_SanNgayBatDau] ON dbo.[DatSan] ([MaSan] ASC, [NgayChoi] ASC, [GioBatDau] ASC) INCLUDE ([GioKetThuc], [TrangThai]);
+    DROP INDEX [IX_DatSan_SanNgayBatDau] ON dbo.[DatSan];
 END
 GO
-IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UX_DatSan_KhongTrungLich' AND object_id = OBJECT_ID('dbo.[DatSan]'))
+CREATE NONCLUSTERED INDEX [IX_DatSan_SanNgayBatDau] ON dbo.[DatSan] ([MaSan] ASC, [NgayChoi] ASC, [GioBatDau] ASC) INCLUDE ([GioKetThuc], [TrangThai]);
+GO
+IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UX_DatSan_KhongTrungLich' AND object_id = OBJECT_ID(N'dbo.[DatSan]'))
 BEGIN
-    CREATE UNIQUE NONCLUSTERED INDEX [UX_DatSan_KhongTrungLich] ON dbo.[DatSan] ([MaSan] ASC, [NgayChoi] ASC, [MaKhungGio] ASC) WHERE ([TrangThai]<>N'Đã hủy' AND [MaKhungGio] IS NOT NULL);
+    DROP INDEX [UX_DatSan_KhongTrungLich] ON dbo.[DatSan];
 END
+GO
+CREATE UNIQUE NONCLUSTERED INDEX [UX_DatSan_KhongTrungLich] ON dbo.[DatSan] ([MaSan] ASC, [NgayChoi] ASC, [MaKhungGio] ASC) WHERE ([TrangThai]<>N'Đã hủy' AND [MaKhungGio] IS NOT NULL);
 GO
 -- ============================================================
 -- BẢNG: NhatKyHeThong
@@ -521,10 +529,12 @@ BEGIN
     ALTER TABLE dbo.[XacNhanSan] ADD CONSTRAINT [CK_XacNhanSan_ThoiGian] CHECK ([ThoiGianKetThuc] IS NULL OR [ThoiGianKetThuc]>=[ThoiGianNhan]);
 END
 GO
-IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UQ_XacNhanSan_DatSan' AND object_id = OBJECT_ID('dbo.[XacNhanSan]'))
+IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UQ_XacNhanSan_DatSan' AND object_id = OBJECT_ID(N'dbo.[XacNhanSan]'))
 BEGIN
-    CREATE UNIQUE NONCLUSTERED INDEX [UQ_XacNhanSan_DatSan] ON dbo.[XacNhanSan] ([MaDatSan] ASC);
+    DROP INDEX [UQ_XacNhanSan_DatSan] ON dbo.[XacNhanSan];
 END
+GO
+CREATE UNIQUE NONCLUSTERED INDEX [UQ_XacNhanSan_DatSan] ON dbo.[XacNhanSan] ([MaDatSan] ASC);
 GO
 -- ============================================================
 -- BẢNG: ChiTietDichVu
@@ -575,10 +585,12 @@ BEGIN
     ALTER TABLE dbo.[ChiTietDichVu] ADD CONSTRAINT [CK_CTDV_SoLuong] CHECK ([SoLuong]>(0));
 END
 GO
-IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'IX_CTDV_BookingSku' AND object_id = OBJECT_ID('dbo.[ChiTietDichVu]'))
+IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'IX_CTDV_BookingSku' AND object_id = OBJECT_ID(N'dbo.[ChiTietDichVu]'))
 BEGIN
-    CREATE NONCLUSTERED INDEX [IX_CTDV_BookingSku] ON dbo.[ChiTietDichVu] ([MaDatSan] ASC, [MaDV] ASC);
+    DROP INDEX [IX_CTDV_BookingSku] ON dbo.[ChiTietDichVu];
 END
+GO
+CREATE NONCLUSTERED INDEX [IX_CTDV_BookingSku] ON dbo.[ChiTietDichVu] ([MaDatSan] ASC, [MaDV] ASC);
 GO
 -- ============================================================
 -- BẢNG: HoaDon
@@ -614,10 +626,12 @@ BEGIN
     ALTER TABLE dbo.[HoaDon] ADD CONSTRAINT [CK_HD_State] CHECK ([TrangThai]='DA_HUY' OR [TrangThai]='DA_THANH_TOAN' OR [TrangThai]='THANH_TOAN_MOT_PHAN' OR [TrangThai]='CHUA_THANH_TOAN');
 END
 GO
-IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UQ_HoaDon_DatSan' AND object_id = OBJECT_ID('dbo.[HoaDon]'))
+IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UQ_HoaDon_DatSan' AND object_id = OBJECT_ID(N'dbo.[HoaDon]'))
 BEGIN
-    CREATE UNIQUE NONCLUSTERED INDEX [UQ_HoaDon_DatSan] ON dbo.[HoaDon] ([MaDatSan] ASC);
+    DROP INDEX [UQ_HoaDon_DatSan] ON dbo.[HoaDon];
 END
+GO
+CREATE UNIQUE NONCLUSTERED INDEX [UQ_HoaDon_DatSan] ON dbo.[HoaDon] ([MaDatSan] ASC);
 GO
 -- ============================================================
 -- BẢNG: ThanhToan
@@ -653,15 +667,19 @@ BEGIN
     ALTER TABLE dbo.[ThanhToan] ADD CONSTRAINT [CK_ThanhToan_TrangThai] CHECK ([TrangThai]=N'Thất bại' OR [TrangThai]=N'Thành công' OR [TrangThai]=N'Chờ xử lý');
 END
 GO
-IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'IX_ThanhToan_BookingState' AND object_id = OBJECT_ID('dbo.[ThanhToan]'))
+IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'IX_ThanhToan_BookingState' AND object_id = OBJECT_ID(N'dbo.[ThanhToan]'))
 BEGIN
-    CREATE NONCLUSTERED INDEX [IX_ThanhToan_BookingState] ON dbo.[ThanhToan] ([MaDatSan] ASC, [TrangThai] ASC) INCLUDE ([SoTien]);
+    DROP INDEX [IX_ThanhToan_BookingState] ON dbo.[ThanhToan];
 END
 GO
-IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UX_ThanhToan_Idempotency' AND object_id = OBJECT_ID('dbo.[ThanhToan]'))
+CREATE NONCLUSTERED INDEX [IX_ThanhToan_BookingState] ON dbo.[ThanhToan] ([MaDatSan] ASC, [TrangThai] ASC) INCLUDE ([SoTien]);
+GO
+IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UX_ThanhToan_Idempotency' AND object_id = OBJECT_ID(N'dbo.[ThanhToan]'))
 BEGIN
-    CREATE UNIQUE NONCLUSTERED INDEX [UX_ThanhToan_Idempotency] ON dbo.[ThanhToan] ([MaGiaoDich] ASC) WHERE ([MaGiaoDich] IS NOT NULL);
+    DROP INDEX [UX_ThanhToan_Idempotency] ON dbo.[ThanhToan];
 END
+GO
+CREATE UNIQUE NONCLUSTERED INDEX [UX_ThanhToan_Idempotency] ON dbo.[ThanhToan] ([MaGiaoDich] ASC) WHERE ([MaGiaoDich] IS NOT NULL);
 GO
 -- ============================================================
 -- BẢNG: HuyDatSan
@@ -702,10 +720,12 @@ BEGIN
     ALTER TABLE dbo.[HuyDatSan] ADD CONSTRAINT [CK_HuyDatSan_TiLeHoan] CHECK ([TiLeHoan]>=(0) AND [TiLeHoan]<=(100));
 END
 GO
-IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UQ_HuyDatSan_DatSan' AND object_id = OBJECT_ID('dbo.[HuyDatSan]'))
+IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UQ_HuyDatSan_DatSan' AND object_id = OBJECT_ID(N'dbo.[HuyDatSan]'))
 BEGIN
-    CREATE UNIQUE NONCLUSTERED INDEX [UQ_HuyDatSan_DatSan] ON dbo.[HuyDatSan] ([MaDatSan] ASC);
+    DROP INDEX [UQ_HuyDatSan_DatSan] ON dbo.[HuyDatSan];
 END
+GO
+CREATE UNIQUE NONCLUSTERED INDEX [UQ_HuyDatSan_DatSan] ON dbo.[HuyDatSan] ([MaDatSan] ASC);
 GO
 -- ============================================================
 -- BẢNG: DanhGia
@@ -730,10 +750,12 @@ BEGIN
     ALTER TABLE dbo.[DanhGia] ADD CONSTRAINT [CK_DanhGia_Diem] CHECK ([DiemTrungBinh] IS NULL OR [DiemTrungBinh]>=(1) AND [DiemTrungBinh]<=(5));
 END
 GO
-IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UQ_DanhGia_DatSan' AND object_id = OBJECT_ID('dbo.[DanhGia]'))
+IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UQ_DanhGia_DatSan' AND object_id = OBJECT_ID(N'dbo.[DanhGia]'))
 BEGIN
-    CREATE UNIQUE NONCLUSTERED INDEX [UQ_DanhGia_DatSan] ON dbo.[DanhGia] ([MaDatSan] ASC);
+    DROP INDEX [UQ_DanhGia_DatSan] ON dbo.[DanhGia];
 END
+GO
+CREATE UNIQUE NONCLUSTERED INDEX [UQ_DanhGia_DatSan] ON dbo.[DanhGia] ([MaDatSan] ASC);
 GO
 -- ============================================================
 -- BẢNG: PhanHoi
@@ -802,10 +824,12 @@ BEGIN
     ALTER TABLE dbo.[HoanTien] ADD CONSTRAINT [CK_HoanTien_TrangThai] CHECK ([TrangThai]=N'Từ chối' OR [TrangThai]=N'Đã hoàn' OR [TrangThai]=N'Chờ duyệt');
 END
 GO
-IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UX_HoanTien_CancellationPayment' AND object_id = OBJECT_ID('dbo.[HoanTien]'))
+IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UX_HoanTien_CancellationPayment' AND object_id = OBJECT_ID(N'dbo.[HoanTien]'))
 BEGIN
-    CREATE UNIQUE NONCLUSTERED INDEX [UX_HoanTien_CancellationPayment] ON dbo.[HoanTien] ([MaHuy] ASC, [MaTT] ASC);
+    DROP INDEX [UX_HoanTien_CancellationPayment] ON dbo.[HoanTien];
 END
+GO
+CREATE UNIQUE NONCLUSTERED INDEX [UX_HoanTien_CancellationPayment] ON dbo.[HoanTien] ([MaHuy] ASC, [MaTT] ASC);
 GO
 -- ============================================================
 -- BẢNG: YeuCauHuyDatSan
@@ -847,20 +871,26 @@ BEGIN
     ALTER TABLE dbo.[YeuCauHuyDatSan] ADD CONSTRAINT [CK_YeuCauHuy_XuLy] CHECK ([TrangThai]='PENDING' AND [MaTKXuLy] IS NULL AND [NgayXuLy] IS NULL AND [MaHuy] IS NULL OR [TrangThai]='APPROVED' AND [MaTKXuLy] IS NOT NULL AND [NgayXuLy] IS NOT NULL AND [MaHuy] IS NOT NULL OR [TrangThai]='REJECTED' AND [MaTKXuLy] IS NOT NULL AND [NgayXuLy] IS NOT NULL AND [MaHuy] IS NULL);
 END
 GO
-IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'IX_YeuCauHuy_Customer' AND object_id = OBJECT_ID('dbo.[YeuCauHuyDatSan]'))
+IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'IX_YeuCauHuy_Customer' AND object_id = OBJECT_ID(N'dbo.[YeuCauHuyDatSan]'))
 BEGIN
-    CREATE NONCLUSTERED INDEX [IX_YeuCauHuy_Customer] ON dbo.[YeuCauHuyDatSan] ([MaTKGui] ASC, [NgayGui] ASC);
+    DROP INDEX [IX_YeuCauHuy_Customer] ON dbo.[YeuCauHuyDatSan];
 END
 GO
-IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'IX_YeuCauHuy_Queue' AND object_id = OBJECT_ID('dbo.[YeuCauHuyDatSan]'))
+CREATE NONCLUSTERED INDEX [IX_YeuCauHuy_Customer] ON dbo.[YeuCauHuyDatSan] ([MaTKGui] ASC, [NgayGui] ASC);
+GO
+IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'IX_YeuCauHuy_Queue' AND object_id = OBJECT_ID(N'dbo.[YeuCauHuyDatSan]'))
 BEGIN
-    CREATE NONCLUSTERED INDEX [IX_YeuCauHuy_Queue] ON dbo.[YeuCauHuyDatSan] ([TrangThai] ASC, [NgayGui] ASC) INCLUDE ([MaDatSan], [MaTKGui]);
+    DROP INDEX [IX_YeuCauHuy_Queue] ON dbo.[YeuCauHuyDatSan];
 END
 GO
-IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UX_YeuCauHuy_Pending' AND object_id = OBJECT_ID('dbo.[YeuCauHuyDatSan]'))
+CREATE NONCLUSTERED INDEX [IX_YeuCauHuy_Queue] ON dbo.[YeuCauHuyDatSan] ([TrangThai] ASC, [NgayGui] ASC) INCLUDE ([MaDatSan], [MaTKGui]);
+GO
+IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UX_YeuCauHuy_Pending' AND object_id = OBJECT_ID(N'dbo.[YeuCauHuyDatSan]'))
 BEGIN
-    CREATE UNIQUE NONCLUSTERED INDEX [UX_YeuCauHuy_Pending] ON dbo.[YeuCauHuyDatSan] ([MaDatSan] ASC) WHERE ([TrangThai]='PENDING');
+    DROP INDEX [UX_YeuCauHuy_Pending] ON dbo.[YeuCauHuyDatSan];
 END
+GO
+CREATE UNIQUE NONCLUSTERED INDEX [UX_YeuCauHuy_Pending] ON dbo.[YeuCauHuyDatSan] ([MaDatSan] ASC) WHERE ([TrangThai]='PENDING');
 GO
 -- ============================================================
 -- BẢNG: ChiTietDanhGia

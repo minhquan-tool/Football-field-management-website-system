@@ -32,8 +32,10 @@ BEGIN
     ALTER TABLE dbo.[TaiKhoan] ADD CONSTRAINT [CK_TaiKhoan_TrangThai] CHECK ([TrangThai]=N'Khóa' OR [TrangThai]=N'Hoạt động');
 END
 GO
-IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UQ_TaiKhoan_TenDangNhap' AND object_id = OBJECT_ID('dbo.[TaiKhoan]'))
+IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UQ_TaiKhoan_TenDangNhap' AND object_id = OBJECT_ID(N'dbo.[TaiKhoan]'))
 BEGIN
-    CREATE UNIQUE NONCLUSTERED INDEX [UQ_TaiKhoan_TenDangNhap] ON dbo.[TaiKhoan] ([TenDangNhap] ASC);
+    DROP INDEX [UQ_TaiKhoan_TenDangNhap] ON dbo.[TaiKhoan];
 END
+GO
+CREATE UNIQUE NONCLUSTERED INDEX [UQ_TaiKhoan_TenDangNhap] ON dbo.[TaiKhoan] ([TenDangNhap] ASC);
 GO

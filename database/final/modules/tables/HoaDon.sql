@@ -37,8 +37,10 @@ BEGIN
     ALTER TABLE dbo.[HoaDon] ADD CONSTRAINT [CK_HD_State] CHECK ([TrangThai]='DA_HUY' OR [TrangThai]='DA_THANH_TOAN' OR [TrangThai]='THANH_TOAN_MOT_PHAN' OR [TrangThai]='CHUA_THANH_TOAN');
 END
 GO
-IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UQ_HoaDon_DatSan' AND object_id = OBJECT_ID('dbo.[HoaDon]'))
+IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UQ_HoaDon_DatSan' AND object_id = OBJECT_ID(N'dbo.[HoaDon]'))
 BEGIN
-    CREATE UNIQUE NONCLUSTERED INDEX [UQ_HoaDon_DatSan] ON dbo.[HoaDon] ([MaDatSan] ASC);
+    DROP INDEX [UQ_HoaDon_DatSan] ON dbo.[HoaDon];
 END
+GO
+CREATE UNIQUE NONCLUSTERED INDEX [UQ_HoaDon_DatSan] ON dbo.[HoaDon] ([MaDatSan] ASC);
 GO
