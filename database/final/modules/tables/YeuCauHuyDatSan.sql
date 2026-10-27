@@ -43,24 +43,3 @@ BEGIN
     ALTER TABLE dbo.[YeuCauHuyDatSan] ADD CONSTRAINT [CK_YeuCauHuy_XuLy] CHECK ([TrangThai]='PENDING' AND [MaTKXuLy] IS NULL AND [NgayXuLy] IS NULL AND [MaHuy] IS NULL OR [TrangThai]='APPROVED' AND [MaTKXuLy] IS NOT NULL AND [NgayXuLy] IS NOT NULL AND [MaHuy] IS NOT NULL OR [TrangThai]='REJECTED' AND [MaTKXuLy] IS NOT NULL AND [NgayXuLy] IS NOT NULL AND [MaHuy] IS NULL);
 END
 GO
-IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'IX_YeuCauHuy_Customer' AND object_id = OBJECT_ID(N'dbo.[YeuCauHuyDatSan]'))
-BEGIN
-    DROP INDEX [IX_YeuCauHuy_Customer] ON dbo.[YeuCauHuyDatSan];
-END
-GO
-CREATE NONCLUSTERED INDEX [IX_YeuCauHuy_Customer] ON dbo.[YeuCauHuyDatSan] ([MaTKGui] ASC, [NgayGui] ASC);
-GO
-IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'IX_YeuCauHuy_Queue' AND object_id = OBJECT_ID(N'dbo.[YeuCauHuyDatSan]'))
-BEGIN
-    DROP INDEX [IX_YeuCauHuy_Queue] ON dbo.[YeuCauHuyDatSan];
-END
-GO
-CREATE NONCLUSTERED INDEX [IX_YeuCauHuy_Queue] ON dbo.[YeuCauHuyDatSan] ([TrangThai] ASC, [NgayGui] ASC) INCLUDE ([MaDatSan], [MaTKGui]);
-GO
-IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UX_YeuCauHuy_Pending' AND object_id = OBJECT_ID(N'dbo.[YeuCauHuyDatSan]'))
-BEGIN
-    DROP INDEX [UX_YeuCauHuy_Pending] ON dbo.[YeuCauHuyDatSan];
-END
-GO
-CREATE UNIQUE NONCLUSTERED INDEX [UX_YeuCauHuy_Pending] ON dbo.[YeuCauHuyDatSan] ([MaDatSan] ASC) WHERE ([TrangThai]='PENDING');
-GO

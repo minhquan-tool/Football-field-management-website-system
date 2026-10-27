@@ -26,10 +26,9 @@ BEGIN
     ALTER TABLE dbo.[XacNhanSan] ADD CONSTRAINT [CK_XacNhanSan_ThoiGian] CHECK ([ThoiGianKetThuc] IS NULL OR [ThoiGianKetThuc]>=[ThoiGianNhan]);
 END
 GO
-IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UQ_XacNhanSan_DatSan' AND object_id = OBJECT_ID(N'dbo.[XacNhanSan]'))
+
+IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UQ_XacNhanSan_DatSan' AND object_id = OBJECT_ID(N'dbo.[XacNhanSan]'))
 BEGIN
-    DROP INDEX [UQ_XacNhanSan_DatSan] ON dbo.[XacNhanSan];
+    ALTER TABLE dbo.[XacNhanSan] ADD CONSTRAINT [UQ_XacNhanSan_DatSan] UNIQUE NONCLUSTERED ([MaDatSan] ASC);
 END
-GO
-CREATE UNIQUE NONCLUSTERED INDEX [UQ_XacNhanSan_DatSan] ON dbo.[XacNhanSan] ([MaDatSan] ASC);
 GO

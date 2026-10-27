@@ -42,10 +42,9 @@ BEGIN
     ALTER TABLE dbo.[HuyDatSan] ADD CONSTRAINT [CK_HuyDatSan_TiLeHoan] CHECK ([TiLeHoan]>=(0) AND [TiLeHoan]<=(100));
 END
 GO
-IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UQ_HuyDatSan_DatSan' AND object_id = OBJECT_ID(N'dbo.[HuyDatSan]'))
+
+IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UQ_HuyDatSan_DatSan' AND object_id = OBJECT_ID(N'dbo.[HuyDatSan]'))
 BEGIN
-    DROP INDEX [UQ_HuyDatSan_DatSan] ON dbo.[HuyDatSan];
+    ALTER TABLE dbo.[HuyDatSan] ADD CONSTRAINT [UQ_HuyDatSan_DatSan] UNIQUE NONCLUSTERED ([MaDatSan] ASC);
 END
-GO
-CREATE UNIQUE NONCLUSTERED INDEX [UQ_HuyDatSan_DatSan] ON dbo.[HuyDatSan] ([MaDatSan] ASC);
 GO

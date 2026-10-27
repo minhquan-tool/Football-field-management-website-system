@@ -21,10 +21,8 @@ BEGIN
 END
 GO
 
-IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UQ_KhachHang_SDT' AND object_id = OBJECT_ID(N'dbo.[KhachHang]'))
+IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UQ_KhachHang_SDT' AND object_id = OBJECT_ID(N'dbo.[KhachHang]'))
 BEGIN
-    DROP INDEX [UQ_KhachHang_SDT] ON dbo.[KhachHang];
+    ALTER TABLE dbo.[KhachHang] ADD CONSTRAINT [UQ_KhachHang_SDT] UNIQUE NONCLUSTERED ([SoDienThoai] ASC);
 END
-GO
-CREATE UNIQUE NONCLUSTERED INDEX [UQ_KhachHang_SDT] ON dbo.[KhachHang] ([SoDienThoai] ASC);
 GO

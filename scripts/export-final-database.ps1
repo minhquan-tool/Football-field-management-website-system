@@ -19,8 +19,9 @@ $viewsDir = Join-Path $modulesDir 'views'
 $funcsDir = Join-Path $modulesDir 'functions'
 $procsDir = Join-Path $modulesDir 'procedures'
 $trigsDir = Join-Path $modulesDir 'triggers'
+$indexesDir = Join-Path $modulesDir 'indexes'
 
-foreach ($dir in @($modulesDir, $tablesDir, $viewsDir, $funcsDir, $procsDir, $trigsDir)) {
+foreach ($dir in @($modulesDir, $tablesDir, $viewsDir, $funcsDir, $procsDir, $trigsDir, $indexesDir)) {
     if (-not (Test-Path -LiteralPath $dir)) {
         $null = New-Item -ItemType Directory -Path $dir -Force
     }
@@ -127,6 +128,7 @@ SELECT
     t.name AS TableName,
     i.name AS IndexName,
     i.is_unique,
+    i.is_unique_constraint,
     i.filter_definition,
     c.name AS ColumnName,
     ic.key_ordinal,
@@ -208,7 +210,7 @@ $null = $sbTables.AppendLine(@"
      - 28 Bảng nghiệp vụ chuẩn hóa (Phase 1 -> Phase 7)
      - Khóa chính (PK), Khóa ngoại (FK), Ràng buộc duy nhất (UQ)
      - Ràng buộc kiểm tra (CHECK), Giá trị mặc định (DEFAULT)
-     - Chỉ mục tối ưu hóa truy vấn (Non-Clustered Indexes, Filtered Indexes)
+     - Chỉ mục được tách riêng trong 08_indexes.sql
    ========================================================================================= */
 
 USE master;
@@ -228,6 +230,9 @@ GO
 SET QUOTED_IDENTIFIER ON;
 GO
 "@)
+
+$sbIndexes = [System.Text.StringBuilder]::new()
+$null = $sbIndexes.AppendLine("/* FILE 08: CHỈ MỤC (INDEXES) */`nUSE [$Database];`nGO`nSET ANSI_NULLS ON;`nGO`nSET QUOTED_IDENTIFIER ON;`nGO`n")
 
 foreach ($tbl in $tableOrder) {
     $tblCols = $dtCols | Where-Object { $_.TableName -eq $tbl }
@@ -292,7 +297,10 @@ foreach ($tbl in $tableOrder) {
         $null = $sbTableSingle.AppendLine($ckSql)
     }
     
-    # Indexes / Unique constraints
+    $sbIndexSingle = [System.Text.StringBuilder]::new()
+    $null = $sbIndexSingle.AppendLine("USE [$Database];`nGO`nSET ANSI_NULLS ON;`nGO`nSET QUOTED_IDENTIFIER ON;`nGO`n")
+    $indexCount = 0
+    # Standalone indexes are separate; UNIQUE constraints remain with tables.
     $tblIdxGroups = $dtIdx | Where-Object { $_.TableName -eq $tbl } | Group-Object IndexName
     foreach ($grp in $tblIdxGroups) {
         $idxName = $grp.Name
@@ -307,13 +315,31 @@ foreach ($tbl in $tableOrder) {
         $incClause = if ($incCols) { " INCLUDE ($incCols)" } else { "" }
         $filterClause = if (-not ($filter -is [System.DBNull]) -and [string]$filter -ne '') { " WHERE $filter" } else { "" }
         
-        $idxSql = "IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = '$idxName' AND object_id = OBJECT_ID(N'dbo.[$tbl]'))`nBEGIN`n    DROP INDEX [$idxName] ON dbo.[$tbl];`nEND`nGO`nCREATE ${uStr}NONCLUSTERED INDEX [$idxName] ON dbo.[$tbl] ($keyCols)$incClause$filterClause;`nGO"
-        $null = $sbTables.AppendLine($idxSql)
-        $null = $sbTableSingle.AppendLine($idxSql)
+        $idxSql = "IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = '$idxName' AND object_id = OBJECT_ID(N'dbo.[$tbl]'))`nBEGIN`n    CREATE ${uStr}NONCLUSTERED INDEX [$idxName] ON dbo.[$tbl] ($keyCols)$incClause$filterClause;`nEND`nGO"
+        if ([bool]$first.is_unique_constraint) {
+            $constraintSql = "IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = '$idxName' AND object_id = OBJECT_ID(N'dbo.[$tbl]'))`nBEGIN`n    ALTER TABLE dbo.[$tbl] ADD CONSTRAINT [$idxName] UNIQUE NONCLUSTERED ($keyCols);`nEND`nGO"
+            $null = $sbTables.AppendLine($constraintSql)
+            $null = $sbTableSingle.AppendLine($constraintSql)
+        } else {
+            $null = $sbIndexes.AppendLine($idxSql)
+            $null = $sbIndexSingle.AppendLine($idxSql)
+            $indexCount++
+        }
     }
     
+    if ($indexCount -gt 0) {
+        [System.IO.File]::WriteAllText((Join-Path $indexesDir "$tbl.sql"), $sbIndexSingle.ToString(), $utf8Bom)
+    } else {
+        $staleIndexFile = Join-Path $indexesDir "$tbl.sql"
+        if (Test-Path -LiteralPath $staleIndexFile) {
+            Remove-Item -LiteralPath $staleIndexFile
+        }
+    }
     [System.IO.File]::WriteAllText((Join-Path $tablesDir "$tbl.sql"), $sbTableSingle.ToString(), $utf8Bom)
 }
+
+[System.IO.File]::WriteAllText((Join-Path $OutputDir '08_indexes.sql'), $sbIndexes.ToString(), $utf8Bom)
+Write-Output "Generated 08_indexes.sql and modules/indexes/*.sql"
 
 # Foreign Key Constraints
 $null = $sbTables.AppendLine(@"
@@ -726,6 +752,7 @@ $null = $sbMaster.AppendLine(@"
 "@)
 
 $null = $sbMaster.AppendLine($sbTables.ToString())
+$null = $sbMaster.AppendLine($sbIndexes.ToString())
 $null = $sbMaster.AppendLine($sbFuncs.ToString())
 $null = $sbMaster.AppendLine($sbViews.ToString())
 $null = $sbMaster.AppendLine($sbProcs.ToString())
@@ -736,7 +763,7 @@ $null = $sbMaster.AppendLine($sbData.ToString())
 Write-Output "Generated 00_full_database.sql"
 
 # 8. Generate README.md
-$readmeContent = @"
+$readmeContent = @'
 # Bộ File SQL Cơ Sở Dữ Liệu QuanLySanBong - Final
 
 Thư mục này chứa toàn bộ các file SQL được xuất hoàn chỉnh, chuẩn hóa và kiểm thử từ cơ sở dữ liệu **QuanLySanBong** chạy trên Microsoft SQL Server (FC UTE Football Management System).
@@ -748,14 +775,16 @@ Thư mục này chứa toàn bộ các file SQL được xuất hoàn chỉnh, c
 ```
 database/final/
 ├── 00_full_database.sql             (Master script: chạy 1 lần là có đầy đủ cấu trúc và dữ liệu)
-├── 01_tables_and_constraints.sql    (Tạo CSDL, 28 bảng, khóa chính, khóa ngoại, ràng buộc CHECK, DEFAULT, Indexes)
+├── 01_tables_and_constraints.sql    (Tạo CSDL, 28 bảng, khóa chính, khóa ngoại, ràng buộc CHECK, DEFAULT)
 ├── 02_views.sql                     (9 View báo cáo, thống kê và tra cứu lịch sân)
 ├── 03_functions.sql                 (6 Hàm người dùng: tính hoàn tiền, doanh thu thực nhận, tra cứu khung giờ trống)
 ├── 04_stored_procedures.sql         (5 Thủ tục lưu trữ báo cáo tài chính, công suất, phương thức thanh toán)
 ├── 05_triggers.sql                  (5 Trigger nghiệp vụ tự động hóa và bảo vệ snapshot bất biến)
 ├── 06_seed_data.sql                 (Dữ liệu chuẩn ban đầu & lịch sử giao dịch vận hành hệ thống)
+├── 08_indexes.sql                   (Chỉ mục riêng: unique index, filtered index)
 ├── README.md                        (Tài liệu hướng dẫn sử dụng và danh mục đối tượng)
 └── modules/                         (Các file SQL lẻ từng đối tượng để đọc, đối chiếu hoặc chấm điểm bảo vệ)
+    ├── indexes/                     (9 index độc lập, chia theo 5 bảng)
     ├── functions/                   (6 file hàm lẻ)
     ├── procedures/                  (5 file thủ tục báo cáo lẻ)
     ├── tables/                      (28 file bảng lẻ)
@@ -775,7 +804,8 @@ database/final/
 
 ### Cách 2: Chạy theo từng phần có thứ tự (Khi cần kiểm soát từng bước)
 Thực hiện tuần tự các file theo đúng thứ tự sau:
-1. **`01_tables_and_constraints.sql`**: Tạo Database và 28 bảng cùng các chỉ mục, ràng buộc.
+1. **`01_tables_and_constraints.sql`**: Tạo Database và 28 bảng cùng các ràng buộc.
+   Sau đó chạy **08_indexes.sql** trước các bước tiếp theo để tạo chỉ mục.
 2. **`03_functions.sql`**: Tạo các hàm tính toán (các View sau này cần gọi hàm).
 3. **`02_views.sql`**: Tạo các View thống kê và tra cứu.
 4. **`04_stored_procedures.sql`**: Tạo các Stored Procedure báo cáo quản trị.
@@ -783,6 +813,8 @@ Thực hiện tuần tự các file theo đúng thứ tự sau:
 6. **`06_seed_data.sql`**: Nạp dữ liệu vận hành.
 
 ---
+
+Chạy `00_full_database.sql` **hoặc** bộ file thành phần; không chạy cả hai. `modules/indexes/` là bản chia nhỏ để đọc/đối chiếu, không chạy thêm sau `08_indexes.sql`. PRIMARY KEY và 6 UNIQUE CONSTRAINT thuộc phần bảng. File index chỉ tạo mục chưa có, không DROP/rebuild index hiện hữu; không dùng bộ export này làm migration sửa schema.
 
 ## 3. Danh Mục Chi Tiết Các Đối Tượng CSDL
 
@@ -865,7 +897,7 @@ Thực hiện tuần tự các file theo đúng thứ tự sau:
 - Bộ script được thiết kế tương thích hoàn toàn với Microsoft SQL Server 2016, 2017, 2019, 2022 và Azure SQL Database.
 - Mọi câu lệnh tạo view, hàm, thủ tục và trigger đều dùng cú pháp chuẩn hiện đại `CREATE OR ALTER`.
 - Bảng mã UTF-8 có BOM đảm bảo tiếng Việt dấu không bị lỗi font khi mở trên bất kỳ môi trường nào.
-"@
+'@
 
 [System.IO.File]::WriteAllText((Join-Path $OutputDir 'README.md'), $readmeContent, $utf8Bom)
 Write-Output "Generated README.md"

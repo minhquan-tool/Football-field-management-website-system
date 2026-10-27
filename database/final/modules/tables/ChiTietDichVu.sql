@@ -52,10 +52,3 @@ BEGIN
     ALTER TABLE dbo.[ChiTietDichVu] ADD CONSTRAINT [CK_CTDV_SoLuong] CHECK ([SoLuong]>(0));
 END
 GO
-IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'IX_CTDV_BookingSku' AND object_id = OBJECT_ID(N'dbo.[ChiTietDichVu]'))
-BEGIN
-    DROP INDEX [IX_CTDV_BookingSku] ON dbo.[ChiTietDichVu];
-END
-GO
-CREATE NONCLUSTERED INDEX [IX_CTDV_BookingSku] ON dbo.[ChiTietDichVu] ([MaDatSan] ASC, [MaDV] ASC);
-GO
