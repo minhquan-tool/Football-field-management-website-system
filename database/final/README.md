@@ -16,6 +16,7 @@ database/final/
 ├── 05_triggers.sql                  (5 Trigger nghiệp vụ tự động hóa và bảo vệ snapshot bất biến)
 ├── 06_seed_data.sql                 (Dữ liệu chuẩn ban đầu & lịch sử giao dịch vận hành hệ thống)
 ├── 08_indexes.sql                   (Chỉ mục riêng: unique index, filtered index)
+├── 09_transactions_demo.sql         (Demo transaction riêng trên DB fixture dev/test, không thuộc bước cài đặt)
 ├── README.md                        (Tài liệu hướng dẫn sử dụng và danh mục đối tượng)
 └── modules/                         (Các file SQL lẻ từng đối tượng để đọc, đối chiếu hoặc chấm điểm bảo vệ)
     ├── indexes/                     (9 index độc lập, chia theo 5 bảng)
@@ -49,6 +50,18 @@ Thực hiện tuần tự các file theo đúng thứ tự sau:
 ---
 
 Chạy `00_full_database.sql` **hoặc** bộ file thành phần; không chạy cả hai. `modules/indexes/` là bản chia nhỏ để đọc/đối chiếu, không chạy thêm sau `08_indexes.sql`. PRIMARY KEY và 6 UNIQUE CONSTRAINT thuộc phần bảng. File index chỉ tạo mục chưa có, không DROP/rebuild index hiện hữu; không dùng bộ export này làm migration sửa schema.
+
+### Demo transaction chạy riêng trong SSMS
+
+`09_transactions_demo.sql` tái sử dụng script `../report-demo/02_Fixture_and_Five_Transactions.sql`. File không được ghép vào `00_full_database.sql` và không thuộc thứ tự dựng database ở trên. Transaction nghiệp vụ ứng dụng vẫn do `@Transactional` tại tầng Service quản lý.
+
+1. Chuẩn bị bản sao theo `../report-demo/README.md`; chọn DB `QuanLySanBong_Fixtures_*` có marker `SanBongFixtureDatabase=1` và `SanBongEnvironment=dev/test`. Không gắn marker vào DB vận hành để vượt chặn.
+2. Chạy `../report-demo/01_Preflight.sql` theo hướng dẫn của file đó.
+3. Mở `09_transactions_demo.sql`, đổi `@EnableDemo bit=0` thành `1`, chạy cả file bằng F5; không cần SQLCMD Mode.
+4. Mong đợi 5 `COMMIT_PASS` và 5 `ROLLBACK_PASS`: đặt sân; thêm/sửa dịch vụ; trả sân/chốt hóa đơn; thu tiền; hủy/hoàn tiền. COMMIT giữ dữ liệu tổng hợp để xem, mỗi lần chạy lại tạo thêm bản ghi. ROLLBACK kiểm tra không còn dữ liệu dở dang của ca lỗi.
+5. Sau khi chạy, `SELECT @@TRANCOUNT AS OpenTransactions, XACT_STATE() AS TransactionState;` phải trả `0, 0`. Nếu gặp lỗi ngoài dự kiến, dừng và kiểm tra, không coi là PASS.
+
+Đây là demo T-SQL, không thay thế đầy đủ validation, phân quyền hoặc idempotency của API. Kiểm thử khóa đồng thời dùng hai file `../report-demo/70A_Concurrency_Window_A.sql` và `../report-demo/70B_Concurrency_Window_B.sql`; demo COMMIT/ROLLBACK này chưa chứng minh đồng thời qua API. File mới được đưa vào bộ final từ script demo hiện có; việc sao chép không đồng nghĩa đã chạy kiểm thử trên SQL Server.
 
 ## 3. Danh Mục Chi Tiết Các Đối Tượng CSDL
 
