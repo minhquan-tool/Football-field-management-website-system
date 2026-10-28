@@ -223,7 +223,7 @@ Công cụ đề xuất: Playwright CLI cho tái lập/E2E; Brave là browser ng
 - `docs/FINAL_FIX01_F02_REPORT.md` đến `FINAL_FIX05_F15_REPORT.md`: các bản sửa và gate F15.
 - `docs/FINAL_BROWSER_ACCEPTANCE_REPORT.md`: browser acceptance lịch sử và BA01–BA05.
 - Báo cáo Phase5.1A/5.1B/5.1C/6/7 trong `docs/`: lịch sử hiện thực nghiệp vụ.
-- `database/schema-bootstrap.sql`, `database/migrations/`: schema và kỹ thuật DBMS. Bootstrap có DROP DATABASE, không chạy trên DB đang dùng.
+- `database/migrations/legacy/schema-bootstrap.sql`, `database/migrations/`: schema và kỹ thuật DBMS. Bootstrap có DROP DATABASE, không chạy trên DB đang dùng.
 - `backend/src/main/`, `backend/src/test/`, `frontend/`, `scripts/`: hiện thực, test và vận hành.
 - `docs/BACKUP_RESTORE_GUIDE.md`, `docs/INTERNAL_DEPLOYMENT_GUIDE.md`: runbook.
 

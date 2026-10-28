@@ -1,8 +1,8 @@
-﻿[CmdletBinding()]
+[CmdletBinding()]
 param(
     [string]$Server = 'tcp:localhost,1433',
     [string]$Database = 'QuanLySanBong',
-    [string]$OutputDir = (Join-Path (Split-Path $PSScriptRoot -Parent) 'database\final')
+    [string]$OutputDir = (Join-Path (Split-Path $PSScriptRoot -Parent) 'exports\database-components')
 )
 
 $ErrorActionPreference = 'Stop'
@@ -773,7 +773,7 @@ Thư mục này chứa toàn bộ các file SQL được xuất hoàn chỉnh, c
 ## 1. Cấu Trúc Thư Mục
 
 ```
-database/final/
+exports/database-components/
 ├── 00_full_database.sql             (Master script: chạy 1 lần là có đầy đủ cấu trúc và dữ liệu)
 ├── 01_tables_and_constraints.sql    (Tạo CSDL, 28 bảng, khóa chính, khóa ngoại, ràng buộc CHECK, DEFAULT)
 ├── 02_views.sql                     (9 View báo cáo, thống kê và tra cứu lịch sân)

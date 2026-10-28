@@ -88,6 +88,6 @@ DECLARE @ddl nvarchar(max)=N'USE '+QUOTENAME(@name)+N'; '+__PAYLOAD__;
 EXEC(@ddl);
 PRINT 'New empty schema created; reference/demo data and private runtime user must be provisioned separately.';
 """
-(root/'database/rubric-schema-new-only.sql').write_text(header.replace('__COLLATION__',data['collation']).replace('__PAYLOAD__',literal(payload)),encoding='utf-8')
+(root/'database/migrations/legacy/rubric-schema-new-only.sql').write_text(header.replace('__COLLATION__',data['collation']).replace('__PAYLOAD__',literal(payload)),encoding='utf-8')
 (root/'docs/DBMS_SCHEMA_DICTIONARY.md').write_text('\n'.join(md),encoding='utf-8')
 print(f"Generated ERD/dictionary for {len(data['tables'])} tables and schema-only snapshot with {len(data['modules'])} business modules")

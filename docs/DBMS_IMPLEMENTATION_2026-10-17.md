@@ -79,7 +79,7 @@ Bốn trigger mới không tính lại tổng dịch vụ hoặc tự thực hi�
 
 Các SB_Demo* không thể đăng nhập bằng SQL Authentication vì WITHOUT LOGIN. DBA dùng EXECUTE AS USER để demo quyền SQL. Web vẫn dùng SanBongApp với whitelist cũ cộng quyền EXECUTE5SP; backend xử lý4vai trò web và ownership. Không hứa rằng mỗi phiên web tự đổi SQL principal.
 
-Probe trên fixture đã xác nhận bốn ma trận khác nhau, lỗi229 khi customer đọc ThanhToan, và GRANT → REVOKE → DENY rồi rollback. Không cấp quyền đọc toàn bộ booking/khách/tài khoản cho SQL role khách. Manager không db_owner, không sửa/xóa nhật ký hoặc xóa thu tiền. File: database/rubric-permission-probes.sql; log: exports/rubric-permission-probes.log.
+Probe trên fixture đã xác nhận bốn ma trận khác nhau, lỗi229 khi customer đọc ThanhToan, và GRANT → REVOKE → DENY rồi rollback. Không cấp quyền đọc toàn bộ booking/khách/tài khoản cho SQL role khách. Manager không db_owner, không sửa/xóa nhật ký hoặc xóa thu tiền. File: database/migrations/legacy/rubric-permission-probes.sql; log: exports/rubric-permission-probes.log.
 
 ### Transaction, constraint và concurrency
 
@@ -101,14 +101,14 @@ Năm CHECK probe bị chặn với SQL547: giá dịch vụ0, số lượng dị
 
 Đã kiểm tra **5 kết quả trước/sau giống nhau**, actual plan từ Table Scan sang Index Seek; XML plan, STATISTICS IO/TIME và JSON được giữ. Bảng thử là heap tổng hợp trong rubric_bench trên fixture; không thay index nguồn. Dịch vụ dùng covering variant có INCLUDE, khác index nguồn hiện tại. Không diễn giải số đo này thành cam kết tốc độ trên dữ liệu/thời điểm khác hoặc tải người dùng thật. Log ANSI đầu được đọc đúng mã hóa để phục hồi plan, runner đã bổ sung UTF-8 cho lần chạy sau.
 
-File: database/rubric-index-benchmark.sql, scripts/measure-rubric-indexes.ps1, scripts/verify-rubric-index-results.py; kết quả exports/rubric-indexes/results.json và verification.json, cùng10file.sqlplan.
+File: database/migrations/legacy/rubric-index-benchmark.sql, scripts/measure-rubric-indexes.ps1, scripts/verify-rubric-index-results.py; kết quả exports/rubric-indexes/results.json và verification.json, cùng10file.sqlplan.
 
 ### ERD, từ điển dữ liệu và tạo lại schema
 
 - docs/DBMS_SCHEMA_DICTIONARY.md: **27 bảng**, cột/kiểu/NULL/default/computed, khóa/FK/CHECK, ERD Mermaid theo cardinality từ schema.
 - docs/DBMS_TECHNICAL_GUIDE.md: hợp đồng6view, phụ thuộc hàm/khóa, giải thích giá và snapshot lịch sử, CRUD nghiệp vụ, quyền và cách kiểm chứng.
 - exports/rubric-schema.json: metadata schema-only lấy từ nguồn sau triển khai, không xuất dữ liệu ứng dụng/hash/password.
-- database/rubric-schema-new-only.sql: tạo mới schema đầy đủ; đã chạy thành công lên **SanBong_SchemaDemo_20261017_Rubric**, CHECKDB đạt,27bảng/21module. So cột/kiểu/nullability/identity hai chiều với nguồn:0khác biệt. Chạy lần nữa cùng tên bị chặn; không DROP/ghi đè database đã có.
+- database/migrations/legacy/rubric-schema-new-only.sql: tạo mới schema đầy đủ; đã chạy thành công lên **SanBong_SchemaDemo_20261017_Rubric**, CHECKDB đạt,27bảng/21module. So cột/kiểu/nullability/identity hai chiều với nguồn:0khác biệt. Chạy lần nữa cùng tên bị chặn; không DROP/ghi đè database đã có.
 
 Snapshot mới là **schema-only**, không có danh mục seed, tài khoản, SQL grants, login hoặc dữ liệu người dùng; không phải bộ cài tự đăng nhập được. Tạo user runtime/danh mục demo trên database mới là công việc provision riêng. Không dùng bootstrap DROP/reset trên nguồn. Backup có dữ liệu là phương án riêng, cần giữ kín.
 
@@ -118,7 +118,7 @@ Snapshot mới là **schema-only**, không có danh mục seed, tài khoản, SQ
 
 SHA-256 JSON đầy đủ, sắp theo khóa của9bảng DatSan/HoaDon/ChiTietDichVu/ThanhToan/HoanTien/HuyDatSan/XacNhanSan/DichVu/GiaTheoCa: **giữ nguyên trước migration, sau migration và sau hồi quy/UI**. Chỉ nhật ký đăng nhập thật được bổ sung. Không dùng checksum đơn giản hoặc chỉ một chiều EXCEPT để nhận là toàn bộ lịch sử không đổi. Các bảng ngoài9bảng này không nằm trong chứng minh hash đó.
 
-Bằng chứng: exports/rubric-source-before.txt, rubric-source-after.txt, rubric-source-final.txt. Helper: database/rubric-financial-fingerprints.sql.
+Bằng chứng: exports/rubric-source-before.txt, rubric-source-after.txt, rubric-source-final.txt. Helper: database/migrations/legacy/rubric-financial-fingerprints.sql.
 
 ## Còn lại và giới hạn thực tế
 

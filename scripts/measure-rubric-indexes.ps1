@@ -3,7 +3,7 @@ $ErrorActionPreference='Stop'
 $qaRoot=Split-Path $PSScriptRoot -Parent
 $qaOutput=Join-Path $qaRoot 'exports/rubric-indexes'
 $null=New-Item -ItemType Directory -Force -Path $qaOutput
-& sqlcmd -S $Server -E -C -d $Database -b -f 65001 -v "ReviewedDatabase=$Database" -i (Join-Path $qaRoot 'database/rubric-index-benchmark.sql') -o (Join-Path $qaOutput 'setup.log')
+& sqlcmd -S $Server -E -C -d $Database -b -f 65001 -v "ReviewedDatabase=$Database" -i (Join-Path $qaRoot 'database/migrations/legacy/rubric-index-benchmark.sql') -o (Join-Path $qaOutput 'setup.log')
 if($LASTEXITCODE -ne 0){throw 'Benchmark preparation failed; existing tables are never overwritten'}
 $qaCases=@(
  @{name='booking';query="SELECT COUNT_BIG(*) hits FROM rubric_bench.Booking WHERE MaSan='S42' AND NgayChoi>='20260301' AND NgayChoi<'20260401'";ddl='CREATE INDEX IX_Booking_SanNgay ON rubric_bench.Booking(MaSan,NgayChoi,GioBatDau)';source='IX_DatSan_SanNgayBatDau'},

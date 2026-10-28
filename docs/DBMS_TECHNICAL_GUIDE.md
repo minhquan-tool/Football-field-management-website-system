@@ -71,7 +71,7 @@ Bảng VaiTro/PhanQuyen là quyền người dùng web; SQL database role là qu
 
 SB_Demo* là user WITHOUT LOGIN để DBA dùng EXECUTE AS USER khi minh họa. Không có mật khẩu, không thể đăng nhập từ web/SSMS bằng các user này. Chúng là kiểm chứng quyền database, không tuyên bố phiên khách web tự đổi SQL identity. Quyền SQL này có chủ ý hẹp hơn tập chức năng web, không phải đường nghiệp vụ thay thế backend.
 
-`database/rubric-permission-probes.sql` kiểm tra bốn role, thực sự bị lỗi229 khi khách đọc ThanhToan, và GRANT → REVOKE → DENY trong transaction rồi ROLLBACK để giữ ma trận quyền đã review. Chỉ chạy probe trên fixture bằng DBA.
+`database/migrations/legacy/rubric-permission-probes.sql` kiểm tra bốn role, thực sự bị lỗi229 khi khách đọc ThanhToan, và GRANT → REVOKE → DENY trong transaction rồi ROLLBACK để giữ ma trận quyền đã review. Chỉ chạy probe trên fixture bằng DBA.
 
 ## Thiết kế quan hệ và chuẩn hóa
 
@@ -96,7 +96,7 @@ Cập nhật 18/10: migration tài chính đã được duyệt và triển khai
 
 ## Transaction và tranh chấp
 
-`database/rubric-transactions.sql` chỉ nhận tên DB fixture có marker dùng một lần. Năm kịch bản: tạo đặt sân kèm nhật ký; thêm/sửa lượng dịch vụ và trigger tổng; nhận/trả và chốt hóa đơn; thu tiền và đồng bộ hóa đơn; hủy/hoàn theo thực thu. Mỗi kịch bản có một COMMIT quan sát được và một lỗi cố ý sau các bước ghi để kiểm tra ROLLBACK không còn dữ liệu từng bảng. Năm bộ dữ liệu thành công được giữ trên fixture để kiểm tra; không copy lên nguồn.
+`database/migrations/legacy/rubric-transactions.sql` chỉ nhận tên DB fixture có marker dùng một lần. Năm kịch bản: tạo đặt sân kèm nhật ký; thêm/sửa lượng dịch vụ và trigger tổng; nhận/trả và chốt hóa đơn; thu tiền và đồng bộ hóa đơn; hủy/hoàn theo thực thu. Mỗi kịch bản có một COMMIT quan sát được và một lỗi cố ý sau các bước ghi để kiểm tra ROLLBACK không còn dữ liệu từng bảng. Năm bộ dữ liệu thành công được giữ trên fixture để kiểm tra; không copy lên nguồn.
 
 Kịch bản SQL là minh họa ACID bằng dữ liệu tổng hợp, không phải API mới cho người dùng cuối hoặc quy trình xác nhận tiền thật. Các quy tắc thời gian/role/ownership/idempotency đầy đủ vẫn do backend và hồi quy tích hợp bảo vệ.
 
@@ -104,7 +104,7 @@ Kịch bản SQL là minh họa ACID bằng dữ liệu tổng hợp, không ph�
 
 ## Index và giới hạn phép đo
 
-`database/rubric-index-benchmark.sql` tạo schema rubric_bench với năm bảng **tổng hợp** 50.000 dòng/bảng trong fixture. `scripts/measure-rubric-indexes.ps1` lưu STATISTICS IO/TIME và actual XML plan trước/sau từng index. Không DROP/DISABLE index nguồn hoặc benchmark bằng dữ liệu khách thật.
+`database/migrations/legacy/rubric-index-benchmark.sql` tạo schema rubric_bench với năm bảng **tổng hợp** 50.000 dòng/bảng trong fixture. `scripts/measure-rubric-indexes.ps1` lưu STATISTICS IO/TIME và actual XML plan trước/sau từng index. Không DROP/DISABLE index nguồn hoặc benchmark bằng dữ liệu khách thật.
 
 | Mẫu truy vấn | Logical reads trước → sau | Ghi chú |
 |---|---|---|
@@ -120,19 +120,19 @@ Chạy scripts/verify-rubric-index-results.py sau phép đo để xác nhận n�
 
 ## Tạo lại schema và chạy kiểm tra
 
-`database/rubric-schema-new-only.sql` là snapshot schema-only: 27 bảng, khóa/ràng buộc/index, view/function/procedure/trigger, không chứa dữ liệu người dùng, hash mật khẩu, ngân hàng hoặc login. Chỉ cho phép tên mới SanBong_SchemaDemo_...; từ chối nếu DB tồn tại, không DROP/reset/restore. Dùng SQLCMD -b để dừng khi lỗi. Không dùng file này thay backup có dữ liệu; danh mục, tài khoản quản trị và service identity phải được provision riêng trên DB mới. Bốn role nằm trong migration riêng; không xuất quyền vào snapshot một cách ngầm định.
+`database/migrations/legacy/rubric-schema-new-only.sql` là snapshot schema-only: 27 bảng, khóa/ràng buộc/index, view/function/procedure/trigger, không chứa dữ liệu người dùng, hash mật khẩu, ngân hàng hoặc login. Chỉ cho phép tên mới SanBong_SchemaDemo_...; từ chối nếu DB tồn tại, không DROP/reset/restore. Dùng SQLCMD -b để dừng khi lỗi. Không dùng file này thay backup có dữ liệu; danh mục, tài khoản quản trị và service identity phải được provision riêng trên DB mới. Bốn role nằm trong migration riêng; không xuất quyền vào snapshot một cách ngầm định.
 
 ```powershell
 # Trong thư mục gốc dự án, với private profile fixture đã chuẩn bị:
 .\backend\run-rubric-verification.ps1 -EnvFile .\.env.rubric.local -Offline
 
 # Chỉ fixture, bằng Windows identity có quyền DBA:
-sqlcmd -S tcp:localhost,1433 -E -C -b -f 65001 -d TEN_DB_FIXTURE -v ReviewedDatabase=TEN_DB_FIXTURE -i database/rubric-transactions.sql
-sqlcmd -S tcp:localhost,1433 -E -C -b -f 65001 -d TEN_DB_FIXTURE -v ReviewedDatabase=TEN_DB_FIXTURE -i database/rubric-permission-probes.sql
+sqlcmd -S tcp:localhost,1433 -E -C -b -f 65001 -d TEN_DB_FIXTURE -v ReviewedDatabase=TEN_DB_FIXTURE -i database/migrations/legacy/rubric-transactions.sql
+sqlcmd -S tcp:localhost,1433 -E -C -b -f 65001 -d TEN_DB_FIXTURE -v ReviewedDatabase=TEN_DB_FIXTURE -i database/migrations/legacy/rubric-permission-probes.sql
 .\scripts\verify-rubric-concurrency.ps1 -Database TEN_DB_FIXTURE
 
 # Chỉ DB mới, không dùng tên của database đang có:
-sqlcmd -S tcp:localhost,1433 -E -C -d master -b -f 65001 -v NewDatabase=SanBong_SchemaDemo_TEN_MOI -i database/rubric-schema-new-only.sql
+sqlcmd -S tcp:localhost,1433 -E -C -d master -b -f 65001 -v NewDatabase=SanBong_SchemaDemo_TEN_MOI -i database/migrations/legacy/rubric-schema-new-only.sql
 ```
 
 Các runner cần JDK24, Maven có trên PATH hoặc MAVEN_HOME. Không chia sẻ .env.rubric.local, .env.test.local, cookie hoặc backup dữ liệu thật lên repository công khai. Không chạy test fixture bằng SanBongApp hoặc DB internal.

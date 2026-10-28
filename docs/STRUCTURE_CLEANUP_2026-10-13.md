@@ -17,9 +17,9 @@ Backup riêng: `exports/Private_Cleanup_Backup_20261013.zip`. Có thể chứa l
 | html/ | frontend/ |
 | Data/ | database/ |
 | backend/backend.ps1 | backend/manage-backend.ps1 |
-| QuanLySanBong_Nhom19.sql | database/schema-bootstrap.sql |
-| SecuritySetup.sql | database/security-permissions.sql |
-| SeedData.sql | database/seed-data.sql |
+| QuanLySanBong_Nhom19.sql | database/migrations/legacy/schema-bootstrap.sql |
+| SecuritySetup.sql | database/migrations/legacy/security-permissions.sql |
+| SeedData.sql | database/migrations/legacy/seed-data.sql |
 
 Cập nhật Maven resource path, frontend static check, finance regression server, source exporter, Java launcher check, README và đường dẫn source trong tài liệu. Tên bảng/database/Java package không đổi. HTML vẫn đóng gói vào `static`, nên URL `/api/Dang_nhap.html` và các route cũ vẫn giữ nguyên.
 

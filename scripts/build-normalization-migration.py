@@ -99,5 +99,5 @@ for name in ['DatSan','HoaDon','ChiTietDichVu','ThanhToan','HoanTien','HuyDatSan
     order=','.join(q(c['name']) for c in key['columns'] if not c['is_included_column'])
     fields=','.join(q(c['name']) for c in table['columns'])
     fingerprints.append(f"SELECT '{name}' AS tableName,COUNT_BIG(*) AS [rowCount],CONVERT(varchar(64),HASHBYTES('SHA2_256',(SELECT {fields} FROM dbo.{q(name)} ORDER BY {order} FOR JSON PATH,INCLUDE_NULL_VALUES)),2) AS sha256 FROM dbo.{q(name)};")
-(root/'database/normalization-original-fingerprints.sql').write_text('\n'.join(fingerprints)+'\n',encoding='utf-8')
+(root/'database/migrations/legacy/normalization-original-fingerprints.sql').write_text('\n'.join(fingerprints)+'\n',encoding='utf-8')
 print('Proposal generated; no database was modified')

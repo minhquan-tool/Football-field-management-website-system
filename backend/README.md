@@ -52,7 +52,7 @@ hóa vì chưa có persistent login.
 
 ## Chuyển dữ liệu cũ
 
-database/security-permissions.sql chỉ INSERT quyền còn thiếu trong transaction, không ghi đè
+database/migrations/legacy/security-permissions.sql chỉ INSERT quyền còn thiếu trong transaction, không ghi đè
 quyền đang có hoặc đổi schema. Quyền mặc định:
 - VT04: đầy đủ 8 chức năng.
 - VT02: khách hàng, đặt sân, dịch vụ, ghi nhận thanh toán, xử lý phản hồi.
